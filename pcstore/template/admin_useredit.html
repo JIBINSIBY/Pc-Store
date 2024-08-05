@@ -1,0 +1,600 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+
+    <title>Hexashop Ecommerce HTML CSS Template</title>
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/templatemo-hexashop.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/owl-carousel.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/lightbox.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/sidebarprofile.css' %}">
+
+    <style>
+        
+        .profilebody{
+            background-color: #ffffff;
+            width: 1046px;
+            margin-left: 321px;
+            margin-top: -475px;
+            height: 850px;
+        }
+        .profilebodypadding{
+            padding: 24px 32px 0;       
+        }
+        .personalinfodetails{
+            padding-bottom: 56px;
+        }
+        .personalinfotitlename{
+            font-size: 18px;
+            font-weight: 500;
+            padding-right: 24px;
+        }
+        .gaVsws {
+            border: 1px solid #e0e0e0;
+            background: #fff;
+            border-radius: 2px;
+            margin-bottom: 30px;
+            margin-top: 15px;
+        }
+        .g8S8Av {
+            font-size: 14px;
+            color: #2874f0;
+            font-weight: 500;
+            padding: 16px 16px;
+            cursor: pointer;
+            
+        }
+        .GiZlJw {
+            border: 1px solid #e0e0e0;
+            background: #fff;
+            border-radius: 2px;
+            margin-bottom: 30px;
+            margin-top: 15px;
+        }
+        .o20LY5 {
+            max-width: 1000px;
+            overflow: hidden;
+            padding: 20px;
+        }
+        .RKqNKN {
+            max-width: 35px;
+            float: right;
+        }
+        ._8DiaSH {
+            margin-bottom: 10px;
+        }
+        .Tlp8CN {
+            margin-top: -23px;
+            line-height: 1.5;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        ._9gyQif {
+            margin-top: 10px;
+            display: block;
+            max-width: 523px;
+            font-size: 13px;
+        }
+        .faq{
+            margin-top: 50px;
+        }
+        .deactivateaccout{
+            margin-top: 17px;
+        }
+        .deleteaccount{
+            margin-top: 10px;
+        }
+
+
+
+
+        .container1 {
+            margin-left: 930px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .icon {
+            cursor: pointer;
+        }
+        
+        .popup {
+            position: absolute;
+            top: -5px;
+            right: 0;
+            background-color: white;
+            border: 0px solid #ccc;
+            box-shadow: 0px 5px 16px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        
+        .popup-item {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        
+        .popup-item:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .hidden {
+            display: none;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .deletebutton{
+            background-color: red;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            MARGIN-BOTTOM: 8PX;
+
+        }
+        .cancelbutton{
+            background-color: green;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+
+    <!-- <link rel="stylesheet" href="{% static 'css/profile-sidenav.css' %}"> -->
+<!--
+
+TemplateMo 571 Hexashop
+
+https://templatemo.com/tm-571-hexashop
+
+-->
+    </head>
+    
+    <body style="background-color:#f0f0f0;">
+    
+    <!-- ***** Preloader Start ***** -->
+    <!-- <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>   -->
+    <!-- ***** Preloader End ***** -->
+    
+    
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+        <div class=" mx-5">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="index.html" class="logo">
+                            <img src="{% static 'images/logo.png' %}">
+                        </a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
+                            <li class="scroll-to-section"><a href="#men">Men's</a></li>
+                            <li class="scroll-to-section"><a href="#women">Women's</a></li>
+                            <li class="scroll-to-section"><a href="#kids">Kid's</a></li>
+                            <li class="submenu">
+                                <a href="javascript:;">Pages</a>
+                                <ul>
+                                    <li><a href="about.html">About Us</a></li>
+                                    <li><a href="products.html">Products</a></li>
+                                    <li><a href="single-product.html">Single Product</a></li>
+                                    <li><a href="contact.html">Contact Us</a></li>
+                                </ul>
+                            </li>
+                            {% if user.is_authenticated%}
+                            <li class="submenu">
+                                <a href="javascript:;">{{ user.username }}</a>
+                                <ul>
+                                    <li><a href="{% url 'userapp:logout' %}">Logout</a></li>
+                            {% else %}
+                            <li><a href="loginuser">Login</a></li>
+                            {% endif %}
+                                    <li><a href="profile">Profile</a></li>
+                                    <li><a href="#">Features Page 3</a></li>
+                                    <li><a rel="nofollow" href="https://templatemo.com/page/4" target="_blank">Template Page 4</a></li>
+                                </ul>
+                            </li>
+                        </ul>        
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+    <!-- ***** side nav start ***** -->
+     <div class="side-nav">
+        <div class="namedisplay">
+            <img class="namedisplayimage" height="50px" width="50px" src="{% static 'images/profileimage.png' %}">    
+            <div class="namedisplaytext">
+                <div class="namedisplaytexthello">
+                    Hello
+                    ,
+                </div>
+                <div class="namedisplaytextname">
+                    {{ user.username }}
+                </div>
+            </div>
+        </div>
+        <div class="accountdisplay">
+            <div class="accountdisplayorderline">
+                <hr>
+            </div>
+            <div class="accountdisplaysettings">
+                <div class="accountdisplaysettingdetails">
+                    <img class="accountdisplayorderdetailsimage" src="{% static 'images/setting.png' %}">
+                    <a class="accountdisplayorderdetailsorder" href="#">
+                        ACCOUNT SETTINGS
+                    </a>
+                </div>
+                <div class="profileaddress">
+                    <a href="{% url 'userapp:admin_profile' %}">
+                        <div class="profileinformation" >Profile Information</div>
+                    </a>
+                    
+                </div>
+            </div>
+            <div class="accountdisplayorderline">
+                <hr>
+            </div>
+            <!-- extra field start -->
+            <div class="accountdisplaysettings">
+                <div class="accountdisplaysettingdetails">
+                    <img class="accountdisplayorderdetailsimage" src="{% static 'images/setting.png' %}">
+                    <a class="accountdisplayorderdetailsorder" href="#">
+                        Users Management
+                    </a>
+                </div>
+                <div class="profileaddress">
+                    <a href="{% url 'userapp:admin_userview' %}">
+                        <div class="profileinformation">User View</div>
+                    </a>
+                    <!-- <a href="#">
+                        <div class="manageaddress">Extra Field 2</div>
+                    </a> -->
+                </div>
+            </div>
+            <div class="accountdisplayorderline">
+                <hr>
+            </div>
+            <!-- extra field end -->
+            <div class="accountdisplaysettings">
+                <div class="accountdisplaysettingdetails">
+                    <img class="accountdisplayorderdetailsimage" src="{% static 'images/turn-off.png' %}">
+                    <a class="accountdisplayorderdetailsorder" href="{% url 'userapp:logout' %}">
+                        LOGOUT
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="profilebody">
+            <div class="profilebodypadding">
+                <div class="personalinfodetails">
+                    <div class="personalinfotitle">
+                        <span class="personalinfotitlename">Edit User Information</span>
+                        <span class="personalinfoedit"><a href="{% url 'userapp:admin_userview' %}">Cancel</a></span>
+                    </div>
+                    <form method="POST" id="userEditForm">
+                        {% csrf_token %}
+                        <div class="personalinfonamenames">
+                            <div class="personalinfofirstname">
+                                {{ form.first_name }}
+                            </div>
+                            <div class="personalinfolastname">
+                                {{ form.last_name }}
+                            </div>
+                        </div>
+                        
+                        <div class="personalinfoemail">
+                            <span class="emailtitle">Email</span>
+                            <div class="personalinfoemail1">
+                                <div class="personalinfofirstname">
+                                    {{ form.email }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="personalinfotitle">
+                            <span class="mobiletitle">Username</span>
+                            <div class="personalinfomobilenames">
+                                <div class="personalinfomobilename">
+                                    {{ form.username }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="editsavebtn">
+                            <button type="submit" class="editsavebtnsubmit">SAVE</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+     </div>
+    
+    <!-- ***** side nav end ***** -->
+     <div>
+
+     </div>
+    
+    <!-- ***** Footer Start ***** -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="first-item">
+                        <div class="logo">
+                            <img src="{% static 'images/white-logo.png' %}" alt="hexashop ecommerce templatemo">
+                        </div>
+                        <ul>
+                            <li><a href="#">16501 Collins Ave, Sunny Isles Beach, FL 33160, United States</a></li>
+                            <li><a href="#">hexashop@company.com</a></li>
+                            <li><a href="#">010-020-0340</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <h4>Shopping &amp; Categories</h4>
+                    <ul>
+                        <li><a href="#">Men's Shopping</a></li>
+                        <li><a href="#">Women's Shopping</a></li>
+                        <li><a href="#">Kid's Shopping</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h4>Useful Links</h4>
+                    <ul>
+                        <li><a href="#">Homepage</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Help</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h4>Help &amp; Information</h4>
+                    <ul>
+                        <li><a href="#">Help</a></li>
+                        <li><a href="#">FAQ's</a></li>
+                        <li><a href="#">Shipping</a></li>
+                        <li><a href="#">Tracking ID</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-12">
+                    <div class="under-footer">
+                        <p>Copyright © 2022 HexaShop Co., Ltd. All Rights Reserved. 
+                        
+                        <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+
+    <!-- jQuery -->
+    <script src="{% static 'js/jquery-2.1.0.min.js' %}"></script>
+
+    <!-- Bootstrap -->
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    <!-- Plugins -->
+    <script src="{% static 'js/owl-carousel.js' %}"></script>
+    <script src="{% static 'js/accordions.js' %}"></script>
+    <script src="{% static 'js/datepicker.js' %}"></script>
+    <script src="{% static 'js/scrollreveal.min.js' %}"></script>
+    <script src="{% static 'js/waypoints.min.js' %}"></script>
+    <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'js/imgfix.min.js' %}"></script> 
+    <script src="{% static 'js/slick.js' %}"></script> 
+    <script src="{% static 'js/lightbox.js' %}"></script> 
+    <script src="{% static 'js/isotope.js' %}"></script> 
+    
+    <!-- Global Init -->
+    <script src="{% static 'js/custom.js' %}"></script>
+
+    <script>
+
+        $(function() {
+            var selectedClass = "";
+            $("p").click(function(){
+            selectedClass = $(this).attr("data-rel");
+            $("#portfolio").fadeTo(50, 0.1);
+                $("#portfolio div").not("."+selectedClass).fadeOut();
+            setTimeout(function() {
+              $("."+selectedClass).fadeIn();
+              $("#portfolio").fadeTo(50, 1);
+            }, 500);
+                
+            });
+        });
+
+
+        $('.btn').click(function(){
+            $(this).toggleClass("click");
+            $('.sidebar').toggleClass("show");
+          });
+            $('.feat-btn').click(function(){
+              $('nav ul .feat-show').toggleClass("show");
+              $('nav ul .first').toggleClass("rotate");
+            });
+            $('.serv-btn').click(function(){
+              $('nav ul .serv-show').toggleClass("show1");
+              $('nav ul .second').toggleClass("rotate");
+            });
+            $('nav ul li').click(function(){
+              $(this).addClass("active").siblings().removeClass("active");
+            });
+            
+    </script>
+
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeDeleteModal()">&times;</span>
+            <h2>Confirm Deletion</h2>
+            <p>Are you sure you want to delete this address?</p>
+            <button class="deletebutton" onclick="deleteAddress()">Yes, Delete</button>
+            <button class="cancelbutton" onclick="closeDeleteModal()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        let currentAddressId;
+
+        function showDeleteModal(addressId) {
+            currentAddressId = addressId;
+            document.getElementById('deleteModal').style.display = 'block';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+
+        function deleteAddress() {
+            fetch(`/delete-address/${currentAddressId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Failed to delete address');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+            closeDeleteModal();
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+
+    <script>
+        document.getElementById('userEditForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            fetch(window.location.href, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('User updated successfully!');
+                    window.location.href = "{% url 'userapp:admin_userview' %}";
+                } else {
+                    alert('Failed to update user. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        });
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+
+  </body>
+</html>

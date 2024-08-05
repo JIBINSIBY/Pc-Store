@@ -1,0 +1,70 @@
+.side-nav{
+    margin-top: 20px;
+}
+.namedisplay{
+    background-color: #ffffff;
+    width: 290px;
+    margin-left: 20px;
+    margin-top: 93px;
+    height: 69px;
+    padding: 12px;
+}
+.namedisplayimage{
+    vertical-align: middle;
+    width: 50px;
+    height: 50px;
+    margin-top: -2px;
+}
+.namedisplaytext{
+    margin-left: 63px;
+    margin-top: -47px;
+}
+.namedisplaytexthello{
+    font-size: 12px;
+    
+}
+.namedisplaytextname{
+    font-size: 20px;
+}
+.accountdisplay{
+    background-color: #ffffff;
+    width: 290px;
+    margin-left: 20px;
+    margin-top: 12px;
+    height: 392px;
+}
+.accountdisplayorder{
+    box-sizing: border-box;
+    margin: 8px;
+    padding: 0;
+}
+.accountdisplayorderdetails{
+    padding: 20px 12px 5px 13px;
+}
+.accountdisplayorderdetailsimage{
+    width: 20px;
+    height: 20px;
+}
+.accountdisplayorderdetailsorder{
+    width: calc(100% - 26px);
+    padding-left: 20px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #878787;
+    cursor: pointer;
+}
+.accountdisplaysettingdetails{
+    padding: 0px 23px 3px 23px;
+}
+.profileinformation{
+    font-size: 14px;
+    padding: 10px 5px 6px 85px;
+    cursor: pointer;
+    color: #000000;
+}
+.manageaddress{
+    font-size: 14px;
+    padding: 10px 5px 6px 85px;
+    cursor: pointer;
+    color: #000000;
+}
