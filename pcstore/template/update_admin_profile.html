@@ -32,7 +32,7 @@
             background-color: #ffffff;
             width: 1046px;
             margin-left: 321px;
-            margin-top: -475px;
+            margin-top: -625px;
             height: 850px;
         }
         .profilebodypadding{
@@ -316,38 +316,24 @@ https://templatemo.com/tm-571-hexashop
                         <span class="personalinfotitlename">Personal Information</span>
                         <span class="personalinfoedit"><a href="{% url 'userapp:admin_profile' %}">Cancel</a></span>
                     </div>
-                    <form method="POST">
+                    <form method="POST" action="{% url 'userapp:update_admin_profile' %}">
                         {% csrf_token %}
                         <div class="row">
                             <div class="personalinfofirstname">
-                                {{ form.first_name }}
+                                <input type="text" class="peronalinfofirstnameinput" name="first_name" value="{{ user.first_name }}" required>
                             </div>
                             <div class="personalinfolastname">
-                                {{ form.last_name }}
+                                <input type="text" class="peronalinfolastnameinput" name="last_name" value="{{ user.last_name }}" required>
                             </div>
-                    
-                            
                         </div>
-                        
+                        <span class="emailtitle">Email</span>
                         <div class="personalinfoemail">
-                            <span class="emailtitle">Email</span>
-                            <div class="personalinfoemail1">
-                                <div class="personalinfofirstname">
-                                    {{ form.email }}
-                                </div>
-                            </div>
+                            <input type="email" class="personalinfoemailinput" name="email" value="{{ user.email }}" required>
                         </div>
-                        <div class="personalinfotitle">
-                            <span class="mobiletitle">Mobile Number</span>
-                            <div class="personalinfomobilenames">
-                                <div class="personalinfomobilename">
-                                    {{ form.mobile }}
-                                </div>
-                            </div>
+                        <div class="personalinfomobile">
+                            <input type="tel" class="personalinfomobileinput" name="mobile" value="{{ user.mobile }}" required>
                         </div>
-                        <div class="editsavebtn">
-                            <input type="submit" value="submit" class="editsavebutn">
-                        </div>
+                        <button type="submit" class="btn btn-primary">Update Profile</button>
                     </form>
                     <div class="faq">
                         <h3>FAQ</h3>
@@ -401,8 +387,8 @@ https://templatemo.com/tm-571-hexashop
                 <div class="col-lg-3">
                     <h4>Shopping &amp; Categories</h4>
                     <ul>
-                        <li><a href="#">Men’s Shopping</a></li>
-                        <li><a href="#">Women’s Shopping</a></li>
+                        <li><a href="#">Men's Shopping</a></li>
+                        <li><a href="#">Women's Shopping</a></li>
                         <li><a href="#">Kid's Shopping</a></li>
                     </ul>
                 </div>

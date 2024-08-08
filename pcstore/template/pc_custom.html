@@ -106,6 +106,10 @@ https://templatemo.com/tm-571-hexashop
         .component-details {
             margin-left: 10px;
         }
+
+        .remove-component {
+            margin-left: 10px;
+        }
     </style>
 
     </head>
@@ -146,17 +150,18 @@ https://templatemo.com/tm-571-hexashop
 
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav" style="margin-top: -43px;">
-                            <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
-                            <li class="scroll-to-section"><a href="#men">Monitors</a></li>
-                            <li class="scroll-to-section"><a href="#women">Keyboards</a></li>
+                            <li class="scroll-to-section"><a href="{% url 'userapp:mainpage' %}" class="active">Home</a></li>
+                            <li class="scroll-to-section"><a href="">About Us</a></li>
+                            <li class="scroll-to-section"><a href="">Contact Us</a></li>
                             <li class="scroll-to-section"><a href="{% url 'userapp:pc_custom' %}">Custom PC</a></li>
                             <li class="submenu">
-                                <a href="javascript:;">Pages</a>
+                                <a href="javascript:;">Products</a>
                                 <ul>
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="products.html">Products</a></li>
-                                    <li><a href="single-product.html">Single Product</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
+                                    <li><a href="{% url 'userapp:monitors' %}">Monitors</a></li>
+                                    <li><a href="{% url 'userapp:keyboards' %}">Keyboards</a></li>
+                                    <li><a href="single-product.html">Mouses</a></li>
+                                    <li><a href="contact.html">Assembled CPU</a></li>
+                                    <li><a href="contact.html">Accessories</a></li>
                                 </ul>
                             </li>
                             {% if user.is_authenticated%}
@@ -258,6 +263,7 @@ https://templatemo.com/tm-571-hexashop
                         <h4>Total:</h4>
                         <h4 id="total-price">₹0</h4>
                     </div>
+                    <div id="cart-message" class="alert alert-success mt-2" style="display: none;"></div>
                     <button class="btn btn-primary btn-lg btn-block mt-3" id="add-to-cart">Add to Cart</button>
                 </div>
             </div>
@@ -449,11 +455,12 @@ https://templatemo.com/tm-571-hexashop
                 wifi: []
             };
 
-            // Populate component options (you'll need to fetch this data from your backend)
+            let selectedComponents = {};
+            let total = 0;
+
             function populateComponents() {
-                // Fetch components data from the backend
                 $.ajax({
-                    url: '{% url "userapp:get_components" %}',  // Use the Django URL name
+                    url: '{% url "userapp:get_components" %}',
                     method: 'GET',
                     success: function(data) {
                         data.forEach(component => {
@@ -467,6 +474,8 @@ https://templatemo.com/tm-571-hexashop
                             components[category].push(component);
                         });
                         console.log('Components loaded:', components);
+                        setupEventListeners();
+                        showInitialComponents();
                     },
                     error: function(xhr, status, error) {
                         console.error("Error fetching components:", error);
@@ -474,49 +483,62 @@ https://templatemo.com/tm-571-hexashop
                 });
             }
 
-            populateComponents();
+            function setupEventListeners() {
+                $('.component-selection button').click(function() {
+                    const componentType = $(this).attr('id').replace('-btn', '');
+                    showComponentModal(componentType);
+                });
 
-            let selectedComponents = {};
-            let total = 0;
+                $(document).on('click', '.select-component', function() {
+                    const componentId = $(this).data('id');
+                    const componentType = $(this).data('type');
+                    const selected = components[componentType].find(c => c.componentId == componentId);
 
-            $('.component-selection button').click(function() {
-                const componentType = $(this).attr('id').replace('-btn', '');
-                showComponentModal(componentType);
-            });
+                    if (selected) {
+                        selectedComponents[componentType] = selected;
+                        updateSelectedComponent(componentType, selected);
+                        updateSelectedList();
+                        calculateTotal();
+                        $('#componentModal').modal('hide');
+                    }
+                });
+
+                $(document).on('click', '.remove-component', function() {
+                    const componentType = $(this).data('type');
+                    removeComponent(componentType);
+                });
+
+                $('#add-to-cart').click(function() {
+                    $('#cart-message').text('Added to cart! Total: ₹' + total.toFixed(2)).show();
+                    setTimeout(function() {
+                        $('#cart-message').fadeOut();
+                    }, 3000);
+                });
+            }
 
             function showComponentModal(componentType) {
                 const modalBody = $('#componentModalBody');
                 modalBody.empty();
 
-                components[componentType].forEach(component => {
-                    const componentHtml = `
-                        <div class="component-item d-flex justify-content-between align-items-center mb-3">
-                            <img src="${component.image}" alt="${component.name}" style="width: 50px; height: 50px;">
-                            <span>${component.name}</span>
-                            <span>₹${component.price}</span>
-                            <button class="btn btn-sm btn-primary select-component" data-id="${component.componentId}" data-type="${componentType}">Select</button>
-                        </div>
-                    `;
-                    modalBody.append(componentHtml);
-                });
+                if (components[componentType] && components[componentType].length > 0) {
+                    components[componentType].forEach(component => {
+                        const componentHtml = `
+                            <div class="component-item d-flex justify-content-between align-items-center mb-3">
+                                <img src="${component.image}" alt="${component.name}" style="width: 50px; height: 50px;">
+                                <span>${component.name}</span>
+                                <span>₹${component.price}</span>
+                                <button class="btn btn-sm btn-primary select-component" data-id="${component.componentId}" data-type="${componentType}">Select</button>
+                            </div>
+                        `;
+                        modalBody.append(componentHtml);
+                    });
+                } else {
+                    modalBody.append('<p>No components available for this category.</p>');
+                }
 
                 $('#componentModalLabel').text(`Select ${componentType.charAt(0).toUpperCase() + componentType.slice(1)}`);
                 $('#componentModal').modal('show');
             }
-
-            $(document).on('click', '.select-component', function() {
-                const componentId = $(this).data('id');
-                const componentType = $(this).data('type');
-                const selected = components[componentType].find(c => c.componentId == componentId);
-
-                if (selected) {
-                    selectedComponents[componentType] = selected;
-                    updateSelectedComponent(componentType, selected);
-                    updateSelectedList();
-                    calculateTotal();
-                    $('#componentModal').modal('hide');
-                }
-            });
 
             function updateSelectedComponent(type, component) {
                 const container = $(`#${type}-container`);
@@ -527,8 +549,16 @@ https://templatemo.com/tm-571-hexashop
                             <strong>${component.name}</strong><br>
                             Price: ₹${component.price}
                         </div>
+                        <button class="btn btn-sm btn-danger remove-component" data-type="${type}">Remove</button>
                     </div>
                 `);
+            }
+
+            function removeComponent(type) {
+                delete selectedComponents[type];
+                $(`#${type}-container`).find('.selected-component').html('No component selected');
+                updateSelectedList();
+                calculateTotal();
             }
 
             function updateSelectedList() {
@@ -548,10 +578,13 @@ https://templatemo.com/tm-571-hexashop
                 $('#total-price').text(`₹${total.toFixed(2)}`);
             }
 
-            $('#add-to-cart').click(function() {
-                // Implement add to cart functionality
-                alert('Added to cart! Total: ₹' + total.toFixed(2));
-            });
+            function showInitialComponents() {
+                for (const componentType in components) {
+                    showComponentModal(componentType);
+                }
+            }
+
+            populateComponents();
         });
     </script>
 

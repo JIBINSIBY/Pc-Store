@@ -7,7 +7,7 @@ import re
 from django.urls import reverse
 from django.contrib.auth.hashers import make_password, check_password
 from .forms import UserUpdateForm
-from .models import Address, Product, Component
+from .models import Address, Product, Component, ProductImage
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 import json
@@ -90,17 +90,18 @@ def forgotpassword(request):
 def profile(request):
     return render(request, 'profile.html')
 
-def profileedit(request):
+def profile_edit(request):
     if request.method == 'POST':
-        form = UserUpdateForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Your profile has been updated successfully!')
-            return redirect('userapp:profile')  # Redirect to a profile page or any other page
-    else:
-        form = UserUpdateForm(instance=request.user)
-    
-    return render(request,'profileedit.html', {'form': form})
+        user = request.user
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
+        user.gender = request.POST.get('gender')
+        user.email = request.POST.get('email')
+        user.mobile = request.POST.get('mobile')
+        user.save()
+        messages.success(request, 'Profile updated successfully!')
+        return redirect('userapp:profile')
+    return render(request, 'profile_edit.html', {'user': request.user})
 
 def address(request):
     user_addresses = Address.objects.filter(user=request.user)
@@ -189,20 +190,20 @@ def admin_dashboard(request):
 
 
 def admin_profile(request):
-    return render(request, 'admin_profile.html')
+    return render(request, 'admin_profile.html', {'user': request.user})
 
 
 def update_admin_profile(request):
     if request.method == 'POST':
-        form = UserUpdateForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Your profile has been updated successfully!')
-            return redirect('userapp:admin_profile')
-    else:
-        form = UserUpdateForm(instance=request.user)
-    
-    return render(request, 'update_admin_profile.html', {'form': form})
+        user = request.user
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
+        user.email = request.POST.get('email')
+        user.mobile = request.POST.get('mobile')
+        user.save()
+        messages.success(request, 'Profile updated successfully!')
+        return redirect('userapp:admin_profile')
+    return render(request, 'update_admin_profile.html', {'user': request.user})
 
 def admin_userview(request):
     User = get_user_model()
@@ -241,28 +242,22 @@ def admin_productadd(request):
         price = request.POST.get('price')
         stockLevel = request.POST.get('stockLevel')
         description = request.POST.get('description')
-        image = request.FILES.get('image')
+        main_image = request.FILES.get('main_image')
+        additional_images = request.FILES.getlist('additional_images')
 
         product = Product(
             name=name,
             category=category,
             price=price,
             stockLevel=stockLevel,
-            description=description
+            description=description,
+            main_image=main_image
         )
-
-        if image:
-            # Generate a unique filename
-            file_name = f'product_images/{name}_{image.name}'
-            file_path = os.path.join(settings.MEDIA_ROOT, file_name)
-            os.makedirs(os.path.dirname(file_path), exist_ok=True)
-            with default_storage.open(file_path, 'wb+') as destination:
-                for chunk in image.chunks():
-                    destination.write(chunk)
-            # Set the image field to the relative path
-            product.image = file_name
-
         product.save()
+
+        for image in additional_images:
+            ProductImage.objects.create(product=product, image=image)
+
         messages.success(request, 'Product added successfully!')
         return redirect('userapp:admin_productadd')
 
@@ -296,20 +291,25 @@ def delete_product(request, product_id):
 def admin_editproduct(request, product_id):
     product = get_object_or_404(Product, productId=product_id)
     if request.method == 'POST':
-        # Handle form submission
         product.name = request.POST.get('name')
         product.category = request.POST.get('category')
         product.price = request.POST.get('price')
         product.stockLevel = request.POST.get('stockLevel')
         product.description = request.POST.get('description')
         
-        if 'image' in request.FILES:
-            product.image = request.FILES['image']
+        if 'main_image' in request.FILES:
+            product.main_image = request.FILES['main_image']
         
         product.save()
+
+        # Handle additional images
+        additional_images = request.FILES.getlist('additional_images')
+        for image in additional_images:
+            ProductImage.objects.create(product=product, image=image)
+
         messages.success(request, 'Product updated successfully!')
         return redirect('userapp:admin_viewproduct')
-    
+
     return render(request, 'admin_editproduct.html', {'product': product})
 
 def admin_viewcomponent(request):
@@ -418,3 +418,22 @@ def get_components(request):
         else:
             component['image'] = settings.STATIC_URL + 'images/default-component.png'
     return JsonResponse(component_list, safe=False)
+
+def keyboards_view(request):
+    keyboards = Product.objects.filter(category='keyboard')
+    return render(request, 'keyboards.html', {'keyboards': keyboards})
+
+def monitors_view(request):
+    monitors = Product.objects.filter(category='monitor')
+    return render(request, 'monitors.html', {'monitors': monitors})
+
+@require_POST
+def delete_additional_image(request, image_id):
+    try:
+        image = ProductImage.objects.get(id=image_id)
+        image.delete()
+        return JsonResponse({'success': True})
+    except ProductImage.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Image not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)

@@ -32,7 +32,7 @@
             background-color: #ffffff;
             width: 1046px;
             margin-left: 321px;
-            margin-top: -475px;
+            margin-top: -625px;
             height: 1500px;
         }
         .profilebodypadding{
@@ -389,8 +389,8 @@ https://templatemo.com/tm-571-hexashop
                                 <td>{{ product.price }}</td>
                                 <td>{{ product.stockLevel }}</td>
                                 <td>
-                                    {% if product.image %}
-                                    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width: 50px; height: 50px;">
+                                    {% if product.main_image %}
+                                    <img src="{{ product.main_image.url }}" alt="{{ product.name }}" style="width: 50px; height: 50px;">
                                     {% else %}
                                     No image
                                     {% endif %}

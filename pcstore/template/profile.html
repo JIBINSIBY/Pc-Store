@@ -32,7 +32,7 @@
             background-color: #ffffff;
             width: 1046px;
             margin-left: 321px;
-            margin-top: -475px;
+            margin-top: -625px;
             height: 850px;
         }
         .profilebodypadding{
@@ -188,17 +188,18 @@ https://templatemo.com/tm-571-hexashop
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
-                            <li class="scroll-to-section"><a href="{% url 'userapp:mainpage' %}" >Home</a></li>
-                            <li class="scroll-to-section"><a href="#">Monitors</a></li>
-                            <li class="scroll-to-section"><a href="#">Keyboards</a></li>
+                            <li class="scroll-to-section"><a href="{% url 'userapp:mainpage' %}" class="active">Home</a></li>
+                            <li class="scroll-to-section"><a href="">About Us</a></li>
+                            <li class="scroll-to-section"><a href="">Contact Us</a></li>
                             <li class="scroll-to-section"><a href="{% url 'userapp:pc_custom' %}">Custom PC</a></li>
                             <li class="submenu">
-                                <a href="javascript:;">Pages</a>
+                                <a href="javascript:;">Products</a>
                                 <ul>
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="products.html">Products</a></li>
-                                    <li><a href="single-product.html">Single Product</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
+                                    <li><a href="{% url 'userapp:monitors' %}">Monitors</a></li>
+                                    <li><a href="{% url 'userapp:keyboards' %}">Keyboards</a></li>
+                                    <li><a href="single-product.html">Mouses</a></li>
+                                    <li><a href="contact.html">Assembled CPU</a></li>
+                                    <li><a href="contact.html">Accessories</a></li>
                                 </ul>
                             </li>
                             {% if user.is_authenticated%}
@@ -305,7 +306,7 @@ https://templatemo.com/tm-571-hexashop
                 <div class="personalinfodetails">
                     <div class="personalinfotitle">
                         <span class="personalinfotitlename">Personal Information</span>
-                        <span class="personalinfoedit"><a href="profileedit">Edit</a></span>
+                        <span class="personalinfoedit"><a href="{% url 'userapp:profile_edit' %}">Edit</a></span>
                     </div>
                     <form>
                         <div class="personalinfonamenames">

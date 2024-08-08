@@ -14,7 +14,8 @@ urlpatterns = [
     path('signupuser', views.signupu, name='signupuser'),
     path('mainpage', views.mainpage, name='mainpage'),
     path('profile/', views.profile, name='profile'),
-    path('profileedit', views.profileedit, name='profileedit'),
+    path('profile_edit/', views.profile_edit, name='profile_edit'),
+    path('profile/edit/', views.profile_edit, name='profile_edit'),
     path('forgotpassword',views.forgotpassword,name='forgotpassword'),
     path('logout',views.signout,name='logout'),
     path('address', views.address, name='address'),
@@ -59,6 +60,10 @@ urlpatterns = [
     path('profile', views.profile, name='profile'),
     path('address/', views.address, name='address'),
     path('get_components/', views.get_components, name='get_components'),
+    path('keyboards/', views.keyboards_view, name='keyboards'),
+    path('monitors/', views.monitors_view, name='monitors'),
+    path('update_admin_profile/', views.update_admin_profile, name='update_admin_profile'),
+    path('admin_profile/', views.admin_profile, name='admin_profile'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

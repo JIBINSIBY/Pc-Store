@@ -106,17 +106,18 @@ https://templatemo.com/tm-571-hexashop
 
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav" style="margin-top: -43px;">
-                            <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
-                            <li class="scroll-to-section"><a href="#men">Monitors</a></li>
-                            <li class="scroll-to-section"><a href="#women">Keyboards</a></li>
+                            <li class="scroll-to-section"><a href="{% url 'userapp:mainpage' %}" class="active">Home</a></li>
+                            <li class="scroll-to-section"><a href="">About Us</a></li>
+                            <li class="scroll-to-section"><a href="">Contact Us</a></li>
                             <li class="scroll-to-section"><a href="{% url 'userapp:pc_custom' %}">Custom PC</a></li>
                             <li class="submenu">
-                                <a href="javascript:;">Pages</a>
+                                <a href="javascript:;">Products</a>
                                 <ul>
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="products.html">Products</a></li>
-                                    <li><a href="single-product.html">Single Product</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
+                                    <li><a href="{% url 'userapp:monitors' %}">Monitors</a></li>
+                                    <li><a href="{% url 'userapp:keyboards' %}">Keyboards</a></li>
+                                    <li><a href="single-product.html">Mouses</a></li>
+                                    <li><a href="contact.html">Assembled CPU</a></li>
+                                    <li><a href="contact.html">Accessories</a></li>
                                 </ul>
                             </li>
                             {% if user.is_authenticated%}
@@ -177,7 +178,7 @@ https://templatemo.com/tm-571-hexashop
                                                 <h4>Monitors</h4>
                                                 <p>Explore the best monitors for your needs.</p>
                                                 <div class="main-border-button">
-                                                    <a href="#">Discover More</a>
+                                                    <a href="{% url 'userapp:monitors' %}">Discover More</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -197,7 +198,7 @@ https://templatemo.com/tm-571-hexashop
                                                 <h4>Keyboards</h4>
                                                 <p>Explore the best keyboards for your needs.</p>
                                                 <div class="main-border-button">
-                                                    <a href="#">Discover More</a>
+                                                    <a href="{% url 'userapp:keyboards' %}">Discover More</a>
                                                 </div>
                                             </div>
                                         </div>

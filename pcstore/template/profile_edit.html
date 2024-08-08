@@ -32,7 +32,7 @@
             background-color: #ffffff;
             width: 1046px;
             margin-left: 321px;
-            margin-top: -475px;
+            margin-top: -625px;
             height: 850px;
         }
         .profilebodypadding{
@@ -70,7 +70,7 @@
             outline: none;
             padding: 0 15px;
             border: 1px solid #CACACA;
-            margin-left: 15px;
+            margin-left: 0px;
         }
         .personalinfolastname{
             margin-left: 252px;
@@ -84,25 +84,8 @@
             outline: none;
             padding: 0 15px;
             border: 1px solid #CACACA;
-            margin-top: 71px;
-            margin-left: -255px;
-        }
-        .personalinfogender{
-            font-size: 17px;
-            font-weight: 400;
-            padding-right: 24px;
-            margin-top: 15px;
-        }
-        .genderfemale{
-            margin-left: 60px;
-        }
-        .gendermalename{
-            margin-left: 28px;
-            margin-top: -25px;
-        }
-        .genderfemalename{
-            margin-left: 28px;
-            margin-top: -25px;
+            margin-top: 0px;
+            margin-left: 0px;
         }
         .emailtitle{
             font-size: 17px;
@@ -111,7 +94,8 @@
             margin-top: 15px;
         }
         .personalinfoemail{
-            margin-top: -1px;
+            margin-top: 10px;
+            margin-bottom: 10px;
         }
         .personalinfoemailinput{
             background-color: var(--color-grey-grade0);
@@ -314,40 +298,30 @@ https://templatemo.com/tm-571-hexashop
                 <div class="personalinfodetails">
                     <div class="personalinfotitle">
                         <span class="personalinfotitlename">Personal Information</span>
-                        <span class="personalinfoedit"><a href="profile">Cancel</a></span>
+                        <span class="personalinfoedit"><a href="{% url 'userapp:profile' %}">Cancel</a></span>
                     </div>
-                    <form method="POST">
+                    <form method="POST" action="{% url 'userapp:profile_edit' %}">
                         {% csrf_token %}
-                        <div class="row">
+                        <div class="personalinfonamenames">
                             <div class="personalinfofirstname">
-                                {{ form.first_name }}
+                                <input type="text" class="peronalinfofirstnameinput" name="first_name" value="{{ user.first_name }}" required>
                             </div>
                             <div class="personalinfolastname">
-                                {{ form.last_name }}
+                                <input type="text" class="peronalinfolastnameinput" name="last_name" value="{{ user.last_name }}" required>
                             </div>
-                    
-                            
                         </div>
-                        
                         <div class="personalinfoemail">
                             <span class="emailtitle">Email</span>
-                            <div class="personalinfoemail1">
-                                <div class="personalinfofirstname">
-                                    {{ form.email }}
-                                </div>
-                            </div>
+                            <br>
+                            <input type="email" class="personalinfoemailinput" name="email" value="{{ user.email }}" required>
                         </div>
-                        <div class="personalinfotitle">
+                        <div class="personalinfomobile">
                             <span class="mobiletitle">Mobile Number</span>
-                            <div class="personalinfomobilenames">
-                                <div class="personalinfomobilename">
-                                    {{ form.mobile }}
-                                </div>
-                            </div>
+                            <br>
+                            <input type="tel" class="personalinfomobileinput" name="mobile" value="{{ user.mobile }}" required>
                         </div>
-                        <div class="editsavebtn">
-                            <input type="submit" value="submit" class="editsavebutn">
-                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-primary editsavebutn">Save</button>
                     </form>
                     <div class="faq">
                         <h3>FAQ</h3>
@@ -401,8 +375,8 @@ https://templatemo.com/tm-571-hexashop
                 <div class="col-lg-3">
                     <h4>Shopping &amp; Categories</h4>
                     <ul>
-                        <li><a href="#">Men’s Shopping</a></li>
-                        <li><a href="#">Women’s Shopping</a></li>
+                        <li><a href="#">Men's Shopping</a></li>
+                        <li><a href="#">Women's Shopping</a></li>
                         <li><a href="#">Kid's Shopping</a></li>
                     </ul>
                 </div>
