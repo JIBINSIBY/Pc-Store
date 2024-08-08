@@ -159,9 +159,9 @@ https://templatemo.com/tm-571-hexashop
                                 <ul>
                                     <li><a href="{% url 'userapp:monitors' %}">Monitors</a></li>
                                     <li><a href="{% url 'userapp:keyboards' %}">Keyboards</a></li>
-                                    <li><a href="single-product.html">Mouses</a></li>
-                                    <li><a href="contact.html">Assembled CPU</a></li>
-                                    <li><a href="contact.html">Accessories</a></li>
+                                    <li><a href="{% url 'userapp:mouses' %}">Mouses</a></li>
+                                    <li><a href="{% url 'userapp:assembledcpus' %}">Assembled CPU</a></li>
+                                    <li><a href="{% url 'userapp:accessories' %}">Accessories</a></li>
                                 </ul>
                             </li>
                             {% if user.is_authenticated%}

@@ -306,26 +306,26 @@ https://templatemo.com/tm-571-hexashop
                 <!-- Product Grid -->
                 <div class="col-lg-9">
                     <div class="section-heading">
-                        <h2>Our Keyboards Collection</h2>
-                        <span>Check out all of our keyboards.</span>
+                        <h2>Our Accessories Collection</h2>
+                        <span>Check out all of our Accessories.</span>
                     </div>
                     <div class="row">
-                        {% for keyboard in keyboards %}
+                        {% for accessory in accessories %}
                         <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
                             <div class="product-item">
                                 <div class="thumb">
-                                    <img src="{{ keyboard.main_image.url }}" alt="{{ keyboard.name }}" class="img-fluid">
+                                    <img src="{{ accessory.main_image.url }}" alt="{{ accessory.name }}" class="img-fluid">
                                 </div>
                                 <div class="down-content">
-                                    <h4>{{ keyboard.name }}</h4>
-                                    <span class="price">₹{{ keyboard.price }}</span>
+                                    <h4>{{ accessory.name }}</h4>
+                                    <span class="price">₹{{ accessory.price }}</span>
                                     <div class="rating">
                                         <i class="fa fa-star"></i>
                                         <i class="fa fa-star"></i>
                                         <i class="fa fa-star"></i>
                                         <i class="fa fa-star"></i>
                                         <i class="fa fa-star-half-o"></i>
-                                        <span class="rating-count">({{ keyboard.rating_count }})</span>
+                                        <span class="rating-count">({{ accessory.rating_count }})</span>
                                     </div>
                                     <button class="btn btn-primary btn-sm mt-2">Add to Cart</button>
                                 </div>
@@ -333,7 +333,7 @@ https://templatemo.com/tm-571-hexashop
                         </div>
                         {% empty %}
                         <div class="col-lg-12">
-                            <p>No keyboards available at the moment.</p>
+                            <p>No Mouses available at the moment.</p>
                         </div>
                         {% endfor %}
                     </div>

@@ -423,10 +423,25 @@ def keyboards_view(request):
     keyboards = Product.objects.filter(category='keyboard')
     return render(request, 'keyboards.html', {'keyboards': keyboards})
 
+def mouses_view(request):
+    mouses = Product.objects.filter(category='mouse')
+    return render(request, 'mouse.html', {'mouses': mouses})
+
 def monitors_view(request):
     monitors = Product.objects.filter(category='monitor')
     return render(request, 'monitors.html', {'monitors': monitors})
 
+def assembledcpus_view(request):
+    assembledcpus = Product.objects.filter(category='assembled_cpu')
+    return render(request, 'assembled_cpu.html', {'assembledcpus': assembledcpus})
+
+def accessories_view(request):
+    accessories = Product.objects.filter(category='accessory')
+    return render(request, 'accessory.html', {'accessories': accessories})
+
+
+
+@require_POST
 @require_POST
 def delete_additional_image(request, image_id):
     try:

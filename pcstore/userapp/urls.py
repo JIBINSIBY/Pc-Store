@@ -62,6 +62,9 @@ urlpatterns = [
     path('get_components/', views.get_components, name='get_components'),
     path('keyboards/', views.keyboards_view, name='keyboards'),
     path('monitors/', views.monitors_view, name='monitors'),
+    path('mouses/', views.mouses_view, name='mouses'),
+    path('assembledcpus/', views.assembledcpus_view, name='assembledcpus'),
+    path('accessories/', views.accessories_view, name='accessories'),
     path('update_admin_profile/', views.update_admin_profile, name='update_admin_profile'),
     path('admin_profile/', views.admin_profile, name='admin_profile'),
 ]
