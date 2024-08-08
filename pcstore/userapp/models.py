@@ -57,3 +57,33 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Component(models.Model):
+    componentId = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+    category = models.CharField(max_length=100)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    stockLevel = models.PositiveIntegerField()
+    description = models.TextField()
+    image = models.ImageField(upload_to='component_images/', null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+class CustomPC(models.Model):
+    configId = models.AutoField(primary_key=True)
+    userId = models.ForeignKey(User, on_delete=models.CASCADE)
+    totalPrice = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"Custom PC {self.configId} for User {self.userId}"
+
+class CustomPCComponent(models.Model):
+    config = models.ForeignKey(CustomPC, on_delete=models.CASCADE)
+    component = models.ForeignKey(Component, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('config', 'component')
+
+    def __str__(self):
+        return f"Component {self.component} for Custom PC {self.config.configId}"

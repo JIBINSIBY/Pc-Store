@@ -32,7 +32,7 @@
             background-color: #ffffff;
             width: 1046px;
             margin-left: 321px;
-            margin-top: -475px;
+            margin-top: -624px;
             height: 850px;
         }
         .profilebodypadding{
@@ -187,6 +187,9 @@
             border-radius: 5px;
             cursor: pointer;
         }
+        .accountdisplay{
+            height: 550px;
+        }
     </style>
 
     <!-- <link rel="stylesheet" href="{% static 'css/profile-sidenav.css' %}"> -->
@@ -332,6 +335,26 @@ https://templatemo.com/tm-571-hexashop
                     </a>
                     <a href="{% url 'userapp:admin_viewproduct' %}">
                         <div class="manageaddress">View Products</div>
+                    </a>
+                </div>
+            </div>
+            <div class="accountdisplayorderline">
+                <hr>
+            </div>
+             <!-- extra field start -->
+             <div class="accountdisplaysettings">
+                <div class="accountdisplaysettingdetails">
+                    <img class="accountdisplayorderdetailsimage" src="{% static 'images/setting.png' %}">
+                    <a class="accountdisplayorderdetailsorder" href="#">
+                        Component Management
+                    </a>
+                </div>
+                <div class="profileaddress">
+                    <a href="admin_addcomponent">
+                        <div class="profileinformation">Component Add</div>
+                    </a>
+                    <a href="{% url 'userapp:admin_viewcomponent' %}">
+                        <div class="manageaddress">View Components</div>
                     </a>
                 </div>
             </div>

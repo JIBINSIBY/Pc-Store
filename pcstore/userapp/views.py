@@ -7,16 +7,29 @@ import re
 from django.urls import reverse
 from django.contrib.auth.hashers import make_password, check_password
 from .forms import UserUpdateForm
-from .models import Address, Product
+from .models import Address, Product, Component
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 import json
 import os
 from django.conf import settings
+from django.db.models import Q
 
 user = get_user_model()
 def index(request):
-    return render(request,'index.html')
+    latest_monitors = Product.objects.filter(Q(category='monitor')).order_by('-productId')[:3]
+    print(f"Latest monitors: {latest_monitors}")
+    latest_keyboards = Product.objects.filter(category='keyboard').order_by('-productId')[:3]
+    print(f"Latest keyboards: {latest_keyboards}")
+    latest_assembledcpu = Product.objects.filter(category='assembled_cpu').order_by('-productId')[:3]
+    print(f"Latest assembled CPUs: {latest_assembledcpu}")
+    context = {
+        'latest_monitors': latest_monitors,
+        'latest_keyboards': latest_keyboards,
+        'latest_assembledcpu': latest_assembledcpu,
+    }
+    return render(request, 'index.html', context)
+
 def mainpage(request):
     return render(request,'main.html')
 
@@ -75,7 +88,7 @@ def forgotpassword(request):
     return render(request,'forgotpassword.html')
 
 def profile(request):
-    return render(request,'profile.html')
+    return render(request, 'profile.html')
 
 def profileedit(request):
     if request.method == 'POST':
@@ -298,3 +311,110 @@ def admin_editproduct(request, product_id):
         return redirect('userapp:admin_viewproduct')
     
     return render(request, 'admin_editproduct.html', {'product': product})
+
+def admin_viewcomponent(request):
+    components = Component.objects.all()
+    return render(request, 'admin_viewcomponent.html', {'components': components})
+
+def admin_editcomponent(request, component_id):
+    component = get_object_or_404(Component, componentId=component_id)
+    if request.method == 'POST':
+        component.name = request.POST.get('name')
+        component.category = request.POST.get('category')
+        component.price = request.POST.get('price')
+        component.stockLevel = request.POST.get('stockLevel')
+        component.description = request.POST.get('description')
+        
+        if 'image' in request.FILES:
+            component.image = request.FILES['image']
+        
+        component.save()
+        messages.success(request, 'Component updated successfully!')
+        return redirect('userapp:admin_viewcomponent')
+    
+    return render(request, 'admin_editcomponent.html', {'component': component})
+
+@require_POST
+def delete_component(request, component_id):
+    try:
+        component = Component.objects.get(componentId=component_id)
+        component.delete()
+        return JsonResponse({'success': True})
+    except Component.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Component not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+def admin_addcomponent(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        category = request.POST.get('category')
+        price = request.POST.get('price')
+        stockLevel = request.POST.get('stockLevel')
+        description = request.POST.get('description')
+        image = request.FILES.get('image')
+
+        component = Component(
+            name=name,
+            category=category,
+            price=price,
+            stockLevel=stockLevel,
+            description=description
+        )
+
+        if image:
+            # Generate a unique filename
+            file_name = f'{name}_{image.name}'
+            file_path = os.path.join(settings.COMPONENT_IMAGES_DIR, file_name)
+            os.makedirs(settings.COMPONENT_IMAGES_DIR, exist_ok=True)
+            with default_storage.open(file_path, 'wb+') as destination:
+                for chunk in image.chunks():
+                    destination.write(chunk)
+            # Set the image field to the relative path
+            component.image = os.path.join('component_images', file_name)
+
+        component.save()
+        messages.success(request, 'Component added successfully!')
+        return redirect('userapp:admin_addcomponent')
+
+    return render(request, 'admin_addcomponent.html')
+
+def search_results(request):
+    query = request.GET.get('q')
+    if query:
+        results = Product.objects.filter(
+            Q(name__icontains=query) | Q(category__icontains=query)
+        )
+    else:
+        results = []
+    return render(request, 'search_results.html', {'results': results, 'query': query})
+
+def pc_custom(request):
+    return render(request, 'pc_custom.html')
+
+from django.http import JsonResponse
+from .models import Component
+
+def get_components(request):
+    components = Component.objects.all().values('componentId', 'name', 'category', 'price', 'image')
+    component_list = list(components)
+    for component in component_list:
+        category = component['category'].lower().replace(' ', '')
+        if category == 'cpu/processor':
+            component['category'] = 'cpu'
+        elif category == 'powersupplyunit':
+            component['category'] = 'psu'
+        elif category == 'graphicscard':
+            component['category'] = 'gpu'
+        elif category == 'bluetoothcard':
+            component['category'] = 'bluetooth'
+        elif category == 'wificard':
+            component['category'] = 'wifi'
+        else:
+            component['category'] = category
+
+        if component.get('image'):
+            component['image'] = settings.MEDIA_URL + str(component['image'])
+        else:
+            component['image'] = settings.STATIC_URL + 'images/default-component.png'
+    return JsonResponse(component_list, safe=False)

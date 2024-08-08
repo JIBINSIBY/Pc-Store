@@ -1,0 +1,8 @@
+var wati_chatscript_url = 'https://wati-integration-prod-service.clare.ai/ShopifyWidget/shopifyWidget.js'; 
+var wati_script = document.createElement('script'); wati_script.type = 'text/javascript'; wati_script.async = true; wati_script.src = wati_chatscript_url; 
+var wati_optionStr = `{"enabled":true,"chatButtonSetting":{"backgroundColor":"#4dc247","ctaText":"","ctaIconWATI":false,"borderRadius":"25","marginLeft":"0","marginBottom":"20","marginRight":"20","position":"right"},"brandSetting":{"brandName":"EliteHubs Customer Support","brandSubTitle":"Typically replies within a day","brandImg":"https://live-server-11208.wati.io/11208/data/logo/elitehubs-1153.myshopify.com.png?32074","brandImgData":null,"welcomeText":"Hi, there! \\nHow can I help you?","backgroundColor":"#0a5f54","ctaText":"Start Chat","borderRadius":"25","autoShow":false,"phoneNumber":"+917738647847","messageText":"Hello, I have a question about __page_link__"}}`;
+var wati_options = JSON.parse(wati_optionStr);
+wati_script.onload = function () { CreateWhatsappChatWidget(wati_options); }; 
+var wati_script_tag = document.getElementsByTagName('script')[0]; wati_script_tag.parentNode.insertBefore(wati_script, wati_script_tag); var popup_script_url = 'https://wati-integration-prod-service.clare.ai/v2/popupWidget.js'; 
+var wati_popup_script = document.createElement('script'); wati_popup_script.type = 'text/javascript'; wati_popup_script.async = true; wati_popup_script.src = popup_script_url; 
+var wati_popup_script_tag = document.getElementsByTagName('script')[0]; wati_popup_script_tag.parentNode.insertBefore(wati_popup_script, wati_popup_script_tag); 

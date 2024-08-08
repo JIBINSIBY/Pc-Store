@@ -13,7 +13,7 @@ urlpatterns = [
     path('loginuser', views.loginu, name='loginuser'),
     path('signupuser', views.signupu, name='signupuser'),
     path('mainpage', views.mainpage, name='mainpage'),
-    path('profile', views.profile, name='profile'),
+    path('profile/', views.profile, name='profile'),
     path('profileedit', views.profileedit, name='profileedit'),
     path('forgotpassword',views.forgotpassword,name='forgotpassword'),
     path('logout',views.signout,name='logout'),
@@ -50,6 +50,15 @@ urlpatterns = [
     path('admin_viewproduct/', views.admin_viewproduct, name='admin_viewproduct'),
     path('delete-product/<int:product_id>/', views.delete_product, name='delete_product'),
     path('admin_editproduct/<int:product_id>/', views.admin_editproduct, name='admin_editproduct'),
+    path('admin_addcomponent/', views.admin_addcomponent, name='admin_addcomponent'),
+    path('admin_viewcomponent/', views.admin_viewcomponent, name='admin_viewcomponent'),
+    path('admin_editcomponent/<int:component_id>/', views.admin_editcomponent, name='admin_editcomponent'),
+    path('delete-component/<int:component_id>/', views.delete_component, name='delete_component'),
+    path('search/', views.search_results, name='search_results'),
+    path('pc_custom/', views.pc_custom, name='pc_custom'),
+    path('profile', views.profile, name='profile'),
+    path('address/', views.address, name='address'),
+    path('get_components/', views.get_components, name='get_components'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

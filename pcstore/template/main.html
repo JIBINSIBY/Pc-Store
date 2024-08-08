@@ -29,7 +29,45 @@ TemplateMo 571 Hexashop
 
 https://templatemo.com/tm-571-hexashop
 
--->
+--><script>
+   
+</script>
+
+    <style>
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+        .search-container form {
+            display: flex;
+            align-items: center;
+        }
+        .search-container input[type="text"] {
+            padding: 10px;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+        }
+        .search-container button {
+            padding: 10px 15px;
+            background-color: #7e96dc;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+        .search-container button:hover {
+            background-color: #d32f2f;
+        }
+        .d-flex{
+            display: flex;
+            align-items: center;
+            margin-left: 87px;
+            margin-top: 34px;
+        }
+    </style>
+
     </head>
     
     <body>
@@ -56,12 +94,22 @@ https://templatemo.com/tm-571-hexashop
                             <img src="{% static 'images/logo.png' %}">
                         </a>
                         <!-- ***** Logo End ***** -->
+                        
+                        <!-- ***** Search Start ***** -->
+                        <div class="search-container ">
+                            <form action="search_results" method="get" class="d-flex">
+                                <input type="text" placeholder="Search products..." name="q">
+                                <button type="submit"><i class="fa fa-search"></i></button>
+                            </form>
+                        </div>
+                        <!-- ***** Search End ***** -->
+
                         <!-- ***** Menu Start ***** -->
-                        <ul class="nav">
+                        <ul class="nav" style="margin-top: -43px;">
                             <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
-                            <li class="scroll-to-section"><a href="#men">Men's</a></li>
-                            <li class="scroll-to-section"><a href="#women">Women's</a></li>
-                            <li class="scroll-to-section"><a href="#kids">Kid's</a></li>
+                            <li class="scroll-to-section"><a href="#men">Monitors</a></li>
+                            <li class="scroll-to-section"><a href="#women">Keyboards</a></li>
+                            <li class="scroll-to-section"><a href="{% url 'userapp:pc_custom' %}">Custom PC</a></li>
                             <li class="submenu">
                                 <a href="javascript:;">Pages</a>
                                 <ul>
@@ -79,7 +127,7 @@ https://templatemo.com/tm-571-hexashop
                                     {% else %}
                                     <li><a href="loginuser">Login</a></li>
                             {% endif %}
-                                    <li><a href="profile">Profile</a></li>
+                                    <li><a href="{% url 'userapp:profile' %}">Profile</a></li>
                                     <li><a href="#">Features Page 3</a></li>
                                     <li><a rel="nofollow" href="https://templatemo.com/page/4" target="_blank">Template Page 4</a></li>
                                 </ul>
@@ -104,13 +152,13 @@ https://templatemo.com/tm-571-hexashop
                     <div class="left-content">
                         <div class="thumb">
                             <div class="inner-content">
-                                <h4>We Are Hexashop</h4>
-                                <span>Awesome, clean &amp; creative HTML5 Template</span>
+                                <h4>Customize Your PC</h4>
+                                <span>Build Your Dream PC</span>
                                 <div class="main-border-button">
-                                    <a href="#">Purchase Now!</a>
+                                    <a href="{% url 'userapp:pc_custom' %}">Build Now!</a>
                                 </div>
                             </div>
-                            <img src="{% static 'images/left-banner-image.jpg' %}" alt="">
+                            <img style="height: 569px;" src="{% static 'images/mainpage_pc.jpg' %}" alt="">
                         </div>
                     </div>
                 </div>
@@ -118,22 +166,22 @@ https://templatemo.com/tm-571-hexashop
                     <div class="right-content">
                         <div class="row">
                             <div class="col-lg-6">
-                                <div class="right-first-image">
+                                <div class="right-first-image"> 
                                     <div class="thumb">
                                         <div class="inner-content">
-                                            <h4>Women</h4>
-                                            <span>Best Clothes For Women</span>
+                                            <h4>Monitors</h4>
+                                            <span>Best Monitor you can find</span>
                                         </div>
                                         <div class="hover-content">
                                             <div class="inner">
-                                                <h4>Women</h4>
-                                                <p>Lorem ipsum dolor sit amet, conservisii ctetur adipiscing elit incid.</p>
+                                                <h4>Monitors</h4>
+                                                <p>Explore the best monitors for your needs.</p>
                                                 <div class="main-border-button">
                                                     <a href="#">Discover More</a>
                                                 </div>
                                             </div>
                                         </div>
-                                        <img src="{% static 'images/baner-right-image-01.jpg' %}">
+                                        <img style="height: 269px;" src="{% static 'images/mainpage_monitor1.jpg' %}">
                                     </div>
                                 </div>
                             </div>
@@ -141,19 +189,19 @@ https://templatemo.com/tm-571-hexashop
                                 <div class="right-first-image">
                                     <div class="thumb">
                                         <div class="inner-content">
-                                            <h4>Men</h4>
-                                            <span>Best Clothes For Men</span>
+                                            <h4>Keyboards</h4>
+                                            <span>Best Keyboards you can find</span>
                                         </div>
                                         <div class="hover-content">
                                             <div class="inner">
-                                                <h4>Men</h4>
-                                                <p>Lorem ipsum dolor sit amet, conservisii ctetur adipiscing elit incid.</p>
+                                                <h4>Keyboards</h4>
+                                                <p>Explore the best keyboards for your needs.</p>
                                                 <div class="main-border-button">
                                                     <a href="#">Discover More</a>
                                                 </div>
                                             </div>
                                         </div>
-                                        <img src="{% static 'images/baner-right-image-02.jpg' %}">
+                                        <img style="height: 269px;" src="{% static 'images/mainpage_keyboard.jpg' %}">
                                     </div>
                                 </div>
                             </div>
@@ -161,19 +209,19 @@ https://templatemo.com/tm-571-hexashop
                                 <div class="right-first-image">
                                     <div class="thumb">
                                         <div class="inner-content">
-                                            <h4>Kids</h4>
-                                            <span>Best Clothes For Kids</span>
+                                            <h4>Assembled CPU</h4>
+                                            <span>Best Assembled CPU you can find</span>
                                         </div>
                                         <div class="hover-content">
                                             <div class="inner">
-                                                <h4>Kids</h4>
-                                                <p>Lorem ipsum dolor sit amet, conservisii ctetur adipiscing elit incid.</p>
+                                                <h4>Assembled CPU</h4>
+                                                <p>Explore the best assembled CPU for your needs.</p>
                                                 <div class="main-border-button">
                                                     <a href="#">Discover More</a>
                                                 </div>
                                             </div>
                                         </div>
-                                        <img src="{% static 'images/baner-right-image-03.jpg' %}">
+                                        <img style="height: 269px;" src="{% static 'images/mainpage_assembledcpu.jpg' %}">
                                     </div>
                                 </div>
                             </div>
@@ -181,19 +229,19 @@ https://templatemo.com/tm-571-hexashop
                                 <div class="right-first-image">
                                     <div class="thumb">
                                         <div class="inner-content">
-                                            <h4>Accessories</h4>
-                                            <span>Best Trend Accessories</span>
+                                            <h4>Mouses</h4>
+                                            <span>Best Mouses you can find</span>
                                         </div>
                                         <div class="hover-content">
                                             <div class="inner">
-                                                <h4>Accessories</h4>
-                                                <p>Lorem ipsum dolor sit amet, conservisii ctetur adipiscing elit incid.</p>
+                                                <h4>Mouses</h4>
+                                                <p>Explore the best Mouses for your needs.</p>
                                                 <div class="main-border-button">
                                                     <a href="#">Discover More</a>
                                                 </div>
                                             </div>
                                         </div>
-                                        <img src="{% static 'images/baner-right-image-04.jpg' %}">
+                                        <img style="height: 269px;" src="{% static 'images/mainpage_mouse.jpg' %}">
                                     </div>
                                 </div>
                             </div>
@@ -211,8 +259,8 @@ https://templatemo.com/tm-571-hexashop
             <div class="row">
                 <div class="col-lg-6">
                     <div class="section-heading">
-                        <h2>Men's Latest</h2>
-                        <span>Details to details is what makes Hexashop different from the other themes.</span>
+                        <h2>Latest Monitors</h2>
+                        <span>Check out our newest monitor selections.</span>
                     </div>
                 </div>
             </div>
@@ -222,6 +270,7 @@ https://templatemo.com/tm-571-hexashop
                 <div class="col-lg-12">
                     <div class="men-item-carousel">
                         <div class="owl-men-item owl-carousel">
+                            {% for monitor in latest_monitors %}
                             <div class="item">
                                 <div class="thumb">
                                     <div class="hover-content">
@@ -231,11 +280,11 @@ https://templatemo.com/tm-571-hexashop
                                             <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
                                         </ul>
                                     </div>
-                                    <img src="{% static 'images/men-01.jpg' %}" alt="">
+                                    <img src="{{ monitor.image.url }}" alt="{{ monitor.name }}">
                                 </div>
                                 <div class="down-content">
-                                    <h4>Classic Spring</h4>
-                                    <span>$120.00</span>
+                                    <h4>{{ monitor.name }}</h4>
+                                    <span><span style="font-family: Arial;">₹</span>{{ monitor.price }}</span>
                                     <ul class="stars">
                                         <li><i class="fa fa-star"></i></li>
                                         <li><i class="fa fa-star"></i></li>
@@ -245,75 +294,7 @@ https://templatemo.com/tm-571-hexashop
                                     </ul>
                                 </div>
                             </div>
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <img src="{% static 'images/men-02.jpg' %}" alt="">
-                                </div>
-                                <div class="down-content">
-                                    <h4>Air Force 1 X</h4>
-                                    <span>$90.00</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <img src="{% static 'images/men-03.jpg' %}" alt="">
-                                </div>
-                                <div class="down-content">
-                                    <h4>Love Nana ‘20</h4>
-                                    <span>$150.00</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <img src="{% static 'images/men-01.jpg' %}" alt="">
-                                </div>
-                                <div class="down-content">
-                                    <h4>Classic Spring</h4>
-                                    <span>$120.00</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -322,14 +303,14 @@ https://templatemo.com/tm-571-hexashop
     </section>
     <!-- ***** Men Area Ends ***** -->
 
-    <!-- ***** Women Area Starts ***** -->
-    <section class="section" id="women">
+    <!-- ***** Keyboards Area Starts ***** -->
+    <section class="section" id="keyboards">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
                     <div class="section-heading">
-                        <h2>Women's Latest</h2>
-                        <span>Details to details is what makes Hexashop different from the other themes.</span>
+                        <h2>Latest Keyboards</h2>
+                        <span>Check out our newest keyboard selections.</span>
                     </div>
                 </div>
             </div>
@@ -337,116 +318,46 @@ https://templatemo.com/tm-571-hexashop
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="women-item-carousel">
-                        <div class="owl-women-item owl-carousel">
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
+                    <div class="keyboards-item-carousel">
+                        <div class="owl-keyboards-item owl-carousel">
+                            {% if latest_keyboards %}
+                                {% for keyboard in latest_keyboards %}
+                                <div class="item">
+                                    <div class="thumb">
+                                        <div class="hover-content">
+                                            <ul>
+                                                <li><a href="loginuser"><i class="fa fa-eye"></i></a></li>
+                                                <li><a href="loginuser"><i class="fa fa-star"></i></a></li>
+                                                <li><a href="loginuser"><i class="fa fa-shopping-cart"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <img src="{{ keyboard.image.url }}" alt="{{ keyboard.name }}">
                                     </div>
-                                    <img src="{% static 'images/women-01.jpg' %}" alt="">
-                                </div>
-                                <div class="down-content">
-                                    <h4>New Green Jacket</h4>
-                                    <span>$75.00</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
+                                    <div class="down-content">
+                                        <h4>{{ keyboard.name }}</h4>
+                                        <span><span style="font-family: Arial;">₹</span>{{ keyboard.price }}</span>
                                     </div>
-                                    <img src="{% static 'images/women-02.jpg' %}" alt="">
                                 </div>
-                                <div class="down-content">
-                                    <h4>Classic Dress</h4>
-                                    <span>$45.00</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <img src="{% static 'images/women-03.jpg' %}" alt="">
-                                </div>
-                                <div class="down-content">
-                                    <h4>Spring Collection</h4>
-                                    <span>$130.00</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <img src="{% static 'images/women-01.jpg' %}" alt="">
-                                </div>
-                                <div class="down-content">
-                                    <h4>Classic Spring</h4>
-                                    <span>$120.00</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
+                                {% endfor %}
+                            {% else %}
+                                <p>No keyboards available.</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- ***** Women Area Ends ***** -->
+    <!-- ***** Keyboards Area Ends ***** -->
 
-    <!-- ***** Kids Area Starts ***** -->
-    <section class="section" id="kids">
+    <!-- ***** Assembled CPU Area Starts ***** -->
+    <section class="section" id="assembled-cpu">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
                     <div class="section-heading">
-                        <h2>Kid's Latest</h2>
-                        <span>Details to details is what makes Hexashop different from the other themes.</span>
+                        <h2>Latest Assembled CPUs</h2>
+                        <span>Check out our newest assembled CPU selections.</span>
                     </div>
                 </div>
             </div>
@@ -454,107 +365,37 @@ https://templatemo.com/tm-571-hexashop
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="kid-item-carousel">
-                        <div class="owl-kid-item owl-carousel">
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
+                    <div class="assembled-cpu-item-carousel">
+                        <div class="owl-assembled-cpu-item owl-carousel">
+                            {% if latest_assembledcpu %}
+                                {% for cpu in latest_assembledcpu %}
+                                <div class="item">
+                                    <div class="thumb">
+                                        <div class="hover-content">
+                                            <ul>
+                                                <li><a href="loginuser"><i class="fa fa-eye"></i></a></li>
+                                                <li><a href="loginuser"><i class="fa fa-star"></i></a></li>
+                                                <li><a href="loginuser"><i class="fa fa-shopping-cart"></i></a></li>
+                                            </ul>
+                                        </div>
+                                        <img src="{{ cpu.image.url }}" alt="{{ cpu.name }}">
                                     </div>
-                                    <img src="{% static 'images/kid-01.jpg' %}" alt="">
-                                </div>
-                                <div class="down-content">
-                                    <h4>School Collection</h4>
-                                    <span>$80.00</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
+                                    <div class="down-content">
+                                        <h4>{{ cpu.name }}</h4>
+                                        <span><span style="font-family: Arial;">₹</span>{{ cpu.price }}</span>
                                     </div>
-                                    <img src="{% static 'images/kid-02.jpg' %}" alt="">
                                 </div>
-                                <div class="down-content">
-                                    <h4>Summer Cap</h4>
-                                    <span>$12.00</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <img src="{% static 'images/kid-03.jpg' %}" alt="">
-                                </div>
-                                <div class="down-content">
-                                    <h4>Classic Kid</h4>
-                                    <span>$30.00</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <img src="{% static 'images/kid-01.jpg' %}" alt="">
-                                </div>
-                                <div class="down-content">
-                                    <h4>Classic Spring</h4>
-                                    <span>$120.00</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
+                                {% endfor %}
+                            {% else %}
+                                <p>No assembled CPUs available.</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- ***** Kids Area Ends ***** -->
+    <!-- ***** Assembled CPU Area Ends ***** -->
 
     <!-- ***** Explore Area Starts ***** -->
     <section class="section" id="explore">
@@ -763,8 +604,8 @@ https://templatemo.com/tm-571-hexashop
                 <div class="col-lg-3">
                     <h4>Shopping &amp; Categories</h4>
                     <ul>
-                        <li><a href="#">Men’s Shopping</a></li>
-                        <li><a href="#">Women’s Shopping</a></li>
+                        <li><a href="#">Men's Shopping</a></li>
+                        <li><a href="#">Women's Shopping</a></li>
                         <li><a href="#">Kid's Shopping</a></li>
                     </ul>
                 </div>

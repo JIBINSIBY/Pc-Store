@@ -339,6 +339,27 @@ https://templatemo.com/tm-571-hexashop
                 <hr>
             </div>
             <!-- extra field end -->
+              <!-- extra field start -->
+            <div class="accountdisplaysettings">
+                <div class="accountdisplaysettingdetails">
+                    <img class="accountdisplayorderdetailsimage" src="{% static 'images/setting.png' %}">
+                    <a class="accountdisplayorderdetailsorder" href="#">
+                        Component Management
+                    </a>
+                </div>
+                <div class="profileaddress">
+                    <a href="{% url 'userapp:admin_addcomponent' %}">
+                        <div class="profileinformation">Components Add</div>
+                    </a>
+                    <a href="{% url 'userapp:admin_viewcomponent' %}">
+                        <div class="profileinformation"  style="background-color:#dfeafd; color:#2874f0">View Components</div>
+                    </a>
+                </div>
+            </div>
+            <div class="accountdisplayorderline">
+                <hr>
+            </div>
+            <!-- extra field end -->
             <div class="accountdisplaysettings">
                 <div class="accountdisplaysettingdetails">
                     <img class="accountdisplayorderdetailsimage" src="{% static 'images/turn-off.png' %}">

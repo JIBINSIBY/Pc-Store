@@ -188,10 +188,10 @@ https://templatemo.com/tm-571-hexashop
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
-                            <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
-                            <li class="scroll-to-section"><a href="#men">Men's</a></li>
-                            <li class="scroll-to-section"><a href="#women">Women's</a></li>
-                            <li class="scroll-to-section"><a href="#kids">Kid's</a></li>
+                            <li class="scroll-to-section"><a href="{% url 'userapp:mainpage' %}" >Home</a></li>
+                            <li class="scroll-to-section"><a href="#">Monitors</a></li>
+                            <li class="scroll-to-section"><a href="#">Keyboards</a></li>
+                            <li class="scroll-to-section"><a href="{% url 'userapp:pc_custom' %}">Custom PC</a></li>
                             <li class="submenu">
                                 <a href="javascript:;">Pages</a>
                                 <ul>
@@ -203,13 +203,13 @@ https://templatemo.com/tm-571-hexashop
                             </li>
                             {% if user.is_authenticated%}
                             <li class="submenu">
-                                <a href="javascript:;">{{ user.username }}</a>
+                                <a href="javascript:;" >{{ user.username }}</a>
                                 <ul>
-                                    <li><a href="logout">Logout</a></li>
+                                    <li><a href="{% url 'userapp:logout' %}">Logout</a></li>
                                     {% else %}
                                     <li><a href="loginuser">Login</a></li>
                             {% endif %}
-                                    <li><a href="profile">Profile</a></li>
+                                    <li><a href="{% url 'userapp:profile' %}">Profile</a></li>
                                     <li><a href="#">Features Page 3</a></li>
                                     <li><a rel="nofollow" href="https://templatemo.com/page/4" target="_blank">Template Page 4</a></li>
                                 </ul>
@@ -259,10 +259,10 @@ https://templatemo.com/tm-571-hexashop
                     </a>
                 </div>
                 <div class="profileaddress">
-                    <a href="#">
+                    <a href="{% url 'userapp:profile' %}">
                         <div class="profileinformation" style="background-color:#dfeafd; color:#2874f0">Profile Information</div>
                     </a>
-                    <a href="address">
+                    <a href="{% url 'userapp:address' %}">
                         <div class="manageaddress">Manage Address</div>
                     </a>
                 </div>
@@ -386,8 +386,8 @@ https://templatemo.com/tm-571-hexashop
                 <div class="col-lg-3">
                     <h4>Shopping &amp; Categories</h4>
                     <ul>
-                        <li><a href="#">Men’s Shopping</a></li>
-                        <li><a href="#">Women’s Shopping</a></li>
+                        <li><a href="#">Men's Shopping</a></li>
+                        <li><a href="#">Women's Shopping</a></li>
                         <li><a href="#">Kid's Shopping</a></li>
                     </ul>
                 </div>
