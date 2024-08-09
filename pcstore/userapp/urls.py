@@ -67,6 +67,11 @@ urlpatterns = [
     path('accessories/', views.accessories_view, name='accessories'),
     path('update_admin_profile/', views.update_admin_profile, name='update_admin_profile'),
     path('admin_profile/', views.admin_profile, name='admin_profile'),
+    path('keyboards/<int:product_id>/', views.single_product, name='single_product'),
+    path('monitors/<int:product_id>/', views.single_product, name='single_product'),
+    path('mouses/<int:product_id>/', views.single_product, name='single_product'),
+    path('assembledcpus/<int:product_id>/', views.single_product, name='single_product'),
+    path('accessories/<int:product_id>/', views.single_product, name='single_product'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

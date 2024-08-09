@@ -306,29 +306,29 @@ https://templatemo.com/tm-571-hexashop
                 <!-- Product Grid -->
                 <div class="col-lg-9">
                     <div class="section-heading">
-                        <h2>Our Mouses Collection</h2>
-                        <span>Check out all of our Mouses.</span>
+                        <h2>Our Mouse Collection</h2>
+                        <span>Check out all of our Mouse.</span>
                     </div>
                     <div class="row">
                         {% for mouse in mouses %}
                         <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
                             <div class="product-item">
-                                <div class="thumb">
-                                    <img src="{{ mouse.main_image.url }}" alt="{{ mouse.name }}" class="img-fluid">
-                                </div>
-                                <div class="down-content">
-                                    <h4>{{ mouse.name }}</h4>
-                                    <span class="price">₹{{ mouse.price }}</span>
-                                    <div class="rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star-half-o"></i>
-                                        <span class="rating-count">({{ mouse.rating_count }})</span>
+                                <a href="{% url 'userapp:single_product' product_id=mouse.productId %}">
+                                    <div class="thumb">
+                                        {% if mouse.main_image %}
+                                             <img src="{{ mouse.main_image.url }}" alt="{{ mouse.name }}" class="img-fluid">
+                                        {% else %}
+                                            <img src="{% static 'images/placeholder.png' %}" alt="Placeholder Image" class="img-fluid">
+                                        {% endif %}
                                     </div>
-                                    <button class="btn btn-primary btn-sm mt-2">Add to Cart</button>
-                                </div>
+                                    <div class="down-content">
+                                        <h4>{{ mouse.name }}</h4>
+                                        <span class="price">₹{{ mouse.price }}</span>
+                                        <div class="rating">
+                                            <!-- Add rating stars here if available -->
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
                         </div>
                         {% empty %}

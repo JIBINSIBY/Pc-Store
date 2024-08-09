@@ -313,27 +313,29 @@ https://templatemo.com/tm-571-hexashop
                         {% for assembledcpu in assembledcpus %}
                         <div class="col-lg-4 col-md-6 col-sm-6 mb-4">
                             <div class="product-item">
-                                <div class="thumb">
-                                    <img src="{{ assembledcpu.main_image.url }}" alt="{{ assembledcpu.name }}" class="img-fluid">
-                                </div>
-                                <div class="down-content">
-                                    <h4>{{ assembledcpu.name }}</h4>
-                                    <span class="price">₹{{ assembledcpu.price }}</span>
-                                    <div class="rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star-half-o"></i>
-                                        <span class="rating-count">({{ assembledcpu.rating_count }})</span>
+                                <a href="{% url 'userapp:single_product' product_id=assembledcpu.productId %}">
+                                    <div class="thumb">
+                                        <img src="{{ assembledcpu.main_image.url }}" alt="{{ assembledcpu.name }}" class="img-fluid">
                                     </div>
-                                    <button class="btn btn-primary btn-sm mt-2">Add to Cart</button>
-                                </div>
+                                    <div class="down-content">
+                                        <h4>{{ assembledcpu.name }}</h4>
+                                        <span class="price">₹{{ assembledcpu.price }}</span>
+                                        <div class="rating">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-o"></i>
+                                            <span class="rating-count">({{ assembledcpu.rating_count }})</span>
+                                        </div>
+                                    </div>
+                                </a>
+                                <button class="btn btn-primary btn-sm mt-2">Add to Cart</button>
                             </div>
                         </div>
                         {% empty %}
                         <div class="col-lg-12">
-                            <p>No Mouses available at the moment.</p>
+                            <p>No Assembled CPUs available at the moment.</p>
                         </div>
                         {% endfor %}
                     </div>

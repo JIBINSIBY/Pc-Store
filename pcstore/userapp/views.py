@@ -421,6 +421,9 @@ def get_components(request):
 
 def keyboards_view(request):
     keyboards = Product.objects.filter(category='keyboard')
+    print(f"Number of keyboards: {keyboards.count()}")
+    for keyboard in keyboards:
+        print(f"Keyboard ID: {keyboard.productId}")
     return render(request, 'keyboards.html', {'keyboards': keyboards})
 
 def mouses_view(request):
@@ -441,6 +444,8 @@ def accessories_view(request):
 
 
 
+
+
 @require_POST
 @require_POST
 def delete_additional_image(request, image_id):
@@ -452,3 +457,10 @@ def delete_additional_image(request, image_id):
         return JsonResponse({'success': False, 'error': 'Image not found'}, status=404)
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+from django.shortcuts import render, get_object_or_404
+from .models import Product
+
+def single_product(request, product_id):
+    product = get_object_or_404(Product, productId=product_id)
+    return render(request, 'singleproduct.html', {'product': product})
