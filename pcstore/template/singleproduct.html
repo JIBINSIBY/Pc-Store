@@ -127,7 +127,7 @@ https://templatemo.com/tm-571-hexashop
     <!-- ***** Main Banner Area End ***** -->
     <br>
     <br>
-
+    
     <!-- ***** Product Area Starts ***** -->
     <section class="section" id="product">
         <div class="container">
@@ -169,7 +169,9 @@ https://templatemo.com/tm-571-hexashop
                         </div> -->
                         <br>
                         <div class="total">
-                            <div class="main-border-button"><a href="#">Add To Cart</a></div>
+                            <div class="main-border-button">
+                                <a href="{% url 'userapp:add_to_cart' product.productId %}" class="add-to-cart-btn">Add To Cart</a>
+                            </div>
                             <br>
                             <div class="main-border-button"><a href="#">Buy Now</a></div>
                         </div>

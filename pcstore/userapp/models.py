@@ -94,3 +94,13 @@ class CustomPCComponent(models.Model):
 
     def __str__(self):
         return f"Component {self.component} for Custom PC {self.config.configId}"
+
+class Cart(models.Model):
+    cartId = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    totalPrice = models.DecimalField(max_digits=10, decimal_places=2)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"Cart {self.cartId} for {self.user.username}"

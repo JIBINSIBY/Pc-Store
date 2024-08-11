@@ -7,13 +7,18 @@ import re
 from django.urls import reverse
 from django.contrib.auth.hashers import make_password, check_password
 from .forms import UserUpdateForm
-from .models import Address, Product, Component, ProductImage
+from .models import Address, Product, Component, ProductImage, Cart
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 import json
 import os
 from django.conf import settings
 from django.db.models import Q
+from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
 
 user = get_user_model()
 def index(request):
@@ -464,3 +469,75 @@ from .models import Product
 def single_product(request, product_id):
     product = get_object_or_404(Product, productId=product_id)
     return render(request, 'singleproduct.html', {'product': product})
+
+@login_required
+def add_to_cart(request, product_id):
+    product = Product.objects.get(productId=product_id)
+    user = request.user
+    
+    # Check if the product is already in the cart
+    cart_item, created = Cart.objects.get_or_create(
+        user=user,
+        product=product,
+        defaults={'quantity': 1, 'totalPrice': product.price}
+    )
+    
+    if not created:
+        # If the item already exists in the cart, increase the quantity
+        cart_item.quantity += 1
+        cart_item.totalPrice = cart_item.quantity * product.price
+        cart_item.save()
+    
+    return redirect('userapp:cart_view')
+
+def cart_view(request):
+    cart_items = Cart.objects.filter(user=request.user)
+    total_price = sum(item.totalPrice for item in cart_items)
+    total_discount = 0  # Calculate this based on your discount logic
+    delivery_charges = 174  # You can adjust this or make it dynamic
+    total_amount = total_price - total_discount + delivery_charges
+    total_savings = total_discount
+
+    context = {
+        'cart_items': cart_items,
+        'total_price': total_price,
+        'total_discount': total_discount,
+        'delivery_charges': delivery_charges,
+        'total_amount': total_amount,
+        'total_savings': total_savings,
+    }
+    return render(request, 'cartview.html', context)
+
+@require_POST
+@csrf_exempt
+def update_cart_item(request, item_id):
+    data = json.loads(request.body)
+    new_quantity = data['quantity']
+    cart_item = Cart.objects.get(cartId=item_id)
+    cart_item.quantity = new_quantity
+    cart_item.totalPrice = cart_item.product.price * new_quantity
+    cart_item.save()
+    
+    cart_total = sum(item.totalPrice for item in Cart.objects.filter(user=request.user))
+    total_items = sum(item.quantity for item in Cart.objects.filter(user=request.user))
+    
+    return JsonResponse({
+        'success': True,
+        'new_price': cart_item.totalPrice,
+        'cart_total': cart_total,
+        'total_items': total_items
+    })
+
+@require_POST
+@csrf_exempt
+def remove_cart_item(request, item_id):
+    Cart.objects.filter(cartId=item_id).delete()
+    
+    cart_total = sum(item.totalPrice for item in Cart.objects.filter(user=request.user))
+    total_items = sum(item.quantity for item in Cart.objects.filter(user=request.user))
+    
+    return JsonResponse({
+        'success': True,
+        'cart_total': cart_total,
+        'total_items': total_items
+    })
