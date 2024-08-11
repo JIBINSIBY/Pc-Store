@@ -33,7 +33,8 @@
             width: 1046px;
             margin-left: 321px;
             margin-top: -625px;
-            height: 850px;
+            min-height: 850px; /* Changed from height to min-height */
+            padding-bottom: 50px; /* Add some padding at the bottom */
         }
         .profilebodypadding{
             padding: 24px 32px 0;       
@@ -186,6 +187,49 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+        }
+
+        .file-upload-container {
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .file-upload-container:hover {
+            border-color: #aaa;
+        }
+
+        .file-upload-container input[type="file"] {
+            display: none;
+        }
+
+        .file-upload-label {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .preview-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
         }
     </style>
 
@@ -372,7 +416,7 @@ https://templatemo.com/tm-571-hexashop
         <div class="profilebody">
             <div class="o20LY5">
                 <h2>Add New Product</h2>
-                <form method="POST" enctype="multipart/form-data">
+                <form method="POST" enctype="multipart/form-data" id="productAddForm">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="name">Product Name</label>
@@ -402,11 +446,23 @@ https://templatemo.com/tm-571-hexashop
                     </div>
                     <div class="form-group">
                         <label for="main_image">Main Product Image</label>
-                        <input type="file" class="form-control-file" id="main_image" name="main_image">
+                        <div class="file-upload-container" id="mainImageUploadContainer">
+                            <label for="main_image" class="file-upload-label">
+                                <i class="fa fa-cloud-upload"></i> Drag & Drop or Click to Upload Main Image
+                            </label>
+                            <input type="file" class="form-control-file" id="main_image" name="main_image" accept="image/*">
+                        </div>
+                        <div id="mainImagePreview" class="image-preview"></div>
                     </div>
                     <div class="form-group">
                         <label for="additional_images">Additional Product Images</label>
-                        <input type="file" class="form-control-file" id="additional_images" name="additional_images" multiple>
+                        <div class="file-upload-container" id="additionalImagesUploadContainer">
+                            <label for="additional_images" class="file-upload-label">
+                                <i class="fa fa-cloud-upload"></i> Drag & Drop or Click to Upload Additional Images
+                            </label>
+                            <input type="file" class="form-control-file" id="additional_images" name="additional_images" multiple accept="image/*">
+                        </div>
+                        <div id="additionalImagesPreview" class="image-preview"></div>
                     </div>
                     <button type="submit" class="btn btn-primary">Add Product</button>
                 </form>
@@ -594,6 +650,118 @@ https://templatemo.com/tm-571-hexashop
             }
             return cookieValue;
         }
+    </script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        setupFileUpload('main_image', 'mainImageUploadContainer', 'mainImagePreview', false);
+        setupFileUpload('additional_images', 'additionalImagesUploadContainer', 'additionalImagesPreview', true);
+
+        function setupFileUpload(inputId, containerId, previewId, multiple) {
+            const fileInput = document.getElementById(inputId);
+            const fileUploadContainer = document.getElementById(containerId);
+            const previewContainer = document.getElementById(previewId);
+
+            fileUploadContainer.addEventListener('click', function() {
+                fileInput.click();
+            });
+
+            fileUploadContainer.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.style.borderColor = '#aaa';
+            });
+
+            fileUploadContainer.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                this.style.borderColor = '#ccc';
+            });
+
+            fileUploadContainer.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.style.borderColor = '#ccc';
+                fileInput.files = e.dataTransfer.files;
+                displayUploadedImages(fileInput, previewContainer, multiple);
+            });
+
+            fileInput.addEventListener('change', function() {
+                displayUploadedImages(this, previewContainer, multiple);
+            });
+        }
+
+        function displayUploadedImages(input, previewContainer, multiple) {
+            previewContainer.innerHTML = '';
+            const files = input.files;
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.classList.add('preview-image');
+                    previewContainer.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+                if (!multiple) break; // Only show one image for main_image
+            }
+        }
+    });
+    </script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('productAddForm');
+        
+        form.addEventListener('submit', function(event) {
+            let isValid = true;
+            
+            // Check all required fields
+            const requiredFields = form.querySelectorAll('[required]');
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    showError(field, 'This field is required');
+                } else {
+                    hideError(field);
+                }
+            });
+            
+            // Check price and stockLevel
+            const price = document.getElementById('price');
+            const stockLevel = document.getElementById('stockLevel');
+            
+            if (!/^\d+(\.\d{1,2})?$/.test(price.value)) {
+                isValid = false;
+                showError(price, 'Please enter a valid price');
+            }
+            
+            if (!/^\d+$/.test(stockLevel.value)) {
+                isValid = false;
+                showError(stockLevel, 'Please enter a valid quantity');
+            }
+            
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+        
+        function showError(field, message) {
+            let errorElement = field.nextElementSibling;
+            if (!errorElement || !errorElement.classList.contains('error-message')) {
+                errorElement = document.createElement('div');
+                errorElement.classList.add('error-message');
+                field.parentNode.insertBefore(errorElement, field.nextSibling);
+            }
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+        
+        function hideError(field) {
+            const errorElement = field.nextElementSibling;
+            if (errorElement && errorElement.classList.contains('error-message')) {
+                errorElement.style.display = 'none';
+            }
+        }
+    });
     </script>
 
   </body>

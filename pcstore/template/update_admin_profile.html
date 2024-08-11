@@ -159,6 +159,27 @@
             height: 42px;
             border: greenyellow;
         }
+        .is-valid {
+            border-color: #28a745 !important;
+        }
+        .is-invalid {
+            border-color: #dc3545 !important;
+        }
+        .invalid-feedback {
+            display: none;
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .was-validated .form-control:invalid ~ .invalid-feedback {
+            display: block;
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
     </style>
 
     <!-- <link rel="stylesheet" href="{% static 'css/profile-sidenav.css' %}"> -->
@@ -214,7 +235,7 @@ https://templatemo.com/tm-571-hexashop
                             <li class="submenu">
                                 <a href="javascript:;">{{ user.username }}</a>
                                 <ul>
-                                    <li><a href="logout">Logout</a></li>
+                                    <li><a href="{% url 'userapp:logout' %}">Logout</a></li>
                                     {% else %}
                                     <li><a href="loginuser">Login</a></li>
                             {% endif %}
@@ -303,7 +324,7 @@ https://templatemo.com/tm-571-hexashop
             <div class="accountdisplaysettings">
                 <div class="accountdisplaysettingdetails">
                     <img class="accountdisplayorderdetailsimage" src="{% static 'images/turn-off.png' %}">
-                    <a class="accountdisplayorderdetailsorder" href="logout">
+                    <a class="accountdisplayorderdetailsorder" href="{% url 'userapp:logout' %}">
                         LOGOUT
                     </a>
                 </div>
@@ -316,25 +337,35 @@ https://templatemo.com/tm-571-hexashop
                         <span class="personalinfotitlename">Personal Information</span>
                         <span class="personalinfoedit"><a href="{% url 'userapp:admin_profile' %}">Cancel</a></span>
                     </div>
-                    <form method="POST" action="{% url 'userapp:update_admin_profile' %}">
+                    <form method="POST" action="{% url 'userapp:update_admin_profile' %}" id="updateProfileForm">
                         {% csrf_token %}
                         <div class="row">
                             <div class="personalinfofirstname">
-                                <input type="text" class="peronalinfofirstnameinput" name="first_name" value="{{ user.first_name }}" required>
+                                <input type="text" class="peronalinfofirstnameinput" name="first_name" id="first_name" value="{{ user.first_name }}" required pattern="[A-Za-z]+" title="Only letters are allowed">
+                                <div id="first_name_error" class="error-message"></div>
                             </div>
                             <div class="personalinfolastname">
-                                <input type="text" class="peronalinfolastnameinput" name="last_name" value="{{ user.last_name }}" required>
+                                <input type="text" class="peronalinfolastnameinput" name="last_name" id="last_name" value="{{ user.last_name }}" required pattern="[A-Za-z]+" title="Only letters are allowed">
+                                <div id="last_name_error" class="error-message"></div>
                             </div>
                         </div>
-                        <span class="emailtitle">Email</span>
                         <div class="personalinfoemail">
-                            <input type="email" class="personalinfoemailinput" name="email" value="{{ user.email }}" required>
+                            <span class="emailtitle">Email</span>
+                            <div class="personalinfoemail">
+                                <input type="email" class="personalinfoemailinput" name="email" id="email" value="{{ user.email }}" required>
+                                <div id="email_error" class="error-message"></div>
+                            </div>
                         </div>
-                        <div class="personalinfomobile">
-                            <input type="tel" class="personalinfomobileinput" name="mobile" value="{{ user.mobile }}" required>
+                        <div class="personalinfotitle">
+                            <span class="emailtitle">Mobile Number</span>
+                            <div class="personalinfomobile">
+                                <input type="tel" class="personalinfomobileinput" name="mobile" id="mobile" value="{{ user.mobile }}" required pattern="[0-9]{10}" title="Please enter a valid 10-digit mobile number">
+                                <div id="mobile_error" class="error-message"></div>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Update Profile</button>
+                        <button type="submit" class="btn btn-primary" id="updateProfileBtn">Update Profile</button>
                     </form>
+                    
                     <div class="faq">
                         <h3>FAQ</h3>
                         <p>What happens when I update my email address?<br>
@@ -483,6 +514,56 @@ https://templatemo.com/tm-571-hexashop
               $(this).addClass("active").siblings().removeClass("active");
             });
             
+    </script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('updateProfileForm');
+        const submitBtn = document.getElementById('updateProfileBtn');
+
+        function showError(inputId, message) {
+            const errorElement = document.getElementById(inputId + '_error');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function hideError(inputId) {
+            const errorElement = document.getElementById(inputId + '_error');
+            errorElement.style.display = 'none';
+        }
+
+        function validateInput(input) {
+            if (input.validity.valueMissing) {
+                showError(input.id, 'This field is required.');
+            } else if (input.validity.patternMismatch) {
+                showError(input.id, input.title);
+            } else {
+                hideError(input.id);
+            }
+        }
+
+        const inputs = form.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('input', function() {
+                validateInput(this);
+            });
+        });
+
+        form.addEventListener('submit', function(event) {
+            let isValid = true;
+            inputs.forEach(input => {
+                if (!input.validity.valid) {
+                    isValid = false;
+                    validateInput(input);
+                }
+            });
+
+            if (!isValid) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+        });
+    });
     </script>
 
   </body>

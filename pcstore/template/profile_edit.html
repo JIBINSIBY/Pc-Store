@@ -143,6 +143,10 @@
             height: 42px;
             border: greenyellow;
         }
+        .error-message {
+            color: red;
+            font-size: 12px;
+        }
     </style>
 
     <!-- <link rel="stylesheet" href="{% static 'css/profile-sidenav.css' %}"> -->
@@ -181,17 +185,18 @@ https://templatemo.com/tm-571-hexashop
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
-                            <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
-                            <li class="scroll-to-section"><a href="#men">Men's</a></li>
-                            <li class="scroll-to-section"><a href="#women">Women's</a></li>
-                            <li class="scroll-to-section"><a href="#kids">Kid's</a></li>
+                            <li class="scroll-to-section"><a href="#" class="active">Home</a></li>
+                            <li class="scroll-to-section"><a href="">About Us</a></li>
+                            <li class="scroll-to-section"><a href="#">Cart</a></li>
+                            <li class="scroll-to-section"><a href="#">Custom PC</a></li>
                             <li class="submenu">
-                                <a href="javascript:;">Pages</a>
+                                <a href="javascript:;">Products</a>
                                 <ul>
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="products.html">Products</a></li>
-                                    <li><a href="single-product.html">Single Product</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
+                                    <li><a href="#">Monitors</a></li>
+                                    <li><a href="#">Keyboards</a></li>
+                                    <li><a href="#">Mouses</a></li>
+                                    <li><a href="#">Assembled CPU</a></li>
+                                    <li><a href="#">Accessories</a></li>
                                 </ul>
                             </li>
                             {% if user.is_authenticated%}
@@ -300,25 +305,29 @@ https://templatemo.com/tm-571-hexashop
                         <span class="personalinfotitlename">Personal Information</span>
                         <span class="personalinfoedit"><a href="{% url 'userapp:profile' %}">Cancel</a></span>
                     </div>
-                    <form method="POST" action="{% url 'userapp:profile_edit' %}">
+                    <form method="POST" action="{% url 'userapp:profile_edit' %}" id="profileEditForm">
                         {% csrf_token %}
                         <div class="personalinfonamenames">
                             <div class="personalinfofirstname">
-                                <input type="text" class="peronalinfofirstnameinput" name="first_name" value="{{ user.first_name }}" required>
+                                <input type="text" class="peronalinfofirstnameinput" name="first_name" id="first_name" value="{{ user.first_name }}" required>
+                                <div id="first_name_error" class="error-message"></div>
                             </div>
                             <div class="personalinfolastname">
-                                <input type="text" class="peronalinfolastnameinput" name="last_name" value="{{ user.last_name }}" required>
+                                <input type="text" class="peronalinfolastnameinput" name="last_name" id="last_name" value="{{ user.last_name }}" required>
+                                <div id="last_name_error" class="error-message"></div>
                             </div>
                         </div>
                         <div class="personalinfoemail">
                             <span class="emailtitle">Email</span>
                             <br>
-                            <input type="email" class="personalinfoemailinput" name="email" value="{{ user.email }}" required>
+                            <input type="email" class="personalinfoemailinput" name="email" id="email" value="{{ user.email }}" required>
+                            <div id="email_error" class="error-message"></div>
                         </div>
                         <div class="personalinfomobile">
                             <span class="mobiletitle">Mobile Number</span>
                             <br>
-                            <input type="tel" class="personalinfomobileinput" name="mobile" value="{{ user.mobile }}" required>
+                            <input type="tel" class="personalinfomobileinput" name="mobile" id="mobile" value="{{ user.mobile }}" required>
+                            <div id="mobile_error" class="error-message"></div>
                         </div>
                         <br>
                         <button type="submit" class="btn btn-primary editsavebutn">Save</button>
@@ -471,6 +480,102 @@ https://templatemo.com/tm-571-hexashop
               $(this).addClass("active").siblings().removeClass("active");
             });
             
+    </script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('profileEditForm');
+        const firstNameInput = document.getElementById('first_name');
+        const lastNameInput = document.getElementById('last_name');
+        const emailInput = document.getElementById('email');
+        const mobileInput = document.getElementById('mobile');
+
+        function showError(input, message) {
+            const errorElement = document.getElementById(input.id + '_error');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function clearError(input) {
+            const errorElement = document.getElementById(input.id + '_error');
+            errorElement.textContent = '';
+            errorElement.style.display = 'none';
+        }
+
+        function isValidName(name) {
+            return /^[A-Za-z\s]+$/.test(name);
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function isValidIndianPhoneNumber(phone) {
+            const phoneRegex = /^(\+91[\-\s]?)?[0]?(91)?[789]\d{9}$/;
+            return phoneRegex.test(phone);
+        }
+
+        firstNameInput.addEventListener('input', function() {
+            if (!isValidName(this.value)) {
+                showError(this, 'First name should contain only alphabets');
+            } else {
+                clearError(this);
+            }
+        });
+
+        lastNameInput.addEventListener('input', function() {
+            if (!isValidName(this.value)) {
+                showError(this, 'Last name should contain only alphabets');
+            } else {
+                clearError(this);
+            }
+        });
+
+        emailInput.addEventListener('input', function() {
+            if (!isValidEmail(this.value)) {
+                showError(this, 'Please enter a valid email address');
+            } else {
+                clearError(this);
+            }
+        });
+
+        mobileInput.addEventListener('input', function() {
+            if (!isValidIndianPhoneNumber(this.value)) {
+                showError(this, 'Please enter a valid Indian phone number');
+            } else {
+                clearError(this);
+            }
+        });
+
+        form.addEventListener('submit', function(event) {
+            let isValid = true;
+
+            if (!isValidName(firstNameInput.value)) {
+                showError(firstNameInput, 'First name should contain only alphabets');
+                isValid = false;
+            }
+
+            if (!isValidName(lastNameInput.value)) {
+                showError(lastNameInput, 'Last name should contain only alphabets');
+                isValid = false;
+            }
+
+            if (!isValidEmail(emailInput.value)) {
+                showError(emailInput, 'Please enter a valid email address');
+                isValid = false;
+            }
+
+            if (!isValidIndianPhoneNumber(mobileInput.value)) {
+                showError(mobileInput, 'Please enter a valid Indian phone number');
+                isValid = false;
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    });
     </script>
 
   </body>

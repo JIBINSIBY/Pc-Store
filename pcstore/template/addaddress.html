@@ -323,7 +323,7 @@ https://templatemo.com/tm-571-hexashop
                             <li class="submenu">
                                 <a href="javascript:;">{{ user.username }}</a>
                                 <ul>
-                                    <li><a href="logout">Logout</a></li>
+                                    <li><a href="{% url 'userapp:logout' %}">Logout</a></li>
                                     {% else %}
                                     <li><a href="loginuser">Login</a></li>
                             {% endif %}
@@ -412,7 +412,7 @@ https://templatemo.com/tm-571-hexashop
             <div class="accountdisplaysettings">
                 <div class="accountdisplaysettingdetails">
                     <img class="accountdisplayorderdetailsimage" src="{% static 'images/turn-off.png' %}">
-                    <a class="accountdisplayorderdetailsorder" href="logout">
+                    <a class="accountdisplayorderdetailsorder" href="{% url 'userapp:logout' %}">
                         LOGOUT
                     </a>
                 </div>
@@ -434,37 +434,37 @@ https://templatemo.com/tm-571-hexashop
                                         <div class="rd3Ege">
                                             <div class="PsvFv">
                                                 <div class="ACw3Xy U1LCmH">
-                                                    <input type="text" class="v2VFa- z2D4XG" name="fullname" required placeholder="Full Name" autocomplete="name" tabindex="1">
+                                                    <input type="text" class="v2VFa- z2D4XG" name="fullname" id="fullname" required placeholder="Full Name" autocomplete="name" tabindex="1">
                                                 </div>
                                                 <div class="ACw3Xy U1LCmH1">
-                                                    <input type="text" class="v2VFa- z2D4XG" name="mobile" required placeholder="10-digit mobile number" maxlength="10" autocomplete="tel" tabindex="2">
+                                                    <input type="text" class="v2VFa- z2D4XG" name="mobile" id="mobile" required placeholder="10-digit mobile number" maxlength="10" autocomplete="tel" tabindex="2">
                                                 </div>
                                             </div>
                                             <div class="PsvFv1">
                                                 <div class="ACw3Xy U1LCmH">
-                                                    <input type="text" class="v2VFa- z2D4XG" name="pincode" required placeholder="Pincode" maxlength="6" autocomplete="postal-code" tabindex="3">
+                                                    <input type="text" class="v2VFa- z2D4XG" name="pincode" id="pincode" required placeholder="Pincode" maxlength="6" autocomplete="postal-code" tabindex="3">
                                                 </div>
                                                 <div class="ACw3Xy U1LCmH1">
-                                                    <input type="text" class="v2VFa- z2D4XG" name="flat_house" required placeholder="Flat, House no., Building, Company, Apartment" tabindex="4">
+                                                    <input type="text" class="v2VFa- z2D4XG" name="flat_house" id="flat_house" required placeholder="Flat, House no., Building, Company, Apartment" tabindex="4">
                                                 </div>
                                             </div>
                                             <div class="PsvFv1 ZU-viH">
                                                 <div class="lJPVok oDxCeH">
                                                     <div class="raia51 U1LCmH">
-                                                        <textarea class="g-nBNP v2VFa- _9-gNKZ" name="area_street" rows="4" cols="10" tabindex="5" placeholder="Area, Street, Sector, Village" required></textarea>
+                                                        <textarea class="g-nBNP v2VFa- _9-gNKZ" name="area_street" id="area_street" rows="4" cols="10" tabindex="5" placeholder="Area, Street, Sector, Village" required></textarea>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="PsvFv1" style="margin-bottom:22px">
                                                 <div class="lJPVok ACw3Xy ZU-viH">
                                                     <div class="raia51 ACw3Xy U1LCmH">
-                                                        <input type="text" class="v2VFa- z2D4XG" name="town_city" required placeholder="Town/City" autocomplete="city" tabindex="6">
+                                                        <input type="text" class="v2VFa- z2D4XG" name="town_city" id="town_city" required placeholder="Town/City" autocomplete="city" tabindex="6">
                                                     </div>
                                                 </div>
                                                 <div>
                                                     <div class="Z5gkGb">
                                                         <div class="stateselection">
-                                                            <select class="OZuttk ACw3Xy O1czOX SWXSwy stateselectionfill" name="state" required tabindex="7">
+                                                            <select class="OZuttk ACw3Xy O1czOX SWXSwy stateselectionfill" name="state" id="state" required tabindex="7">
                                                                 <option value="" disabled selected>--Select State--</option>
                                                                 <option value="Andaman &amp; Nicobar Islands">Andaman &amp; Nicobar Islands</option>
                                                                 <option value="Andhra Pradesh">Andhra Pradesh</option><option value="Arunachal Pradesh">Arunachal Pradesh</option>
@@ -645,6 +645,131 @@ https://templatemo.com/tm-571-hexashop
               $(this).addClass("active").siblings().removeClass("active");
             });
             
+    </script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const fullnameInput = document.getElementById('fullname');
+        const mobileInput = document.getElementById('mobile');
+        const pincodeInput = document.getElementById('pincode');
+        const flatHouseInput = document.getElementById('flat_house');
+        const areaStreetInput = document.getElementById('area_street');
+        const townCityInput = document.getElementById('town_city');
+        const stateInput = document.getElementById('state');
+
+        function showError(input, message) {
+            const errorElement = input.nextElementSibling || document.createElement('span');
+            errorElement.className = 'error-message';
+            errorElement.textContent = message;
+            errorElement.style.color = 'red';
+            errorElement.style.fontSize = '12px';
+            if (!input.nextElementSibling) {
+                input.parentElement.appendChild(errorElement);
+            }
+        }
+
+        function clearError(input) {
+            const errorElement = input.nextElementSibling;
+            if (errorElement && errorElement.className === 'error-message') {
+                errorElement.remove();
+            }
+        }
+
+        function isValidName(name) {
+            return /^[A-Za-z\s]+$/.test(name);
+        }
+
+        function isValidMobile(mobile) {
+            return /^[6-9]\d{9}$/.test(mobile);
+        }
+
+        function isValidPincode(pincode) {
+            return /^\d{6}$/.test(pincode);
+        }
+
+        form.addEventListener('submit', function(event) {
+            let isValid = true;
+
+            if (!isValidName(fullnameInput.value)) {
+                showError(fullnameInput, 'Please enter a valid name (only alphabets and spaces)');
+                isValid = false;
+            } else {
+                clearError(fullnameInput);
+            }
+
+            if (!isValidMobile(mobileInput.value)) {
+                showError(mobileInput, 'Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9');
+                isValid = false;
+            } else {
+                clearError(mobileInput);
+            }
+
+            if (!isValidPincode(pincodeInput.value)) {
+                showError(pincodeInput, 'Please enter a valid 6-digit pincode');
+                isValid = false;
+            } else {
+                clearError(pincodeInput);
+            }
+
+            if (flatHouseInput.value.trim() === '') {
+                showError(flatHouseInput, 'This field is required');
+                isValid = false;
+            } else {
+                clearError(flatHouseInput);
+            }
+
+            if (areaStreetInput.value.trim() === '') {
+                showError(areaStreetInput, 'This field is required');
+                isValid = false;
+            } else {
+                clearError(areaStreetInput);
+            }
+
+            if (townCityInput.value.trim() === '') {
+                showError(townCityInput, 'This field is required');
+                isValid = false;
+            } else {
+                clearError(townCityInput);
+            }
+
+            if (stateInput.value === '') {
+                showError(stateInput, 'Please select a state');
+                isValid = false;
+            } else {
+                clearError(stateInput);
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+
+        // Add input event listeners for real-time validation
+        fullnameInput.addEventListener('input', function() {
+            if (!isValidName(this.value)) {
+                showError(this, 'Please enter a valid name (only alphabets and spaces)');
+            } else {
+                clearError(this);
+            }
+        });
+
+        mobileInput.addEventListener('input', function() {
+            if (!isValidMobile(this.value)) {
+                showError(this, 'Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9');
+            } else {
+                clearError(this);
+            }
+        });
+
+        pincodeInput.addEventListener('input', function() {
+            if (!isValidPincode(this.value)) {
+                showError(this, 'Please enter a valid 6-digit pincode');
+            } else {
+                clearError(this);
+            }
+        });
+    });
     </script>
 
   </body>

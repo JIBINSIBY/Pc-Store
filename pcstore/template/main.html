@@ -108,7 +108,7 @@ https://templatemo.com/tm-571-hexashop
                         <ul class="nav" style="margin-top: -43px;">
                             <li class="scroll-to-section"><a href="{% url 'userapp:mainpage' %}" class="active">Home</a></li>
                             <li class="scroll-to-section"><a href="">About Us</a></li>
-                            <li class="scroll-to-section"><a href="">Contact Us</a></li>
+                            <li class="scroll-to-section"><a href="{% url 'userapp:cart_view' %}">Cart</a></li>
                             <li class="scroll-to-section"><a href="{% url 'userapp:pc_custom' %}">Custom PC</a></li>
                             <li class="submenu">
                                 <a href="javascript:;">Products</a>
@@ -218,7 +218,7 @@ https://templatemo.com/tm-571-hexashop
                                                 <h4>Assembled CPU</h4>
                                                 <p>Explore the best assembled CPU for your needs.</p>
                                                 <div class="main-border-button">
-                                                    <a href="#">Discover More</a>
+                                                    <a href="{% url 'userapp:assembledcpus' %}">Discover More</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -238,7 +238,7 @@ https://templatemo.com/tm-571-hexashop
                                                 <h4>Mouses</h4>
                                                 <p>Explore the best Mouses for your needs.</p>
                                                 <div class="main-border-button">
-                                                    <a href="#">Discover More</a>
+                                                    <a href="{% url 'userapp:mouses' %}">Discover More</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -271,31 +271,23 @@ https://templatemo.com/tm-571-hexashop
                 <div class="col-lg-12">
                     <div class="men-item-carousel">
                         <div class="owl-men-item owl-carousel">
-                            {% for monitor in latest_monitors %}
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.html"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.html"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
+                            {% if latest_monitors %}
+                                {% for monitor in latest_monitors|slice:":3" %}
+                                <div class="item">
+                                    <div class="thumb">
+                                        <a href="{% url 'userapp:single_product' product_id=monitor.productId %}">
+                                            <img src="{{ monitor.main_image.url }}" alt="{{ monitor.name }}">
+                                        </a>
                                     </div>
-                                    <img src="{{ monitor.image.url }}" alt="{{ monitor.name }}">
+                                    <div class="down-content">
+                                        <h4>{{ monitor.name }}</h4>
+                                        <span><span style="font-family: Arial;">₹</span>{{ monitor.price }}</span>
+                                    </div>
                                 </div>
-                                <div class="down-content">
-                                    <h4>{{ monitor.name }}</h4>
-                                    <span><span style="font-family: Arial;">₹</span>{{ monitor.price }}</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            {% endfor %}
+                                {% endfor %}
+                            {% else %}
+                                <p>No monitors available.</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -305,7 +297,7 @@ https://templatemo.com/tm-571-hexashop
     <!-- ***** Men Area Ends ***** -->
 
     <!-- ***** Keyboards Area Starts ***** -->
-    <section class="section" id="keyboards">
+    <section class="section" id="men">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
@@ -322,17 +314,12 @@ https://templatemo.com/tm-571-hexashop
                     <div class="keyboards-item-carousel">
                         <div class="owl-keyboards-item owl-carousel">
                             {% if latest_keyboards %}
-                                {% for keyboard in latest_keyboards %}
+                                {% for keyboard in latest_keyboards|slice:":3" %}
                                 <div class="item">
                                     <div class="thumb">
-                                        <div class="hover-content">
-                                            <ul>
-                                                <li><a href="loginuser"><i class="fa fa-eye"></i></a></li>
-                                                <li><a href="loginuser"><i class="fa fa-star"></i></a></li>
-                                                <li><a href="loginuser"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <img src="{{ keyboard.image.url }}" alt="{{ keyboard.name }}">
+                                        <a href="{% url 'userapp:single_product' product_id=keyboard.productId %}">
+                                            <img src="{{ keyboard.main_image.url }}" alt="{{ keyboard.name }}">
+                                        </a>
                                     </div>
                                     <div class="down-content">
                                         <h4>{{ keyboard.name }}</h4>
@@ -352,7 +339,7 @@ https://templatemo.com/tm-571-hexashop
     <!-- ***** Keyboards Area Ends ***** -->
 
     <!-- ***** Assembled CPU Area Starts ***** -->
-    <section class="section" id="assembled-cpu">
+    <section class="section" id="men">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
@@ -369,17 +356,12 @@ https://templatemo.com/tm-571-hexashop
                     <div class="assembled-cpu-item-carousel">
                         <div class="owl-assembled-cpu-item owl-carousel">
                             {% if latest_assembledcpu %}
-                                {% for cpu in latest_assembledcpu %}
+                                {% for cpu in latest_assembledcpu|slice:":3" %}
                                 <div class="item">
                                     <div class="thumb">
-                                        <div class="hover-content">
-                                            <ul>
-                                                <li><a href="loginuser"><i class="fa fa-eye"></i></a></li>
-                                                <li><a href="loginuser"><i class="fa fa-star"></i></a></li>
-                                                <li><a href="loginuser"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <img src="{{ cpu.image.url }}" alt="{{ cpu.name }}">
+                                        <a href="{% url 'userapp:single_product' product_id=cpu.productId %}">
+                                            <img src="{{ cpu.main_image.url }}" alt="{{ cpu.name }}">
+                                        </a>
                                     </div>
                                     <div class="down-content">
                                         <h4>{{ cpu.name }}</h4>
@@ -397,6 +379,48 @@ https://templatemo.com/tm-571-hexashop
         </div>
     </section>
     <!-- ***** Assembled CPU Area Ends ***** -->
+
+    <!-- ***** Mice Area Starts ***** -->
+    <section class="section" id="men">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="section-heading">
+                        <h2>Latest Mouse</h2>
+                        <span>Check out our newest mouse selections.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="mice-item-carousel">
+                        <div class="owl-mice-item owl-carousel">
+                            {% if latest_mice %}
+                                {% for mouse in latest_mice|slice:":3" %}
+                                <div class="item">
+                                    <div class="thumb">
+                                        <a href="{% url 'userapp:single_product' product_id=mouse.productId %}">
+                                            <img src="{{ mouse.main_image.url }}" alt="{{ mouse.name }}">
+                                        </a>
+                                    </div>
+                                    <div class="down-content">
+                                        <h4>{{ mouse.name }}</h4>
+                                        <span><span style="font-family: Arial;">₹</span>{{ mouse.price }}</span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <p>No mice available.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ***** Mice Area Ends ***** -->
 
     <!-- ***** Explore Area Starts ***** -->
     <section class="section" id="explore">
@@ -684,6 +708,62 @@ https://templatemo.com/tm-571-hexashop
             });
         });
 
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $(".owl-men-item").owlCarousel({
+                items: 3,
+                loop: true,
+                dots: true,
+                nav: true,
+                margin: 30,
+                responsive: {
+                    0: { items: 1 },
+                    600: { items: 2 },
+                    1000: { items: 3 }
+                }
+            });
+
+            $(".owl-keyboards-item").owlCarousel({
+                items: 3,
+                loop: true,
+                dots: true,
+                nav: true,
+                margin: 30,
+                responsive: {
+                    0: { items: 1 },
+                    600: { items: 2 },
+                    1000: { items: 3 }
+                }
+            });
+
+            $(".owl-assembled-cpu-item").owlCarousel({
+                items: 3,
+                loop: true,
+                dots: true,
+                nav: true,
+                margin: 30,
+                responsive: {
+                    0: { items: 1 },
+                    600: { items: 2 },
+                    1000: { items: 3 }
+                }
+            });
+
+            $(".owl-mice-item").owlCarousel({
+                items: 3,
+                loop: true,
+                dots: true,
+                nav: true,
+                margin: 30,
+                responsive: {
+                    0: { items: 1 },
+                    600: { items: 2 },
+                    1000: { items: 3 }
+                }
+            });
+        });
     </script>
 
   </body>

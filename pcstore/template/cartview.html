@@ -121,6 +121,55 @@ https://templatemo.com/tm-571-hexashop
             width: 100%;
             cursor: pointer;
         }
+        .custom-alert {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .alert-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 90%;
+        }
+        .alert-content p {
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+        .alert-content button {
+            margin: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        #confirmRemove {
+            background-color: #ff4444;
+            color: white;
+        }
+        #confirmRemove:hover {
+            background-color: #ff6666;
+        }
+        #cancelRemove {
+            background-color: #f1f1f1;
+            color: #333;
+        }
+        #cancelRemove:hover {
+            background-color: #e0e0e0;
+        }
     </style>
 
     </head>
@@ -161,9 +210,9 @@ https://templatemo.com/tm-571-hexashop
 
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav" style="margin-top: -43px;">
-                            <li class="scroll-to-section"><a href="{% url 'userapp:mainpage' %}" class="active">Home</a></li>
+                            <li class="scroll-to-section"><a href="{% url 'userapp:mainpage' %}" >Home</a></li>
                             <li class="scroll-to-section"><a href="">About Us</a></li>
-                            <li class="scroll-to-section"><a href="">Contact Us</a></li>
+                            <li class="scroll-to-section"><a href="{% url 'userapp:cart_view' %}" class="active">Cart</a></li>
                             <li class="scroll-to-section"><a href="{% url 'userapp:pc_custom' %}">Custom PC</a></li>
                             <li class="submenu">
                                 <a href="javascript:;">Products</a>
@@ -175,19 +224,20 @@ https://templatemo.com/tm-571-hexashop
                                     <li><a href="{% url 'userapp:accessories' %}">Accessories</a></li>
                                 </ul>
                             </li>
-                            {% if user.is_authenticated%}
+                            {% if user.is_authenticated %}
                             <li class="submenu">
                                 <a href="javascript:;">{{ user.username }}</a>
                                 <ul>
                                     <li><a href="{% url 'userapp:logout' %}">Logout</a></li>
                                     {% else %}
-                                    <li><a href="loginuser">Login</a></li>
+                            <li><a href="{% url 'userapp:login' %}">Login</a></li>
                             {% endif %}
-                                    <li><a href="{% url 'userapp:profile' %}">Profile</a></li>
-                                    <li><a href="#">Features Page 3</a></li>
-                                    <li><a rel="nofollow" href="https://templatemo.com/page/4" target="_blank">Template Page 4</a></li>
+                            <li><a href="{% url 'userapp:profile' %}">Profile</a></li>
+                            <li><a href="#">Features Page 3</a></li>
+                            <li><a rel="nofollow" href="https://templatemo.com/page/4" target="_blank">Template Page 4</a></li>
                                 </ul>
                             </li>
+                            
                         </ul>
                         <a class='menu-trigger'>
                             <span>Menu</span>
@@ -204,57 +254,68 @@ https://templatemo.com/tm-571-hexashop
     <!-- ***** Cart Area Starts ***** -->
     <section class="section" id="cart">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="cart-items">
-                        {% for item in cart_items %}
-                        <div class="cart-item" data-item-id="{{ item.cartId }}">
-                            <div class="row">
-                                <div class="col-lg-3">
-                                    <img src="{{ item.product.main_image.url }}" alt="{{ item.product.name }}">
-                                </div>
-                                <div class="col-lg-6">
-                                    <h4>{{ item.product.name }}</h4>
-                                    <p>{{ item.product.description|truncatewords:20 }}</p>
-                                    <div class="quantity">
-                                        <button class="minus-btn" onclick="updateQuantity({{ item.cartId }}, -1)">-</button>
-                                        <input type="number" value="{{ item.quantity }}" min="1" id="quantity-{{ item.cartId }}" readonly>
-                                        <button class="plus-btn" onclick="updateQuantity({{ item.cartId }}, 1)">+</button>
+            {% if cart_items %}
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="cart-items">
+                            {% for item in cart_items %}
+                            <div class="cart-item" data-item-id="{{ item.cartId }}">
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <img src="{{ item.product.main_image.url }}" alt="{{ item.product.name }}">
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <h4>{{ item.product.name }}</h4>
+                                        <p>{{ item.product.description|truncatewords:20 }}</p>
+                                        <div class="quantity">
+                                            <button class="minus-btn" onclick="updateQuantity({{ item.cartId }}, -1)">-</button>
+                                            <input type="number" value="{{ item.quantity }}" min="1" id="quantity-{{ item.cartId }}" readonly>
+                                            <button class="plus-btn" onclick="updateQuantity({{ item.cartId }}, 1)">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <p class="price">₹<span id="price-{{ item.cartId }}">{{ item.totalPrice }}</span></p>
+                                        <button class="remove-btn" onclick="showCustomAlert({{ item.cartId }})">REMOVE</button>
                                     </div>
                                 </div>
-                                <div class="col-lg-3">
-                                    <p class="price">₹<span id="price-{{ item.cartId }}">{{ item.totalPrice }}</span></p>
-                                    <button class="remove-btn" onclick="removeItem({{ item.cartId }})">REMOVE</button>
-                                </div>
                             </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="cart-summary">
+                            <h3>PRICE DETAILS</h3>
+                            <div class="summary-item">
+                                <span>Price ({{ cart_items|length }} items)</span>
+                                <span>₹{{ total_price }}</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Discount</span>
+                                <span>- ₹{{ total_discount }}</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Delivery Charges</span>
+                                <span>₹{{ delivery_charges }}</span>
+                            </div>
+                            <div class="summary-item total">
+                                <span>Total Amount</span>
+                                <span>₹{{ total_amount }}</span>
+                            </div>
+                            <p class="savings">You will save ₹{{ total_savings }} on this order</p>
+                            <button class="place-order-btn">PLACE ORDER</button>
+                        </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
-                    <div class="cart-summary">
-                        <h3>PRICE DETAILS</h3>
-                        <div class="summary-item">
-                            <span>Price ({{ cart_items|length }} items)</span>
-                            <span>₹{{ total_price }}</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Discount</span>
-                            <span>- ₹{{ total_discount }}</span>
-                        </div>
-                        <div class="summary-item">
-                            <span>Delivery Charges</span>
-                            <span>₹{{ delivery_charges }}</span>
-                        </div>
-                        <div class="summary-item total">
-                            <span>Total Amount</span>
-                            <span>₹{{ total_amount }}</span>
-                        </div>
-                        <p class="savings">You will save ₹{{ total_savings }} on this order</p>
-                        <button class="place-order-btn">PLACE ORDER</button>
+            {% else %}
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <img src="{% static 'images/cart3.png' %}" alt="Empty Cart" style="max-width: 200px;">
+                        <h2>Your cart is empty!</h2>
+                        <p>Explore our wide selection and find something you like</p>
+                        <a href="{% url 'userapp:mainpage' %}" class="btn btn-primary mt-3">Continue Shopping</a>
                     </div>
                 </div>
-            </div>
+            {% endif %}
         </div>
     </section>
     <!-- ***** Cart Area Ends ***** -->
@@ -564,11 +625,28 @@ https://templatemo.com/tm-571-hexashop
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                quantityInput.value = newQuantity;
-                document.getElementById(`price-${itemId}`).textContent = data.new_price;
-                updateCartSummary(data.cart_total, data.total_items);
+                location.reload(); // This will reload the page
+            } else if (data.error === 'insufficient_stock') {
+                alert(`Sorry, only ${data.available_stock} items are available in stock.`);
+                quantityInput.value = data.available_stock;
+                location.reload(); // Reload even in case of insufficient stock
             }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while updating the quantity.');
         });
+    }
+
+    function showCustomAlert(itemId) {
+        document.getElementById('customAlert').style.display = 'flex';
+        document.getElementById('confirmRemove').onclick = function() {
+            removeItem(itemId);
+            document.getElementById('customAlert').style.display = 'none';
+        };
+        document.getElementById('cancelRemove').onclick = function() {
+            document.getElementById('customAlert').style.display = 'none';
+        };
     }
 
     function removeItem(itemId) {
@@ -581,18 +659,34 @@ https://templatemo.com/tm-571-hexashop
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                document.querySelector(`.cart-item[data-item-id="${itemId}"]`).remove();
-                updateCartSummary(data.cart_total, data.total_items);
+                location.reload(); // This will reload the page
+            } else {
+                alert('Failed to remove the product from your cart.');
             }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while removing the product from your cart.');
         });
     }
 
-    function updateCartSummary(total, itemCount) {
-        document.querySelector('.summary-item:first-child span:last-child').textContent = `₹${total}`;
-        document.querySelector('.summary-item:first-child span:first-child').textContent = `Price (${itemCount} items)`;
-        // Update other summary fields as needed
+    function updateCartSummary(total, itemCount, discount, deliveryCharges, totalAmount) {
+        document.querySelector('.summary-item:nth-child(1) span:last-child').textContent = `₹${total}`;
+        document.querySelector('.summary-item:nth-child(1) span:first-child').textContent = `Price (${itemCount} items)`;
+        document.querySelector('.summary-item:nth-child(2) span:last-child').textContent = `- ₹${discount}`;
+        document.querySelector('.summary-item:nth-child(3) span:last-child').textContent = `₹${deliveryCharges}`;
+        document.querySelector('.summary-item:nth-child(4) span:last-child').textContent = `₹${totalAmount}`;
+        document.querySelector('.savings').textContent = `You will save ₹${discount} on this order`;
     }
     </script>
+
+    <div id="customAlert" class="custom-alert" style="display: none;">
+        <div class="alert-content">
+            <p>Are you sure you want to remove this item from your cart?</p>
+            <button id="confirmRemove">Yes, Remove</button>
+            <button id="cancelRemove">Cancel</button>
+        </div>
+    </div>
 
   </body>
 </html>

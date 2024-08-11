@@ -247,12 +247,12 @@ https://templatemo.com/tm-571-hexashop
 
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav" style="margin-top: -43px;">
-                            <li class="scroll-to-section"><a href="{% url 'userapp:mainpage' %}" class="active">Home</a></li>
+                            <li class="scroll-to-section"><a href="{% url 'userapp:mainpage' %}">Home</a></li>
                             <li class="scroll-to-section"><a href="">About Us</a></li>
-                            <li class="scroll-to-section"><a href="">Contact Us</a></li>
+                            <li class="scroll-to-section"><a href="{% url 'userapp:cart_view' %}">Cart</a></li>
                             <li class="scroll-to-section"><a href="{% url 'userapp:pc_custom' %}">Custom PC</a></li>
                             <li class="submenu">
-                                <a href="javascript:;">Products</a>
+                                <a href="javascript:;"  class="active">Products</a>
                                 <ul>
                                     <li><a href="{% url 'userapp:monitors' %}">Monitors</a></li>
                                     <li><a href="{% url 'userapp:keyboards' %}">Keyboards</a></li>
@@ -265,7 +265,7 @@ https://templatemo.com/tm-571-hexashop
                             <li class="submenu">
                                 <a href="javascript:;">{{ user.username }}</a>
                                 <ul>
-                                    <li><a href="logout">Logout</a></li>
+                                    <li><a href="{% url 'userapp:logout' %}">Logout</a></li>
                                     {% else %}
                                     <li><a href="loginuser">Login</a></li>
                             {% endif %}

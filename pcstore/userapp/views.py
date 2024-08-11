@@ -36,7 +36,18 @@ def index(request):
     return render(request, 'index.html', context)
 
 def mainpage(request):
-    return render(request,'main.html')
+    latest_monitors = Product.objects.filter(Q(category='monitor')).order_by('-productId')[:3]
+    latest_keyboards = Product.objects.filter(category='keyboard').order_by('-productId')[:3]
+    latest_assembledcpu = Product.objects.filter(category='assembled_cpu').order_by('-productId')[:3]
+    latest_mice = Product.objects.filter(category='mouse').order_by('-productId')[:3]
+
+    context = {
+        'latest_monitors': latest_monitors,
+        'latest_keyboards': latest_keyboards,
+        'latest_assembledcpu': latest_assembledcpu,
+        'latest_mice': latest_mice,
+    }
+    return render(request, 'main.html', context)
 
 def signupu(request):
     if request.method == 'POST':
@@ -67,26 +78,20 @@ def signupu(request):
     return render(request, 'signupuser.html')
 
 def loginu(request):
-    u=request.user
-    if u.is_authenticated:
-        return redirect('userapp:mainpage')
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
         u = authenticate(request, email=email, password=password)
         if u is not None:
             login(request, u)
-            
-            # Check user role and redirect accordingly
+            redirect_url = reverse('userapp:mainpage')
             if u.role == 'admin':
-                return redirect(reverse('userapp:admin_dashboard'))
+                redirect_url = reverse('userapp:admin_dashboard')
             elif u.role == 'staff':
-                return redirect(reverse('userapp:staff_dashboard'))
-            else:  # Assume 'user' role or any other role
-                return redirect(reverse('userapp:mainpage'))
+                redirect_url = reverse('userapp:staff_dashboard')
+            return JsonResponse({'success': True, 'redirect_url': redirect_url})
         else:
-            messages.error(request, 'Invalid email or password')
-            return render(request, 'loginuser.html')
+            return JsonResponse({'success': False, 'error': 'Invalid email or password'})
     return render(request, 'loginuser.html')
 
 def forgotpassword(request):
@@ -173,7 +178,7 @@ def editaddress(request, address_id):
 
 def signout(request):
     logout(request)
-    return redirect(reverse('userapp:loginuser'))
+    return redirect('userapp:login')
 
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
@@ -295,6 +300,8 @@ def delete_product(request, product_id):
     
 def admin_editproduct(request, product_id):
     product = get_object_or_404(Product, productId=product_id)
+    additional_images = ProductImage.objects.filter(product=product)
+    
     if request.method == 'POST':
         product.name = request.POST.get('name')
         product.category = request.POST.get('category')
@@ -315,7 +322,12 @@ def admin_editproduct(request, product_id):
         messages.success(request, 'Product updated successfully!')
         return redirect('userapp:admin_viewproduct')
 
-    return render(request, 'admin_editproduct.html', {'product': product})
+    context = {
+        'product': product,
+        'additional_images': additional_images,
+        'product_id': product_id,
+    }
+    return render(request, 'admin_editproduct.html', context)
 
 def admin_viewcomponent(request):
     components = Component.objects.all()
@@ -464,6 +476,8 @@ def delete_additional_image(request, image_id):
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
 from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from .models import Product
 
 def single_product(request, product_id):
@@ -492,6 +506,10 @@ def add_to_cart(request, product_id):
 
 def cart_view(request):
     cart_items = Cart.objects.filter(user=request.user)
+    
+    if not cart_items:
+        return render(request, 'cartview.html', {'cart_items': []})
+
     total_price = sum(item.totalPrice for item in cart_items)
     total_discount = 0  # Calculate this based on your discount logic
     delivery_charges = 174  # You can adjust this or make it dynamic
@@ -514,6 +532,15 @@ def update_cart_item(request, item_id):
     data = json.loads(request.body)
     new_quantity = data['quantity']
     cart_item = Cart.objects.get(cartId=item_id)
+    product = cart_item.product
+
+    if new_quantity > product.stockLevel:
+        return JsonResponse({
+            'success': False,
+            'error': 'insufficient_stock',
+            'available_stock': product.stockLevel
+        })
+
     cart_item.quantity = new_quantity
     cart_item.totalPrice = cart_item.product.price * new_quantity
     cart_item.save()
@@ -533,11 +560,36 @@ def update_cart_item(request, item_id):
 def remove_cart_item(request, item_id):
     Cart.objects.filter(cartId=item_id).delete()
     
-    cart_total = sum(item.totalPrice for item in Cart.objects.filter(user=request.user))
-    total_items = sum(item.quantity for item in Cart.objects.filter(user=request.user))
+    cart_items = Cart.objects.filter(user=request.user)
+    cart_total = sum(item.totalPrice for item in cart_items)
+    total_items = sum(item.quantity for item in cart_items)
+    total_discount = 0  # Calculate this based on your discount logic
+    delivery_charges = 174  # You can adjust this or make it dynamic
+    total_amount = cart_total - total_discount + delivery_charges
     
     return JsonResponse({
         'success': True,
         'cart_total': cart_total,
-        'total_items': total_items
+        'total_items': total_items,
+        'total_discount': total_discount,
+        'delivery_charges': delivery_charges,
+        'total_amount': total_amount
     })
+
+@require_POST
+def remove_main_image(request):
+    product_id = request.POST.get('product_id')
+    product = get_object_or_404(Product, id=product_id)
+    if product.main_image:
+        # Delete the file from storage
+        default_storage.delete(product.main_image.path)
+        # Clear the main_image field
+        product.main_image = None
+        product.save()
+    return JsonResponse({'success': True})
+
+@require_POST
+def remove_additional_image(request, image_id):
+    image = get_object_or_404(ProductImage, id=image_id)
+    image.delete()
+    return JsonResponse({'success': True})

@@ -20,6 +20,7 @@
                 text-align: center;
                 list-style-type: none;
                 padding: 0;
+                transition: opacity 0.5s;
             }
             .success-message {
                 color: green;
@@ -32,7 +33,7 @@
             <div class="form login">
                 <div class="form-content">
                     <header>Login</header>
-                    <form action="#" method="POST">
+                    <form action="{% url 'userapp:loginu' %}" method="POST" id="loginForm">
                         {% csrf_token %}
                         <div class="field input-field">
                             <input type="email" placeholder="Email" class="input" id="email" name="email">
@@ -51,10 +52,7 @@
                             <button type="submit">Login</button>
                         </div>
                     </form>
-
-                    <div class="form-link">
-                        <span>Don't have an account? <a href="signupuser" class="#">Signup</a></span>
-                    </div>
+                    <div id="error-message" class="error-messages" style="display: none;"></div>
                 </div>
                 <!-- ` -->
                 <div class="line"></div>
@@ -76,5 +74,55 @@
 
         <!-- JavaScript -->
         <script src="{% static 'js/loginscript.js' %}"></script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('loginForm');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const errorMessage = document.getElementById('error-message');
+
+            function validateInputs() {
+                if (emailInput.value.trim() !== '' && passwordInput.value.trim() !== '') {
+                    errorMessage.style.opacity = '0';
+                    errorMessage.style.transition = 'opacity 0.5s';
+                }
+            }
+
+            emailInput.addEventListener('input', validateInputs);
+            passwordInput.addEventListener('input', validateInputs);
+
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const email = emailInput.value;
+                const password = passwordInput.value;
+
+                // Send a POST request to the server
+                fetch('{% url "userapp:loginu" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = data.redirect_url;
+                    } else {
+                        errorMessage.textContent = data.error;
+                        errorMessage.style.display = 'block';
+                        errorMessage.style.opacity = '1';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    errorMessage.textContent = 'An error occurred. Please try again.';
+                    errorMessage.style.display = 'block';
+                    errorMessage.style.opacity = '1';
+                });
+            });
+        });
+        </script>
     </body>
 </html>

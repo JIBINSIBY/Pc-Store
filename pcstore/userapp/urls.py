@@ -10,7 +10,7 @@ app_name='userapp'
 urlpatterns = [
     path('', views.index, name='index'),
     
-    path('loginuser', views.loginu, name='loginuser'),
+    path('loginuser', views.loginu, name='loginu'),
     path('signupuser', views.signupu, name='signupuser'),
     path('mainpage', views.mainpage, name='mainpage'),
     path('profile/', views.profile, name='profile'),
@@ -76,6 +76,9 @@ urlpatterns = [
     path('cart/', views.cart_view, name='cart_view'),
     path('update-cart-item/<int:item_id>/', views.update_cart_item, name='update_cart_item'),
     path('remove-cart-item/<int:item_id>/', views.remove_cart_item, name='remove_cart_item'),
+    path('login/', views.loginu, name='login'),
+    path('remove-main-image/', views.remove_main_image, name='remove_main_image'),
+    path('remove-additional-image/<int:image_id>/', views.remove_additional_image, name='remove_additional_image'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

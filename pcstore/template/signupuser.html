@@ -32,25 +32,25 @@
                 <div class="form-content">
                     <header>Signup</header>
                     
-                    <form action="#" method='POST'>
+                    <form action="#" method='POST' id="signupForm">
                         {% csrf_token %}
                         <div class="field input-field">
-                            <input type="email" placeholder="Email" class="input" id="email" name="email">
+                            <input type="email" placeholder="Email" class="input" id="email" name="email" data-validate="email" required>
                         </div>
                         <div class="field input-field">
-                            <input type="text" placeholder="username" class="username" id="username" name="username">
+                            <input type="text" placeholder="username" class="username" id="username" name="username" required>
                         </div>
                         <div class="field input-field">
-                            <input type="password" placeholder="Create password" class="password" id="password" name="password">
+                            <input type="password" placeholder="Create password" class="password" id="password" name="password" data-validate="password" required>
                         </div>
 
                         <div class="field input-field">
-                            <input type="password" placeholder="Confirm password" class="password" id="cpassword" name="cpassword">
+                            <input type="password" placeholder="Confirm password" class="password" id="cpassword" name="cpassword" data-validate="confirmPassword" required>
                             <i class='bx bx-hide eye-icon'></i>
                         </div>
 
                         <div class="field button-field">
-                            <button>Signup</button>
+                            <button type="submit">Signup</button>
                         </div>
                     </form>
 
@@ -58,13 +58,13 @@
                         <span>Already have an account? <a href="loginuser" class="#">Login</a></span>
                     </div>
                 </div>
-                {% if messages %}
+                <!-- {% if messages %}
                 <ul class="error-messages">
                 {% for message in messages %}
                     <li>{{ message }}</li>
                 {% endfor %}
                 </ul>
-                {% endif %}
+                {% endif %} -->
                 <div class="line"></div>
 
            
@@ -84,5 +84,89 @@
 
         <!-- JavaScript -->
         <script src="{% static 'js/loginscript.js' %}"></script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('signupForm');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const confirmPasswordInput = document.getElementById('cpassword');
+
+            passwordInput.addEventListener('input', function() {
+                if (isValidPassword(this.value)) {
+                    clearError(this);
+                } else {
+                    showError(this, 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character');
+                }
+            });
+
+            confirmPasswordInput.addEventListener('input', function() {
+                if (this.value === passwordInput.value) {
+                    clearError(this);
+                } else {
+                    showError(this, 'Passwords do not match');
+                }
+            });
+
+            form.addEventListener('submit', function(event) {
+                let isValid = true;
+
+                // Email validation
+                if (!isValidEmail(emailInput.value)) {
+                    showError(emailInput, 'Please enter a valid email address');
+                    isValid = false;
+                } else {
+                    clearError(emailInput);
+                }
+
+                // Password validation
+                if (!isValidPassword(passwordInput.value)) {
+                    showError(passwordInput, 'Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character');
+                    isValid = false;
+                } else {
+                    clearError(passwordInput);
+                }
+
+                // Confirm password validation
+                if (passwordInput.value !== confirmPasswordInput.value) {
+                    showError(confirmPasswordInput, 'Passwords do not match');
+                    isValid = false;
+                } else {
+                    clearError(confirmPasswordInput);
+                }
+
+                if (!isValid) {
+                    event.preventDefault();
+                }
+            });
+
+            function isValidEmail(email) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return emailRegex.test(email);
+            }
+
+            function isValidPassword(password) {
+                const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+                return passwordRegex.test(password);
+            }
+
+            function showError(input, message) {
+                const errorElement = input.parentElement.querySelector('.error-message') || document.createElement('span');
+                errorElement.className = 'error-message';
+                errorElement.textContent = message;
+                errorElement.style.color = 'red';
+                errorElement.style.fontSize = '12px';
+                if (!input.parentElement.contains(errorElement)) {
+                    input.parentElement.appendChild(errorElement);
+                }
+            }
+
+            function clearError(input) {
+                const errorElement = input.parentElement.querySelector('.error-message');
+                if (errorElement) {
+                    errorElement.remove();
+                }
+            }
+        });
+        </script>
     </body>
 </html>
