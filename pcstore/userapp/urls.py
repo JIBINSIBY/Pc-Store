@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 from . import views
 from django.urls import path,reverse_lazy
 from django.contrib.auth import views as auth_views
+from .views import search_suggestions
 
 app_name='userapp'
 urlpatterns = [
@@ -67,11 +68,11 @@ urlpatterns = [
     path('accessories/', views.accessories_view, name='accessories'),
     path('update_admin_profile/', views.update_admin_profile, name='update_admin_profile'),
     path('admin_profile/', views.admin_profile, name='admin_profile'),
-    path('keyboards/<int:product_id>/', views.single_product, name='single_product'),
-    path('monitors/<int:product_id>/', views.single_product, name='single_product'),
-    path('mouses/<int:product_id>/', views.single_product, name='single_product'),
-    path('assembledcpus/<int:product_id>/', views.single_product, name='single_product'),
-    path('accessories/<int:product_id>/', views.single_product, name='single_product'),
+    path('keyboards/<int:product_id>/', views.single_product, name='single_product', kwargs={'category': 'keyboards'}),
+    path('monitors/<int:product_id>/', views.single_product, name='single_product', kwargs={'category': 'monitors'}),
+    path('mouses/<int:product_id>/', views.single_product, name='single_product', kwargs={'category': 'mouses'}),
+    path('assembledcpus/<int:product_id>/', views.single_product, name='single_product', kwargs={'category': 'assembledcpus'}),
+    path('accessories/<int:product_id>/', views.single_product, name='single_product', kwargs={'category': 'accessories'}),
     path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path('cart/', views.cart_view, name='cart_view'),
     path('update-cart-item/<int:item_id>/', views.update_cart_item, name='update_cart_item'),
@@ -79,6 +80,8 @@ urlpatterns = [
     path('login/', views.loginu, name='login'),
     path('remove-main-image/', views.remove_main_image, name='remove_main_image'),
     path('remove-additional-image/<int:image_id>/', views.remove_additional_image, name='remove_additional_image'),
+    path('search-suggestions/', search_suggestions, name='search_suggestions'),
+    path('<str:category>/<int:product_id>/', views.single_product, name='single_product'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

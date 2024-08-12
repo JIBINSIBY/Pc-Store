@@ -480,7 +480,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .models import Product
 
-def single_product(request, product_id):
+def single_product(request, category, product_id):
     product = get_object_or_404(Product, productId=product_id)
     return render(request, 'singleproduct.html', {'product': product})
 
@@ -593,3 +593,12 @@ def remove_additional_image(request, image_id):
     image = get_object_or_404(ProductImage, id=image_id)
     image.delete()
     return JsonResponse({'success': True})
+
+def search_suggestions(request):
+    query = request.GET.get('q', '')
+    if len(query) > 1:
+        suggestions = Product.objects.filter(
+            Q(name__icontains=query) | Q(category__icontains=query)
+        ).values('name', 'productId', 'category')[:5]
+        return JsonResponse(list(suggestions), safe=False)
+    return JsonResponse([], safe=False)

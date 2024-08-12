@@ -24,6 +24,765 @@
 
     <link rel="stylesheet" href="{% static 'css/lightbox.css' %}">
 
+    <style>
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+        .search-container form {
+            display: flex;
+            align-items: center;
+        }
+        .search-container input[type="text"] {
+            padding: 10px;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+        }
+        .search-container button {
+            padding: 10px 15px;
+            background-color: #7e96dc;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+        .search-container button:hover {
+            background-color: #d32f2f;
+        }
+        .d-flex{
+            display: flex;
+            align-items: center;
+            margin-left: 87px;
+            margin-top: 34px;
+        }
+    </style>
+
+    </head>
+    
+    <body>
+    
+    <!-- ***** Preloader Start ***** -->
+    <!-- <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>   -->
+    <!-- ***** Preloader End ***** -->
+    
+    
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+        <div class=" mx-5">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="index.html" class="logo">
+                            <img src="{% static 'images/logo.png' %}">
+                        </a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Search Start ***** -->
+                        <div class="search-container">
+                            <form action="{% url 'userapp:search_results' %}" method="get" class="d-flex">
+                                <input type="text" placeholder="Search products..." name="q">
+                                <button type="submit"><i class="fa fa-search"></i></button>
+                            </form>
+                        </div>
+                        <!-- ***** Search End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav" style="margin-top: -43px;">
+                            <li class="scroll-to-section"><a href="{% url 'userapp:mainpage' %}" class="active">Home</a></li>
+                            <li class="scroll-to-section"><a href="">About Us</a></li>
+                            <li class="scroll-to-section"><a href="{% url 'userapp:cart_view' %}">Cart</a></li>
+                            <li class="scroll-to-section"><a href="{% url 'userapp:pc_custom' %}">Custom PC</a></li>
+                            <li class="submenu">
+                                <a href="javascript:;">Products</a>
+                                <ul>
+                                    <li><a href="{% url 'userapp:monitors' %}">Monitors</a></li>
+                                    <li><a href="{% url 'userapp:keyboards' %}">Keyboards</a></li>
+                                    <li><a href="{% url 'userapp:mouses' %}">Mouses</a></li>
+                                    <li><a href="{% url 'userapp:assembledcpus' %}">Assembled CPU</a></li>
+                                    <li><a href="{% url 'userapp:accessories' %}">Accessories</a></li>
+                                </ul>
+                            </li>
+                            {% if user.is_authenticated%}
+                            <li class="submenu">
+                                <a href="javascript:;">{{ user.username }}</a>
+                                <ul>
+                                    <li><a href="logout">Logout</a></li>
+                                    {% else %}
+                                    <li><a href="loginuser">Login</a></li>
+                            {% endif %}
+                                    <li><a href="{% url 'userapp:profile' %}">Profile</a></li>
+                                    <li><a href="#">Features Page 3</a></li>
+                                    <li><a rel="nofollow" href="https://templatemo.com/page/4" target="_blank">Template Page 4</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+    <!-- ***** Main Banner Area Start ***** -->
+    <div class="main-banner" id="top">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="left-content">
+                        <div class="thumb">
+                            <div class="inner-content">
+                                <h4>Customize Your PC</h4>
+                                <span>Build Your Dream PC</span>
+                                <div class="main-border-button">
+                                    <a href="{% url 'userapp:pc_custom' %}">Build Now!</a>
+                                </div>
+                            </div>
+                            <img style="height: 569px;" src="{% static 'images/mainpage_pc.jpg' %}" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="right-content">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="right-first-image"> 
+                                    <div class="thumb">
+                                        <div class="inner-content">
+                                            <h4>Monitors</h4>
+                                            <span>Best Monitor you can find</span>
+                                        </div>
+                                        <div class="hover-content">
+                                            <div class="inner">
+                                                <h4>Monitors</h4>
+                                                <p>Explore the best monitors for your needs.</p>
+                                                <div class="main-border-button">
+                                                    <a href="{% url 'userapp:monitors' %}">Discover More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <img style="height: 269px;" src="{% static 'images/mainpage_monitor1.jpg' %}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="right-first-image">
+                                    <div class="thumb">
+                                        <div class="inner-content">
+                                            <h4>Keyboards</h4>
+                                            <span>Best Keyboards you can find</span>
+                                        </div>
+                                        <div class="hover-content">
+                                            <div class="inner">
+                                                <h4>Keyboards</h4>
+                                                <p>Explore the best keyboards for your needs.</p>
+                                                <div class="main-border-button">
+                                                    <a href="{% url 'userapp:keyboards' %}">Discover More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <img style="height: 269px;" src="{% static 'images/mainpage_keyboard.jpg' %}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="right-first-image">
+                                    <div class="thumb">
+                                        <div class="inner-content">
+                                            <h4>Assembled CPU</h4>
+                                            <span>Best Assembled CPU you can find</span>
+                                        </div>
+                                        <div class="hover-content">
+                                            <div class="inner">
+                                                <h4>Assembled CPU</h4>
+                                                <p>Explore the best assembled CPU for your needs.</p>
+                                                <div class="main-border-button">
+                                                    <a href="{% url 'userapp:assembledcpus' %}">Discover More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <img style="height: 269px;" src="{% static 'images/mainpage_assembledcpu.jpg' %}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="right-first-image">
+                                    <div class="thumb">
+                                        <div class="inner-content">
+                                            <h4>Mouses</h4>
+                                            <span>Best Mouses you can find</span>
+                                        </div>
+                                        <div class="hover-content">
+                                            <div class="inner">
+                                                <h4>Mouses</h4>
+                                                <p>Explore the best Mouses for your needs.</p>
+                                                <div class="main-border-button">
+                                                    <a href="{% url 'userapp:mouses' %}">Discover More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <img style="height: 269px;" src="{% static 'images/mainpage_mouse.jpg' %}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ***** Main Banner Area End ***** -->
+
+    <!-- ***** Men Area Starts ***** -->
+    <section class="section" id="men">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="section-heading">
+                        <h2>Latest Monitors</h2>
+                        <span>Check out our newest monitor selections.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="men-item-carousel">
+                        <div class="owl-men-item owl-carousel">
+                            {% if latest_monitors %}
+                                {% for monitor in latest_monitors|slice:":3" %}
+                                <div class="item">
+                                    <div class="thumb">
+                                        <a href="{% url 'userapp:single_product' product_id=monitor.productId %}">
+                                            <img src="{{ monitor.main_image.url }}" alt="{{ monitor.name }}">
+                                        </a>
+                                    </div>
+                                    <div class="down-content">
+                                        <h4>{{ monitor.name }}</h4>
+                                        <span><span style="font-family: Arial;">₹</span>{{ monitor.price }}</span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <p>No monitors available.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ***** Men Area Ends ***** -->
+
+    <!-- ***** Keyboards Area Starts ***** -->
+    <section class="section" id="men">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="section-heading">
+                        <h2>Latest Keyboards</h2>
+                        <span>Check out our newest keyboard selections.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="keyboards-item-carousel">
+                        <div class="owl-keyboards-item owl-carousel">
+                            {% if latest_keyboards %}
+                                {% for keyboard in latest_keyboards|slice:":3" %}
+                                <div class="item">
+                                    <div class="thumb">
+                                        <a href="{% url 'userapp:single_product' product_id=keyboard.productId %}">
+                                            <img src="{{ keyboard.main_image.url }}" alt="{{ keyboard.name }}">
+                                        </a>
+                                    </div>
+                                    <div class="down-content">
+                                        <h4>{{ keyboard.name }}</h4>
+                                        <span><span style="font-family: Arial;">₹</span>{{ keyboard.price }}</span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <p>No keyboards available.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ***** Keyboards Area Ends ***** -->
+
+    <!-- ***** Assembled CPU Area Starts ***** -->
+    <section class="section" id="men">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="section-heading">
+                        <h2>Latest Assembled CPUs</h2>
+                        <span>Check out our newest assembled CPU selections.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="assembled-cpu-item-carousel">
+                        <div class="owl-assembled-cpu-item owl-carousel">
+                            {% if latest_assembledcpu %}
+                                {% for cpu in latest_assembledcpu|slice:":3" %}
+                                <div class="item">
+                                    <div class="thumb">
+                                        <a href="{% url 'userapp:single_product' product_id=cpu.productId %}">
+                                            <img src="{{ cpu.main_image.url }}" alt="{{ cpu.name }}">
+                                        </a>
+                                    </div>
+                                    <div class="down-content">
+                                        <h4>{{ cpu.name }}</h4>
+                                        <span><span style="font-family: Arial;">₹</span>{{ cpu.price }}</span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <p>No assembled CPUs available.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ***** Assembled CPU Area Ends ***** -->
+
+    <!-- ***** Mice Area Starts ***** -->
+    <section class="section" id="men">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="section-heading">
+                        <h2>Latest Mouse</h2>
+                        <span>Check out our newest mouse selections.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="mice-item-carousel">
+                        <div class="owl-mice-item owl-carousel">
+                            {% if latest_mice %}
+                                {% for mouse in latest_mice|slice:":3" %}
+                                <div class="item">
+                                    <div class="thumb">
+                                        <a href="{% url 'userapp:single_product' product_id=mouse.productId %}">
+                                            <img src="{{ mouse.main_image.url }}" alt="{{ mouse.name }}">
+                                        </a>
+                                    </div>
+                                    <div class="down-content">
+                                        <h4>{{ mouse.name }}</h4>
+                                        <span><span style="font-family: Arial;">₹</span>{{ mouse.price }}</span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <p>No mice available.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ***** Mice Area Ends ***** -->
+
+    <!-- ***** Explore Area Starts ***** -->
+    <section class="section" id="explore">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="left-content">
+                        <h2>Explore Our Products</h2>
+                        <span>You are allowed to use this HexaShop HTML CSS template. You can feel free to modify or edit this layout. You can convert this template as any kind of ecommerce CMS theme as you wish.</span>
+                        <div class="quote">
+                            <i class="fa fa-quote-left"></i><p>You are not allowed to redistribute this template ZIP file on any other website.</p>
+                        </div>
+                        <p>There are 5 pages included in this HexaShop Template and we are providing it to you for absolutely free of charge at our TemplateMo website. There are web development costs for us.</p>
+                        <p>If this template is beneficial for your website or business, please kindly <a rel="nofollow" href="https://paypal.me/templatemo" target="_blank">support us</a> a little via PayPal. Please also tell your friends about our great website. Thank you.</p>
+                        <div class="main-border-button">
+                            <a href="products.html">Discover More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="right-content">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="leather">
+                                    <h4>Leather Bags</h4>
+                                    <span>Latest Collection</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="first-image">
+                                    <img src="{% static 'images/explore-image-01.jpg' %}" alt="">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="second-image">
+                                    <img src="{% static 'images/explore-image-02.jpg' %}" alt="">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="types">
+                                    <h4>Different Types</h4>
+                                    <span>Over 304 Products</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ***** Explore Area Ends ***** -->
+
+    <!-- ***** Social Area Starts ***** -->
+    <section class="section" id="social">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-heading">
+                        <h2>Social Media</h2>
+                        <span>Details to details is what makes Hexashop different from the other themes.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row images">
+                <div class="col-2">
+                    <div class="thumb">
+                        <div class="icon">
+                            <a href="http://instagram.com">
+                                <h6>Fashion</h6>
+                                <i class="fa fa-instagram"></i>
+                            </a>
+                        </div>
+                        <img src="{% static 'images/instagram-01.jpg' %}" alt="">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="thumb">
+                        <div class="icon">
+                            <a href="http://instagram.com">
+                                <h6>New</h6>
+                                <i class="fa fa-instagram"></i>
+                            </a>
+                        </div>
+                        <img src="{% static 'images/instagram-02.jpg' %}" alt="">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="thumb">
+                        <div class="icon">
+                            <a href="http://instagram.com">
+                                <h6>Brand</h6>
+                                <i class="fa fa-instagram"></i>
+                            </a>
+                        </div>
+                        <img src="{% static 'images/instagram-03.jpg' %}" alt="">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="thumb">
+                        <div class="icon">
+                            <a href="http://instagram.com">
+                                <h6>Makeup</h6>
+                                <i class="fa fa-instagram"></i>
+                            </a>
+                        </div>
+                        <img src="{% static 'images/instagram-04.jpg' %}" alt="">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="thumb">
+                        <div class="icon">
+                            <a href="http://instagram.com">
+                                <h6>Leather</h6>
+                                <i class="fa fa-instagram"></i>
+                            </a>
+                        </div>
+                        <img src="{% static 'images/instagram-05.jpg' %}" alt="">
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="thumb">
+                        <div class="icon">
+                            <a href="http://instagram.com">
+                                <h6>Bag</h6>
+                                <i class="fa fa-instagram"></i>
+                            </a>
+                        </div>
+                        <img src="{% static 'images/instagram-06.jpg' %}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ***** Social Area Ends ***** -->
+
+    <!-- ***** Subscribe Area Starts ***** -->
+    <div class="subscribe">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="section-heading">
+                        <h2>By Subscribing To Our Newsletter You Can Get 30% Off</h2>
+                        <span>Details to details is what makes Hexashop different from the other themes.</span>
+                    </div>
+                    <form id="subscribe" action="" method="get">
+                        <div class="row">
+                          <div class="col-lg-5">
+                            <fieldset>
+                              <input name="name" type="text" id="name" placeholder="Your Name" required="">
+                            </fieldset>
+                          </div>
+                          <div class="col-lg-5">
+                            <fieldset>
+                              <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*" placeholder="Your Email Address" required="">
+                            </fieldset>
+                          </div>
+                          <div class="col-lg-2">
+                            <fieldset>
+                              <button type="submit" id="form-submit" class="main-dark-button"><i class="fa fa-paper-plane"></i></button>
+                            </fieldset>
+                          </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-6">
+                            <ul>
+                                <li>Store Location:<br><span>Sunny Isles Beach, FL 33160, United States</span></li>
+                                <li>Phone:<br><span>010-020-0340</span></li>
+                                <li>Office Location:<br><span>North Miami Beach</span></li>
+                            </ul>
+                        </div>
+                        <div class="col-6">
+                            <ul>
+                                <li>Work Hours:<br><span>07:30 AM - 9:30 PM Daily</span></li>
+                                <li>Email:<br><span>info@company.com</span></li>
+                                <li>Social Media:<br><span><a href="#">Facebook</a>, <a href="#">Instagram</a>, <a href="#">Behance</a>, <a href="#">Linkedin</a></span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ***** Subscribe Area Ends ***** -->
+    
+    <!-- ***** Footer Start ***** -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="first-item">
+                        <div class="logo">
+                            <img src="{% static 'images/white-logo.png' %}" alt="hexashop ecommerce templatemo">
+                        </div>
+                        <ul>
+                            <li><a href="#">16501 Collins Ave, Sunny Isles Beach, FL 33160, United States</a></li>
+                            <li><a href="#">hexashop@company.com</a></li>
+                            <li><a href="#">010-020-0340</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <h4>Shopping &amp; Categories</h4>
+                    <ul>
+                        <li><a href="#">Men's Shopping</a></li>
+                        <li><a href="#">Women's Shopping</a></li>
+                        <li><a href="#">Kid's Shopping</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h4>Useful Links</h4>
+                    <ul>
+                        <li><a href="#">Homepage</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Help</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h4>Help &amp; Information</h4>
+                    <ul>
+                        <li><a href="#">Help</a></li>
+                        <li><a href="#">FAQ's</a></li>
+                        <li><a href="#">Shipping</a></li>
+                        <li><a href="#">Tracking ID</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-12">
+                    <div class="under-footer">
+                        <p>Copyright © 2022 HexaShop Co., Ltd. All Rights Reserved. 
+                        
+                        <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+
+    <!-- jQuery -->
+    <script src="{% static 'js/jquery-2.1.0.min.js' %}"></script>
+
+    <!-- Bootstrap -->
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    <!-- Plugins -->
+    <script src="{% static 'js/owl-carousel.js' %}"></script>
+    <script src="{% static 'js/accordions.js' %}"></script>
+    <script src="{% static 'js/datepicker.js' %}"></script>
+    <script src="{% static 'js/scrollreveal.min.js' %}"></script>
+    <script src="{% static 'js/waypoints.min.js' %}"></script>
+    <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'js/imgfix.min.js' %}"></script> 
+    <script src="{% static 'js/slick.js' %}"></script> 
+    <script src="{% static 'js/lightbox.js' %}"></script> 
+    <script src="{% static 'js/isotope.js' %}"></script> 
+    
+    <!-- Global Init -->
+    <script src="{% static 'js/custom.js' %}"></script>
+
+    <script>
+
+        $(function() {
+            var selectedClass = "";
+            $("p").click(function(){
+            selectedClass = $(this).attr("data-rel");
+            $("#portfolio").fadeTo(50, 0.1);
+                $("#portfolio div").not("."+selectedClass).fadeOut();
+            setTimeout(function() {
+              $("."+selectedClass).fadeIn();
+              $("#portfolio").fadeTo(50, 1);
+            }, 500);
+                
+            });
+        });
+
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $(".owl-men-item").owlCarousel({
+                items: 3,
+                loop: true,
+                dots: true,
+                nav: true,
+                margin: 30,
+                responsive: {
+                    0: { items: 1 },
+                    600: { items: 2 },
+                    1000: { items: 3 }
+                }
+            });
+
+            $(".owl-keyboards-item").owlCarousel({
+                items: 3,
+                loop: true,
+                dots: true,
+                nav: true,
+                margin: 30,
+                responsive: {
+                    0: { items: 1 },
+                    600: { items: 2 },
+                    1000: { items: 3 }
+                }
+            });
+
+            $(".owl-assembled-cpu-item").owlCarousel({
+                items: 3,
+                loop: true,
+                dots: true,
+                nav: true,
+                margin: 30,
+                responsive: {
+                    0: { items: 1 },
+                    600: { items: 2 },
+                    1000: { items: 3 }
+                }
+            });
+
+            $(".owl-mice-item").owlCarousel({
+                items: 3,
+                loop: true,
+                dots: true,
+                nav: true,
+                margin: 30,
+                responsive: {
+                    0: { items: 1 },
+                    600: { items: 2 },
+                    1000: { items: 3 }
+                }
+            });
+        });
+    </script>
+
+  </body>
+</html>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+
+    <title>Hexashop Ecommerce HTML CSS Template</title>
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/templatemo-hexashop.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/owl-carousel.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/lightbox.css' %}">
+
     <link rel="stylesheet" type="text/css" href="{% static 'css/sidebarprofile.css' %}">
 
     <style>

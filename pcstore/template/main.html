@@ -66,6 +66,28 @@ https://templatemo.com/tm-571-hexashop
             margin-left: 87px;
             margin-top: 34px;
         }
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+        }
+
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
     </style>
 
     </head>
@@ -96,11 +118,12 @@ https://templatemo.com/tm-571-hexashop
                         <!-- ***** Logo End ***** -->
                         
                         <!-- ***** Search Start ***** -->
-                        <div class="search-container ">
-                            <form action="search_results" method="get" class="d-flex">
-                                <input type="text" placeholder="Search products..." name="q">
+                        <div class="search-container">
+                            <form action="{% url 'userapp:search_results' %}" method="get" class="d-flex">
+                                <input type="text" id="search-input" placeholder="Search products..." name="q" autocomplete="off">
                                 <button type="submit"><i class="fa fa-search"></i></button>
                             </form>
+                            <div id="search-suggestions" class="search-suggestions"></div>
                         </div>
                         <!-- ***** Search End ***** -->
 
@@ -764,6 +787,42 @@ https://templatemo.com/tm-571-hexashop
                 }
             });
         });
+    </script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('search-input');
+        const suggestionsContainer = document.getElementById('search-suggestions');
+
+        searchInput.addEventListener('input', function() {
+            const query = this.value;
+            if (query.length > 1) {
+                fetch(`/search-suggestions/?q=${query}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        suggestionsContainer.innerHTML = '';
+                        data.forEach(suggestion => {
+                            const div = document.createElement('div');
+                            div.classList.add('suggestion-item');
+                            div.textContent = suggestion.name;
+                            div.addEventListener('click', function() {
+                                window.location.href = `/${suggestion.category}/${suggestion.productId}/`;
+                            });
+                            suggestionsContainer.appendChild(div);
+                        });
+                        suggestionsContainer.style.display = data.length ? 'block' : 'none';
+                    });
+            } else {
+                suggestionsContainer.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('click', function(e) {
+            if (e.target !== searchInput && e.target !== suggestionsContainer) {
+                suggestionsContainer.style.display = 'none';
+            }
+        });
+    });
     </script>
 
   </body>
