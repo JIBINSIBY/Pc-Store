@@ -96,7 +96,6 @@
                 const email = emailInput.value;
                 const password = passwordInput.value;
 
-                // Send a POST request to the server
                 fetch('{% url "userapp:loginu" %}', {
                     method: 'POST',
                     headers: {

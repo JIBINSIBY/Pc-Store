@@ -90,6 +90,10 @@ https://templatemo.com/tm-571-hexashop
         }
     </style>
 
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
     </head>
     
     <body>
@@ -143,19 +147,19 @@ https://templatemo.com/tm-571-hexashop
                                     <li><a href="{% url 'userapp:accessories' %}">Accessories</a></li>
                                 </ul>
                             </li>
-                            {% if user.is_authenticated%}
-                            <li class="submenu">
-                                <a href="javascript:;">{{ user.username }}</a>
-                                <ul>
-                                    <li><a href="logout">Logout</a></li>
-                                    {% else %}
-                                    <li><a href="loginuser">Login</a></li>
+                            {% if request.session.user_id %}
+                                <!-- User is logged in -->
+                                <li class="submenu">
+                                    <a href="javascript:;">{{ request.session.username }}</a>
+                                    <ul>
+                                        <li><a href="#" id="logout-link">Logout</a></li>
+                                        <li><a href="{% url 'userapp:profile' %}">Profile</a></li>
+                                    </ul>
+                                </li>
+                            {% else %}
+                                <!-- User is not logged in -->
+                                <li><a href="{% url 'userapp:login' %}">Login</a></li>
                             {% endif %}
-                                    <li><a href="{% url 'userapp:profile' %}">Profile</a></li>
-                                    <li><a href="#">Features Page 3</a></li>
-                                    <li><a rel="nofollow" href="https://templatemo.com/page/4" target="_blank">Template Page 4</a></li>
-                                </ul>
-                            </li>
                         </ul>
                         <a class='menu-trigger'>
                             <span>Menu</span>
@@ -298,7 +302,7 @@ https://templatemo.com/tm-571-hexashop
                                 {% for monitor in latest_monitors|slice:":3" %}
                                 <div class="item">
                                     <div class="thumb">
-                                        <a href="{% url 'userapp:single_product' product_id=monitor.productId %}">
+                                        <a href="{% url 'userapp:single_product' category='monitors' product_id=monitor.productId %}">
                                             <img src="{{ monitor.main_image.url }}" alt="{{ monitor.name }}">
                                         </a>
                                     </div>
@@ -340,7 +344,7 @@ https://templatemo.com/tm-571-hexashop
                                 {% for keyboard in latest_keyboards|slice:":3" %}
                                 <div class="item">
                                     <div class="thumb">
-                                        <a href="{% url 'userapp:single_product' product_id=keyboard.productId %}">
+                                        <a href="{% url 'userapp:single_product' category='keyboards' product_id=keyboard.productId %}">
                                             <img src="{{ keyboard.main_image.url }}" alt="{{ keyboard.name }}">
                                         </a>
                                     </div>
@@ -382,7 +386,7 @@ https://templatemo.com/tm-571-hexashop
                                 {% for cpu in latest_assembledcpu|slice:":3" %}
                                 <div class="item">
                                     <div class="thumb">
-                                        <a href="{% url 'userapp:single_product' product_id=cpu.productId %}">
+                                        <a href="{% url 'userapp:single_product' category='assembledcpus' product_id=cpu.productId %}">
                                             <img src="{{ cpu.main_image.url }}" alt="{{ cpu.name }}">
                                         </a>
                                     </div>
@@ -424,7 +428,7 @@ https://templatemo.com/tm-571-hexashop
                                 {% for mouse in latest_mice|slice:":3" %}
                                 <div class="item">
                                     <div class="thumb">
-                                        <a href="{% url 'userapp:single_product' product_id=mouse.productId %}">
+                                        <a href="{% url 'userapp:single_product' category='mouses' product_id=mouse.productId %}">
                                             <img src="{{ mouse.main_image.url }}" alt="{{ mouse.name }}">
                                         </a>
                                     </div>
@@ -822,6 +826,21 @@ https://templatemo.com/tm-571-hexashop
                 suggestionsContainer.style.display = 'none';
             }
         });
+
+        const logoutLink = document.getElementById('logout-link');
+        if (logoutLink) {
+            logoutLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                fetch('{% url "userapp:logout" %}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                }).then(() => {
+                    window.location.reload();
+                });
+            });
+        }
     });
     </script>
 

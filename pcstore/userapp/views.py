@@ -84,6 +84,10 @@ def loginu(request):
         u = authenticate(request, email=email, password=password)
         if u is not None:
             login(request, u)
+            request.session['user_id'] = u.id
+            request.session['user_email'] = u.email
+            request.session['user_role'] = u.role
+            request.session['username'] = u.username
             redirect_url = reverse('userapp:mainpage')
             if u.role == 'admin':
                 redirect_url = reverse('userapp:admin_dashboard')
@@ -97,6 +101,7 @@ def loginu(request):
 def forgotpassword(request):
     return render(request,'forgotpassword.html')
 
+@login_required(login_url='userapp:login')
 def profile(request):
     return render(request, 'profile.html')
 
@@ -178,7 +183,8 @@ def editaddress(request, address_id):
 
 def signout(request):
     logout(request)
-    return redirect('userapp:login')
+    request.session.flush()
+    return redirect('userapp:index')
 
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
