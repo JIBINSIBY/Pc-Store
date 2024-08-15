@@ -34,21 +34,31 @@ https://templatemo.com/tm-571-hexashop
 </script>
 
     <style>
+        .header-area .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+        }
+
         .search-container {
             display: flex;
             align-items: center;
-            margin-right: 20px;
+            margin: 0 20px;
         }
+
         .search-container form {
             display: flex;
             align-items: center;
         }
+
         .search-container input[type="text"] {
             padding: 10px;
-            border: none;
+            border: 1px solid #ddd;
             border-radius: 5px 0 0 5px;
             outline: none;
         }
+
         .search-container button {
             padding: 10px 15px;
             background-color: #7e96dc;
@@ -57,15 +67,53 @@ https://templatemo.com/tm-571-hexashop
             border-radius: 0 5px 5px 0;
             cursor: pointer;
         }
+
         .search-container button:hover {
             background-color: #d32f2f;
         }
-        .d-flex{
+
+        .header-area .main-nav .nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        .header-area .main-nav .nav li {
+            padding: 0 15px;
+            height: 100%;
             display: flex;
             align-items: center;
-            margin-left: 87px;
-            margin-top: 34px;
         }
+
+        .header-area .main-nav .nav li a {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            height: 100%;
+            border: transparent;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 991px) {
+            .header-area .main-nav {
+                flex-wrap: wrap;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0;
+            }
+            .search-container form {
+                width: 100%;
+            }
+            .search-container input[type="text"] {
+                flex-grow: 1;
+            }
+        }
+
         .search-suggestions {
             position: absolute;
             top: 100%;
@@ -87,6 +135,18 @@ https://templatemo.com/tm-571-hexashop
 
         .suggestion-item:hover {
             background-color: #f0f0f0;
+        }
+
+        .fixed-top {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1030;
+        }
+
+        body {
+            padding-top: 80px; /* Adjust this value based on your header height */
         }
     </style>
 
@@ -110,29 +170,24 @@ https://templatemo.com/tm-571-hexashop
     
     
     <!-- ***** Header Area Start ***** -->
-    <header class="header-area header-sticky">
-        <div class=" mx-5">
+    <header class="header-area header-sticky fixed-top">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
                     <nav class="main-nav">
-                        <!-- ***** Logo Start ***** -->
                         <a href="index.html" class="logo">
                             <img src="{% static 'images/logo.png' %}">
                         </a>
-                        <!-- ***** Logo End ***** -->
-                        
-                        <!-- ***** Search Start ***** -->
+
                         <div class="search-container">
-                            <form action="{% url 'userapp:search_results' %}" method="get" class="d-flex">
+                            <form action="{% url 'userapp:search_results' %}" method="get">
                                 <input type="text" id="search-input" placeholder="Search products..." name="q" autocomplete="off">
                                 <button type="submit"><i class="fa fa-search"></i></button>
                             </form>
                             <div id="search-suggestions" class="search-suggestions"></div>
                         </div>
-                        <!-- ***** Search End ***** -->
 
-                        <!-- ***** Menu Start ***** -->
-                        <ul class="nav" style="margin-top: -43px;">
+                        <ul class="nav">
                             <li class="scroll-to-section"><a href="{% url 'userapp:mainpage' %}" class="active">Home</a></li>
                             <li class="scroll-to-section"><a href="">About Us</a></li>
                             <li class="scroll-to-section"><a href="{% url 'userapp:cart_view' %}">Cart</a></li>
@@ -148,7 +203,6 @@ https://templatemo.com/tm-571-hexashop
                                 </ul>
                             </li>
                             {% if request.session.user_id %}
-                                <!-- User is logged in -->
                                 <li class="submenu">
                                     <a href="javascript:;">{{ request.session.username }}</a>
                                     <ul>
@@ -157,14 +211,9 @@ https://templatemo.com/tm-571-hexashop
                                     </ul>
                                 </li>
                             {% else %}
-                                <!-- User is not logged in -->
                                 <li><a href="{% url 'userapp:login' %}">Login</a></li>
                             {% endif %}
                         </ul>
-                        <a class='menu-trigger'>
-                            <span>Menu</span>
-                        </a>
-                        <!-- ***** Menu End ***** -->
                     </nav>
                 </div>
             </div>
@@ -303,7 +352,7 @@ https://templatemo.com/tm-571-hexashop
                                 <div class="item">
                                     <div class="thumb">
                                         <a href="{% url 'userapp:single_product' category='monitors' product_id=monitor.productId %}">
-                                            <img src="{{ monitor.main_image.url }}" alt="{{ monitor.name }}">
+                                            <img src="{{ monitor.image.url }}" alt="{{ monitor.name }}">
                                         </a>
                                     </div>
                                     <div class="down-content">
@@ -345,7 +394,7 @@ https://templatemo.com/tm-571-hexashop
                                 <div class="item">
                                     <div class="thumb">
                                         <a href="{% url 'userapp:single_product' category='keyboards' product_id=keyboard.productId %}">
-                                            <img src="{{ keyboard.main_image.url }}" alt="{{ keyboard.name }}">
+                                            <img src="{{ keyboard.image.url }}" alt="{{ keyboard.name }}">
                                         </a>
                                     </div>
                                     <div class="down-content">
@@ -387,7 +436,7 @@ https://templatemo.com/tm-571-hexashop
                                 <div class="item">
                                     <div class="thumb">
                                         <a href="{% url 'userapp:single_product' category='assembledcpus' product_id=cpu.productId %}">
-                                            <img src="{{ cpu.main_image.url }}" alt="{{ cpu.name }}">
+                                            <img src="{{ cpu.image.url }}" alt="{{ cpu.name }}">
                                         </a>
                                     </div>
                                     <div class="down-content">
@@ -429,7 +478,7 @@ https://templatemo.com/tm-571-hexashop
                                 <div class="item">
                                     <div class="thumb">
                                         <a href="{% url 'userapp:single_product' category='mouses' product_id=mouse.productId %}">
-                                            <img src="{{ mouse.main_image.url }}" alt="{{ mouse.name }}">
+                                            <img src="{{ mouse.image.url }}" alt="{{ mouse.name }}">
                                         </a>
                                     </div>
                                     <div class="down-content">

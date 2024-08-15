@@ -86,19 +86,19 @@ https://templatemo.com/tm-571-hexashop
                                     <li><a href="{% url 'userapp:accessories' %}">Accessories</a></li>
                                 </ul>
                             </li>
-                            {% if user.is_authenticated%}
-                            <li class="submenu">
-                                <a href="javascript:;">{{ user.username }}</a>
-                                <ul>
-                                    <li><a href="{% url 'userapp:logout' %}">Logout</a></li>
-                                    {% else %}
-                                    <li><a href="loginuser">Login</a></li>
+                            {% if request.session.user_id %}
+                                <!-- User is logged in -->
+                                <li class="submenu">
+                                    <a href="javascript:;">{{ request.session.username }}</a>
+                                    <ul>
+                                        <li><a href="#" id="logout-link">Logout</a></li>
+                                        <li><a href="{% url 'userapp:profile' %}">Profile</a></li>
+                                    </ul>
+                                </li>
+                            {% else %}
+                                <!-- User is not logged in -->
+                                <li><a href="{% url 'userapp:login' %}">Login</a></li>
                             {% endif %}
-                                    <li><a href="{% url 'userapp:profile' %}">Profile</a></li>
-                                    <li><a href="#">Features Page 3</a></li>
-                                    <li><a rel="nofollow" href="https://templatemo.com/page/4" target="_blank">Template Page 4</a></li>
-                                </ul>
-                            </li>
                         </ul>
                         <a class='menu-trigger'>
                             <span>Menu</span>
@@ -170,7 +170,7 @@ https://templatemo.com/tm-571-hexashop
                         <br>
                         <div class="total">
                             <div class="main-border-button">
-                                <a href="{% url 'userapp:add_to_cart' product.productId %}" class="add-to-cart-btn">Add To Cart</a>
+                                <a href="#" id="addToCartBtn" data-product-id="{{ product.productId }}" data-stock="{{ product.stock }}">Add To Cart</a>
                             </div>
                             <br>
                             <div class="main-border-button"><a href="#">Buy Now</a></div>
@@ -281,6 +281,44 @@ https://templatemo.com/tm-571-hexashop
             });
         });
 
+    </script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const addToCartBtn = document.getElementById('addToCartBtn');
+        
+        addToCartBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const productId = this.getAttribute('data-product-id');
+            const stock = parseInt(this.getAttribute('data-stock'));
+            
+            if (stock <= 0) {
+                alert('This product is out of stock.');
+                return;
+            }
+            
+            fetch(`/add-to-cart/${productId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Product added to cart successfully!');
+                } else {
+                    alert('Failed to add product to cart. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        });
+    });
     </script>
 
   </body>

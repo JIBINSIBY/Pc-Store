@@ -1,0 +1,10 @@
+* 038423f session done
+* 8bdb248 search comp
+* c101d97 validation in progress
+* 917f264 admin, user ongoing
+* 98f81fe editted
+* a2367ac editted
+* cfb70e7 Product display, implementing custompc - 40%
+* 2a6377f Initial push
+* 219d27c initial push
+* 285707f Initial commit

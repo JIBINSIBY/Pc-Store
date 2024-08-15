@@ -85,9 +85,8 @@ def loginu(request):
         if u is not None:
             login(request, u)
             request.session['user_id'] = u.id
-            request.session['user_email'] = u.email
-            request.session['user_role'] = u.role
             request.session['username'] = u.username
+            request.session['user_role'] = u.role
             redirect_url = reverse('userapp:mainpage')
             if u.role == 'admin':
                 redirect_url = reverse('userapp:admin_dashboard')
@@ -181,6 +180,7 @@ def editaddress(request, address_id):
 
     return render(request, 'editaddress.html', {'address': address})
 
+@require_POST
 def signout(request):
     logout(request)
     request.session.flush()
@@ -492,23 +492,26 @@ def single_product(request, category, product_id):
 
 @login_required
 def add_to_cart(request, product_id):
-    product = Product.objects.get(productId=product_id)
-    user = request.user
+    if request.method == 'POST':
+        product = get_object_or_404(Product, productId=product_id)
+        user = request.user
+        
+        cart_item, created = Cart.objects.get_or_create(
+            user=user,
+            product=product,
+            defaults={'quantity': 1, 'totalPrice': product.price}
+        )
+        
+        if not created:
+            if cart_item.quantity >= product.stockLevel:
+                return JsonResponse({'success': False, 'message': 'Cannot add more of this product to cart.'})
+            cart_item.quantity += 1
+            cart_item.totalPrice = cart_item.quantity * product.price
+            cart_item.save()
+        
+        return JsonResponse({'success': True})
     
-    # Check if the product is already in the cart
-    cart_item, created = Cart.objects.get_or_create(
-        user=user,
-        product=product,
-        defaults={'quantity': 1, 'totalPrice': product.price}
-    )
-    
-    if not created:
-        # If the item already exists in the cart, increase the quantity
-        cart_item.quantity += 1
-        cart_item.totalPrice = cart_item.quantity * product.price
-        cart_item.save()
-    
-    return redirect('userapp:cart_view')
+    return JsonResponse({'success': False}, status=400)
 
 def cart_view(request):
     cart_items = Cart.objects.filter(user=request.user)
@@ -608,3 +611,21 @@ def search_suggestions(request):
         ).values('name', 'productId', 'category')[:5]
         return JsonResponse(list(suggestions), safe=False)
     return JsonResponse([], safe=False)
+
+def check_cart_quantity(request, product_id):
+    product = Product.objects.get(productId=product_id)
+    cart_item = Cart.objects.filter(user=request.user, product=product).first()
+    current_quantity = cart_item.quantity if cart_item else 0
+    return JsonResponse({'current_quantity': current_quantity})
+
+@require_POST
+def add_to_cart(request, product_id):
+    product = Product.objects.get(productId=product_id)
+    cart_item, created = Cart.objects.get_or_create(user=request.user, product=product)
+    
+    if not created and cart_item.quantity >= product.stockLevel:
+        return JsonResponse({'success': False, 'message': 'Cannot add more of this product to cart.'})
+    
+    cart_item.quantity += 1
+    cart_item.save()
+    return JsonResponse({'success': True})

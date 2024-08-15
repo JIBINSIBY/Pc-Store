@@ -82,6 +82,8 @@ urlpatterns = [
     path('remove-additional-image/<int:image_id>/', views.remove_additional_image, name='remove_additional_image'),
     path('search-suggestions/', search_suggestions, name='search_suggestions'),
     path('<str:category>/<int:product_id>/', views.single_product, name='single_product'),
+    path('check-cart-quantity/<int:product_id>/', views.check_cart_quantity, name='check_cart_quantity'),
+    path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
