@@ -31,6 +31,10 @@ https://templatemo.com/tm-571-hexashop
 
 -->
     <style>
+        .main-banner {
+            padding-top: 46px;
+            padding-bottom: 0px !important;
+        }
         #keyboards .thumb {
             position: relative;
             overflow: hidden;
@@ -52,6 +56,1487 @@ https://templatemo.com/tm-571-hexashop
             opacity: 1;
             visibility: visible;
         }
+
+        .header-area .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin: 0 20px;
+            max-width: 50%; /* Adjust this value to control the maximum width */
+        }
+
+        .search-container form {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .search-container input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+            flex-grow: 1;
+            min-width: 0;
+            width: 100%;
+        }
+
+        .search-container button {
+            padding: 10px 15px;
+            background-color: #7e96dc;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background-color: #d32f2f;
+        }
+
+        .header-area .main-nav .nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        .header-area .main-nav .nav li {
+            padding: 0 15px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-area .main-nav .nav li a {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            height: 100%;
+            border: transparent;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 991px) {
+            .header-area .main-nav {
+                flex-wrap: wrap;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0;
+            }
+            .search-container form {
+                width: 100%;
+            }
+            .search-container input[type="text"] {
+                flex-grow: 1;
+            }
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+        }
+
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .fixed-top {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1030;
+        }
+
+        body {
+            padding-top: 80px; /* Adjust this value based on your header height */
+        }
+
+        .submenu {
+            position: relative;
+        }
+
+        .submenu .dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            padding: 10px 0;
+            min-width: 200px;
+            z-index: 1000;
+        }
+
+        .submenu:hover .dropdown {
+            display: block;
+        }
+
+        .submenu .dropdown li {
+            display: block;
+            padding: 5px 15px;
+        }
+
+        .submenu .dropdown li a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .submenu .dropdown li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .submenu .dropdown li a:hover {
+            background-color: #f5f5f5;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            flex-shrink: 0;
+        }
+
+        .search-container {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+
+        .search-container form {
+            display: flex;
+        }
+
+        .search-container input[type="text"] {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .nav {
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 991px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+
+        .scrolling-banner {
+            overflow: hidden;
+            position: relative;
+            height: 300px;
+            margin-bottom: 50px;
+            padding-top: 0px !important;
+        }
+
+        .banner-container {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .banner-slide {
+            flex: 0 0 100%;
+            position: relative;
+        }
+
+        .banner-slide img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .banner-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+        }
+
+        .banner-content h2 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .banner-content p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .btn-shop-now {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-shop-now:hover {
+            background-color: #0056b3;
+        }
+
+        .scrolling-banner {
+            position: relative;
+        }
+
+        .banner-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            font-size: 24px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .banner-arrow:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .banner-prev {
+            left: 10px;
+        }
+
+        .banner-next {
+            right: 10px;
+        }
+
+        .section {
+            padding: 0px 0;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .owl-carousel {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+        }
+
+        .owl-carousel .item {
+            flex: 0 0 auto;
+            width: 280px;
+            margin-right: 20px;
+            scroll-snap-align: start;
+        }
+
+        .owl-carousel .item:last-child {
+            margin-right: 0;
+        }
+
+        @media (max-width: 768px) {
+            .owl-carousel .item {
+                width: 220px;
+            }
+        }
+
+        .down-content .category {
+            display: block;
+            font-size: 14px;
+            color: #7a7a7a;
+            margin-top: 5px;
+        }
+        #latest-products{
+            background: #f8f9fa;
+            height: 490px;
+        }
+        #latest-products .item {
+            margin-bottom: 30px;
+        }
+
+        #latest-products .item .thumb {
+            position: relative;
+            overflow: hidden;
+        }
+
+        #latest-products .item .thumb img {
+            width: 100%;
+            height: auto;
+        }
+
+        #latest-products .item .down-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        #latest-products .item .down-content h4 {
+            font-size: 17px;
+            color: #1a6692;
+            margin-bottom: 10px;
+        }
+
+        #latest-products .item .down-content span {
+            color: #000000;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        #latest-products .row {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 0 10px;
+        }
+
+        #latest-products .row::-webkit-scrollbar {
+            display: none;
+        }
+
+        #latest-products .col-lg-2 {
+            flex: 0 0 auto;
+            width: calc(16.666% - 20px);
+            min-width: 200px;
+            scroll-snap-align: start;
+            margin-right: 20px;
+        }
+
+        #latest-products .item {
+            border: 1px solid #e6e6e6;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #latest-products .thumb img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        #latest-products .down-content {
+            padding: 15px;
+            text-align: center;
+        }
+
+        #latest-products h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #latest-products span {
+            font-size: 14px;
+            color: #000000;
+            font-weight: 500;
+        }
+
+        #latest-products .section-heading {
+            text-align: left;
+            margin-bottom: 30px;
+            padding: 0 10px;
+        }
+
+        #latest-products .section-heading h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        #latest-products .section-heading span {
+            color: #7a7a7a;
+        }
+
+        #latest-products .product-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 20px 0;
+        }
+
+        #latest-products .product-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        #latest-products .product-item {
+            flex: 0 0 auto;
+            width: calc(100% / 7);
+            padding: 0 10px;
+            scroll-snap-align: start;
+        }
+
+        #latest-products .item {
+            border: 1px solid #e6e6e6;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #latest-products .thumb img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        #latest-products .down-content {
+            padding: 15px;
+            text-align: center;
+        }
+
+        #latest-products h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #latest-products span {
+            font-size: 14px;
+            color: #000000;
+            font-weight: 500;
+        }
+
+        @media (max-width: 1200px) {
+            #latest-products .product-item {
+                width: calc(100% / 5);
+            }
+        }
+
+        @media (max-width: 992px) {
+            #latest-products .product-item {
+                width: calc(100% / 4);
+            }
+        }
+
+        @media (max-width: 768px) {
+            #latest-products .product-item {
+                width: calc(100% / 3);
+            }
+        }
+
+        @media (max-width: 576px) {
+            #latest-products .product-item {
+                width: calc(100% / 2);
+            }
+        }
+
+        #latest-products .product-item {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #latest-products .product-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #latest-products .item {
+            transition: background-color 0.3s ease;
+        }
+
+        #latest-products .product-item:hover .item {
+            background-color: #f8f8f8;
+        }
+
+        #latest-products .down-content {
+            transition: color 0.3s ease;
+        }
+
+        #latest-products .product-item:hover .down-content h4,
+        #latest-products .product-item:hover .down-content span {
+            color: #7d7d7d;
+        }
+
+        .bottom-banner {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .bottom-banner .banner-container {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .bottom-banner .banner-slide {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+
+        .bottom-banner .banner-slide img {
+            width: 100%;
+            height: auto;
+        }
+
+        .bottom-banner .banner-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .bottom-banner .banner-prev {
+            left: 10px;
+        }
+
+        .bottom-banner .banner-next {
+            right: 10px;
+        }
+        #explore{
+            padding-top: 30px !important;
+            padding-bottom: 30px !important ;
+        }
+        #explore .container-fluid {
+            max-width: 100%;
+            padding: 0;
+        }
+
+        #explore .row {
+            display: flex;
+            align-items: center;
+        }
+
+        #explore .left-content {
+            background-color: #f8f9fa;
+            padding: 60px 0;
+        }
+
+        #explore .content-wrapper {
+            max-width: 540px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 30px;
+        }
+
+        #explore .right-content {
+            padding: 0;
+        }
+
+        #explore .big-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @media (max-width: 991px) {
+            #explore .row {
+                flex-direction: column;
+            }
+            #explore .content-wrapper {
+                max-width: 100%;
+                padding: 0 15px;
+                margin: 0 auto;
+            }
+            #explore .big-image img {
+                margin-top: 30px;
+            }
+        }
+
+        .hover13 figure {
+            background: #fff;
+            overflow: hidden;
+        }
+        
+        .hover13 figure:hover img {
+            opacity: 1;
+            -webkit-animation: flash 1.5s;
+            animation: flash 1.5s;
+        }
+        
+        @-webkit-keyframes flash {
+            0% {
+                opacity: .4;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes flash {
+            0% {
+                opacity: .4;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        #social {
+            margin-top: 35px;
+            padding-bottom: 10px !important;
+            border-bottom: 3px dotted #eee;
+            margin-left: -130px;
+        }
+
+        #social .social-images {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        #social .social-item {
+            position: relative;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        #social .social-item img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+
+        #social .social-item:hover img {
+            transform: scale(1.1);
+        }
+
+        #social .social-item .icon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #social .social-item:hover .icon {
+            opacity: 1;
+        }
+
+        #social .social-item .icon a {
+            text-align: center;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        #social .social-item .icon h6 {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        #social .social-item .icon i {
+            font-size: 24px;
+        }
+
+        @media (max-width: 991px) {
+            #social .social-item {
+                flex-basis: calc(33.333% - 10px);
+            }
+        }
+
+        @media (max-width: 767px) {
+            #social .social-item {
+                flex-basis: calc(50% - 10px);
+            }
+        }
+    </style>
+    </head>
+    
+    <body>
+    
+    <!-- ***** Preloader Start ***** -->
+    <!-- <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>   -->
+    <!-- ***** Preloader End ***** -->
+    
+    
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+
+    <title>Hexashop Ecommerce HTML CSS Template</title>
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/templatemo-hexashop.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/owl-carousel.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/lightbox.css' %}">
+<!--
+
+TemplateMo 571 Hexashop
+
+https://templatemo.com/tm-571-hexashop
+
+-->
+    <style>
+        .main-banner {
+            padding-top: 46px;
+            padding-bottom: 0px !important;
+        }
+        #keyboards .thumb {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #keyboards .hover-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.7);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        #keyboards .thumb:hover .hover-content {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .header-area .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin: 0 20px;
+            max-width: 50%; /* Adjust this value to control the maximum width */
+        }
+
+        .search-container form {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .search-container input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+            flex-grow: 1;
+            min-width: 0;
+            width: 100%;
+        }
+
+        .search-container button {
+            padding: 10px 15px;
+            background-color: #7e96dc;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background-color: #d32f2f;
+        }
+
+        .header-area .main-nav .nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        .header-area .main-nav .nav li {
+            padding: 0 15px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-area .main-nav .nav li a {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            height: 100%;
+            border: transparent;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 991px) {
+            .header-area .main-nav {
+                flex-wrap: wrap;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0;
+            }
+            .search-container form {
+                width: 100%;
+            }
+            .search-container input[type="text"] {
+                flex-grow: 1;
+            }
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+        }
+
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .fixed-top {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1030;
+        }
+
+        body {
+            padding-top: 80px; /* Adjust this value based on your header height */
+        }
+
+        .submenu {
+            position: relative;
+        }
+
+        .submenu .dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            padding: 10px 0;
+            min-width: 200px;
+            z-index: 1000;
+        }
+
+        .submenu:hover .dropdown {
+            display: block;
+        }
+
+        .submenu .dropdown li {
+            display: block;
+            padding: 5px 15px;
+        }
+
+        .submenu .dropdown li a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .submenu .dropdown li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .submenu .dropdown li a:hover {
+            background-color: #f5f5f5;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            flex-shrink: 0;
+        }
+
+        .search-container {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+
+        .search-container form {
+            display: flex;
+        }
+
+        .search-container input[type="text"] {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .nav {
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 991px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+
+        .scrolling-banner {
+            overflow: hidden;
+            position: relative;
+            height: 300px;
+            margin-bottom: 50px;
+            padding-top: 0px !important;
+        }
+
+        .banner-container {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .banner-slide {
+            flex: 0 0 100%;
+            position: relative;
+        }
+
+        .banner-slide img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .banner-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+        }
+
+        .banner-content h2 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .banner-content p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .btn-shop-now {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-shop-now:hover {
+            background-color: #0056b3;
+        }
+
+        .scrolling-banner {
+            position: relative;
+        }
+
+        .banner-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            font-size: 24px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .banner-arrow:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .banner-prev {
+            left: 10px;
+        }
+
+        .banner-next {
+            right: 10px;
+        }
+
+        .section {
+            padding: 0px 0;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .owl-carousel {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+        }
+
+        .owl-carousel .item {
+            flex: 0 0 auto;
+            width: 280px;
+            margin-right: 20px;
+            scroll-snap-align: start;
+        }
+
+        .owl-carousel .item:last-child {
+            margin-right: 0;
+        }
+
+        @media (max-width: 768px) {
+            .owl-carousel .item {
+                width: 220px;
+            }
+        }
+
+        .down-content .category {
+            display: block;
+            font-size: 14px;
+            color: #7a7a7a;
+            margin-top: 5px;
+        }
+        #latest-products{
+            background: #f8f9fa;
+            height: 490px;
+        }
+        #latest-products .item {
+            margin-bottom: 30px;
+        }
+
+        #latest-products .item .thumb {
+            position: relative;
+            overflow: hidden;
+        }
+
+        #latest-products .item .thumb img {
+            width: 100%;
+            height: auto;
+        }
+
+        #latest-products .item .down-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        #latest-products .item .down-content h4 {
+            font-size: 17px;
+            color: #1a6692;
+            margin-bottom: 10px;
+        }
+
+        #latest-products .item .down-content span {
+            color: #000000;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        #latest-products .row {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 0 10px;
+        }
+
+        #latest-products .row::-webkit-scrollbar {
+            display: none;
+        }
+
+        #latest-products .col-lg-2 {
+            flex: 0 0 auto;
+            width: calc(16.666% - 20px);
+            min-width: 200px;
+            scroll-snap-align: start;
+            margin-right: 20px;
+        }
+
+        #latest-products .item {
+            border: 1px solid #e6e6e6;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #latest-products .thumb img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        #latest-products .down-content {
+            padding: 15px;
+            text-align: center;
+        }
+
+        #latest-products h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #latest-products span {
+            font-size: 14px;
+            color: #000000;
+            font-weight: 500;
+        }
+
+        #latest-products .section-heading {
+            text-align: left;
+            margin-bottom: 30px;
+            padding: 0 10px;
+        }
+
+        #latest-products .section-heading h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        #latest-products .section-heading span {
+            color: #7a7a7a;
+        }
+
+        #latest-products .product-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 20px 0;
+        }
+
+        #latest-products .product-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        #latest-products .product-item {
+            flex: 0 0 auto;
+            width: calc(100% / 7);
+            padding: 0 10px;
+            scroll-snap-align: start;
+        }
+
+        #latest-products .item {
+            border: 1px solid #e6e6e6;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #latest-products .thumb img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        #latest-products .down-content {
+            padding: 15px;
+            text-align: center;
+        }
+
+        #latest-products h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #latest-products span {
+            font-size: 14px;
+            color: #000000;
+            font-weight: 500;
+        }
+
+        @media (max-width: 1200px) {
+            #latest-products .product-item {
+                width: calc(100% / 5);
+            }
+        }
+
+        @media (max-width: 992px) {
+            #latest-products .product-item {
+                width: calc(100% / 4);
+            }
+        }
+
+        @media (max-width: 768px) {
+            #latest-products .product-item {
+                width: calc(100% / 3);
+            }
+        }
+
+        @media (max-width: 576px) {
+            #latest-products .product-item {
+                width: calc(100% / 2);
+            }
+        }
+
+        #latest-products .product-item {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #latest-products .product-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #latest-products .item {
+            transition: background-color 0.3s ease;
+        }
+
+        #latest-products .product-item:hover .item {
+            background-color: #f8f8f8;
+        }
+
+        #latest-products .down-content {
+            transition: color 0.3s ease;
+        }
+
+        #latest-products .product-item:hover .down-content h4,
+        #latest-products .product-item:hover .down-content span {
+            color: #7d7d7d;
+        }
+
+        .bottom-banner {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .bottom-banner .banner-container {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .bottom-banner .banner-slide {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+
+        .bottom-banner .banner-slide img {
+            width: 100%;
+            height: auto;
+        }
+
+        .bottom-banner .banner-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .bottom-banner .banner-prev {
+            left: 10px;
+        }
+
+        .bottom-banner .banner-next {
+            right: 10px;
+        }
+        #explore{
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+        #explore .container-fluid {
+            max-width: 100%;
+            padding: 0;
+        }
+
+        #explore .row {
+            display: flex;
+            align-items: center;
+        }
+
+        #explore .left-content {
+            background-color: #f8f9fa;
+            padding: 60px 0;
+        }
+
+        #explore .content-wrapper {
+            max-width: 540px;
+            margin-left: 12px;
+            margin-right: auto;
+            padding: 0 30px;
+        }
+
+        #explore .right-content {
+            padding: 0;
+            margin-left: 691px;
+            margin-top: -554px;
+            width: 829px;
+        }
+
+        #explore .big-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @media (max-width: 991px) {
+            #explore .row {
+                flex-direction: column;
+            }
+            #explore .content-wrapper {
+                max-width: 100%;
+                padding: 0 15px;
+                margin: 0 auto;
+            }
+            #explore .big-image img {
+                margin-top: 30px;
+            }
+        }
+
+        .hover13 figure {
+            background: #fff;
+            overflow: hidden;
+        }
+        
+        .hover13 figure:hover img {
+            opacity: 1;
+            -webkit-animation: flash 1.5s;
+            animation: flash 1.5s;
+        }
+        
+        @-webkit-keyframes flash {
+            0% {
+                opacity: .4;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes flash {
+            0% {
+                opacity: .4;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        #social {
+            margin-top: 35px;
+            padding-bottom: 31px;
+            border-bottom: 3px dotted #eee;
+            margin-left: -130px;
+        }
+        footer {
+            padding-top: 43px;
+            margin-top: 60px;
+            padding: 60px 0px 30px 0px;
+            background-color: #2a2a2a;
+            margin-top: 0px !important;
+        }
     </style>
     </head>
     
@@ -69,39 +1554,61 @@ https://templatemo.com/tm-571-hexashop
     
     
     <!-- ***** Header Area Start ***** -->
-    <header class="header-area header-sticky">
-        <div class=" mx-5">
+    <header class="header-area header-sticky fixed-top">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
                     <nav class="main-nav">
-                        <!-- ***** Logo Start ***** -->
-                        <a href="index.html" class="logo">
-                            <img src="{% static 'images/logo.png' %}">
-                        </a>
-                        <!-- ***** Logo End ***** -->
-                        <!-- ***** Menu Start ***** -->
-                        <ul class="nav">
-                            <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
-                            <li class="scroll-to-section"><a href="#men">Monitors</a></li>
-                            <li class="scroll-to-section"><a href="#keyboards">Keyboards</a></li>
-                            <li class="scroll-to-section"><a href="#assembled-cpu">Assembled PC</a></li>
-                            <li class="submenu">
-                                <a href="javascript:;">Pages</a>
-                                <ul>
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="products.html">Products</a></li>
-                                    <li><a href="single-product.html">Single Product</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
-                                </ul>
-                            </li>
-                            <li class="submenu">
-                                <a href="loginuser">login</a>
-                            </li>
-                        </ul>
+                        <div class="header-content">
+                            <a href="index.html" class="logo">
+                                <img src="{% static 'images/logo.png' %}">
+                            </a>
+
+                            <div class="search-container">
+                                <form action="{% url 'userapp:search_results' %}" method="get">
+                                    <input type="text" id="search-input" placeholder="Search products..." name="q" autocomplete="off">
+                                    <button type="submit"><i class="fa fa-search"></i></button>
+                                </form>
+                                <div id="search-suggestions" class="search-suggestions"></div>
+                            </div>
+
+                            <ul class="nav">
+                                <li class="scroll-to-section"><a href="{% url 'userapp:index' %}" class="active">Home</a></li>
+                                <li class="scroll-to-section"><a href="loginuser">Cart</a></li>
+                                <li class="scroll-to-section"><a href="loginuser">Custom PC</a></li>
+                                <li class="submenu">
+                                    <a href="javascript:;">
+                                        <i class="fa fa-box"></i> Products
+                                    </a>
+                                    <ul class="dropdown">
+                                        <li><a href="loginuser"><i class="fa fa-desktop"></i> Monitors</a></li>
+                                        <li><a href="loginuser"><i class="fa fa-keyboard"></i> Keyboards</a></li>
+                                        <li><a href="loginuser"><i class="fa fa-mouse"></i> Mouses</a></li>
+                                        <li><a href="loginuser"><i class="fa fa-microchip"></i> Assembled CPU</a></li>
+                                        <li><a href="loginuser"><i class="fa fa-headphones"></i> Accessories</a></li>
+                                    </ul>
+                                </li>
+                                {% if request.session.user_id %}
+                                    <li class="submenu">
+                                        <a href="loginuser">
+                                            Login
+                                        </a>
+                                        <ul class="dropdown">
+                                            <li><a href="loginuser"><i class="fa fa-user"></i> Profile</a></li>
+                                            <li><a href="loginuser"><i class="fa fa-shopping-bag"></i> Orders</a></li>
+                                            <li><a href="loginuser"><i class="fa fa-heart"></i> Wishlist</a></li>
+                                            <li><a href="loginuser"><i class="fa fa-bell"></i> Notifications</a></li>
+                                            <li><a href="#" id="logout-link"><i class="fa fa-sign-out"></i> Logout</a></li>
+                                        </ul>
+                                    </li>
+                                {% else %}
+                                    <li><a href="{% url 'userapp:login' %}">Login</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
                         <a class='menu-trigger'>
                             <span>Menu</span>
                         </a>
-                        <!-- ***** Menu End ***** -->
                     </nav>
                 </div>
             </div>
@@ -218,276 +1725,195 @@ https://templatemo.com/tm-571-hexashop
     </div>
     <!-- ***** Main Banner Area End ***** -->
 
-    <!-- ***** Men Area Starts ***** -->
-    <section class="section" id="men">
-        <div class="container">
+    <!-- ***** Scrolling Banner Area Start ***** -->
+    <div class="scrolling-banner">
+        <div class="banner-container">
+            <div class="banner-slide">
+                <img src="{% static 'images/banner1.png' %}" alt="Banner 1">
+            </div>
+            <div class="banner-slide">
+                <img src="{% static 'images/banner2.png' %}" alt="Banner 2">
+            </div>
+            <div class="banner-slide">
+                <img src="{% static 'images/banner3.png' %}" alt="Banner 3">
+            </div>
+        </div>
+        <button class="banner-arrow banner-prev">&lt;</button>
+        <button class="banner-arrow banner-next">&gt;</button>
+    </div>
+    <!-- ***** Scrolling Banner Area End ***** -->
+
+    <!-- ***** Latest Products Area Starts ***** -->
+    <section class="section" id="latest-products">
+        <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-12">
                     <div class="section-heading">
-                        <h2>Latest Monitors</h2>
-                        <span>Check out our newest monitor selections.</span>
+                        <h2>Best Deals on Products</h2>
+                        <span>Check out our latest selections from different categories.</span>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="men-item-carousel">
-                        <div class="owl-men-item owl-carousel">
-                            {% for monitor in latest_monitors %}
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="loginuser"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="loginuser"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="loginuser"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <img src="{{ monitor.image.url }}" alt="{{ monitor.name }}">
-                                </div>
-                                <div class="down-content">
-                                    <h4>{{ monitor.name }}</h4>
-                                    <span style="font-family: Arial;">₹{{ monitor.price }}</span>
-                                    
-                                </div>
+            <div class="product-slider">
+                {% for product in latest_products|slice:":7" %}
+                <div class="product-item">
+                    <a href="loginuser">
+                        <div class="item">
+                            <div class="thumb">
+                                <img src="{{ product.main_image.url }}" alt="{{ product.name }}">
                             </div>
-                            {% endfor %}
+                            <div class="down-content">
+                                <h4>{{ product.name }}</h4>
+                                <span>From ₹{{ product.price }}</span>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
+                {% endfor %}
             </div>
         </div>
     </section>
-    <!-- ***** Men Area Ends ***** -->
-
-         <!-- ***** Women Area Starts ***** -->
-         <section class="section" id="men">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="section-heading">
-                            <h2>Latest Keyboards</h2>
-                            <span>Check out our newest keyboard selections.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="men-item-carousel">
-                            <div class="owl-men-item owl-carousel">
-                                {% for keyboard in latest_keyboards %}
-                                <div class="item">
-                                    <div class="thumb">
-                                        <div class="hover-content">
-                                            <ul>
-                                                <li><a href="loginuser"><i class="fa fa-eye"></i></a></li>
-                                                <li><a href="loginuser"><i class="fa fa-star"></i></a></li>
-                                                <li><a href="loginuser"><i class="fa fa-shopping-cart"></i></a></li>
-                                            </ul>
-                                        </div>
-                                        <img src="{{ keyboard.image.url }}" alt="{{ keyboard.name }}">
-                                    </div>
-                                    <div class="down-content">
-                                        <h4>{{ keyboard.name }}</h4>
-                                        <span style="font-family: Arial;">₹{{ keyboard.price }}</span>
-                                        
-                                    </div>
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    <!-- ***** Women Area Ends ***** -->
-
-    <!-- ***** Assembled CPU Area Starts ***** -->
-    <section class="section" id="kids">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="section-heading">
-                        <h2>Latest Assembled CPUs</h2>
-                        <span>Check out our newest assembled CPU selections.</span>
-                    </div>
-                </div>
-            </div>
+    <!-- ***** Latest Products Area Ends ***** -->
+    <!-- ***** Bottom Banner Area Start ***** -->
+<!-- <div class="bottom-banner">
+    <div class="banner-container">
+        <div class="banner-slide">
+            <img src="{% static 'images/banner1.png' %}" alt="Bottom Banner 1">
         </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="men-item-carousel">
-                        <div class="owl-men-item owl-carousel">
-                            {% for cpu in latest_assembledcpu %}
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="loginuser"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="loginuser"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="loginuser"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <img src="{{ cpu.image.url }}" alt="{{ cpu.name }}">
-                                </div>
-                                <div class="down-content">
-                                    <h4>{{ cpu.name }}</h4>
-                                    <span style="font-family: Arial;">₹{{ cpu.price }}</span>
-                                    
-                                </div>
-                            </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="banner-slide">
+            <img src="{% static 'images/banner2.png' %}" alt="Bottom Banner 2">
         </div>
-    </section>
-    <!-- ***** Assembled CPU Area Ends ***** -->
+        <div class="banner-slide">
+            <img src="{% static 'images/banner3.png' %}" alt="Bottom Banner 3">
+        </div>
+    </div>
+    <button class="banner-arrow banner-prev">&lt;</button>
+    <button class="banner-arrow banner-next">&gt;</button>
+</div> -->
+<!-- ***** Bottom Banner Area End ***** -->
     <!-- ***** Explore Area Starts ***** -->
-    <section class="section" id="explore">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="left-content">
-                        <h2>Explore Our Products</h2>
-                        <span>You are allowed to use this HexaShop HTML CSS template. You can feel free to modify or edit this layout. You can convert this template as any kind of ecommerce CMS theme as you wish.</span>
-                        <div class="quote">
-                            <i class="fa fa-quote-left"></i><p>You are not allowed to redistribute this template ZIP file on any other website.</p>
-                        </div>
-                        <p>There are 5 pages included in this HexaShop Template and we are providing it to you for absolutely free of charge at our TemplateMo website. There are web development costs for us.</p>
-                        <p>If this template is beneficial for your website or business, please kindly <a rel="nofollow" href="https://paypal.me/templatemo" target="_blank">support us</a> a little via PayPal. Please also tell your friends about our great website. Thank you.</p>
-                        <div class="main-border-button">
-                            <a href="products.html
-                            ">Discover More</a>
-                        </div>
+    <!-- ***** Explore Area Starts ***** -->
+<section class="section" id="explore">
+    <div class="container-fluid px-0">
+        <div class="row no-gutters">
+            <div class="col-lg-6 left-content">
+                <div class="content-wrapper">
+                    <h2>Explore Our Products</h2>
+                    <span>Discover the latest and greatest in computer hardware and accessories. From powerful CPUs to sleek peripherals, we have everything you need to build your dream setup.</span>
+                    <div class="quote">
+                        <i class="fa fa-quote-left"></i>
+                        <p>Quality components for every budget and need.</p>
+                    </div>
+                    <p>Browse our extensive collection of monitors, keyboards, mice, and assembled CPUs. Whether you're a casual user or a hardcore gamer, we have the perfect products for you.</p>
+                    <p>Don't miss out on our special offers and bundle deals to get the most value for your money.</p>
+                    <div class="main-border-button">
+                        <a href="#">Discover More</a>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="right-content">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="leather">
-                                    <h4>Leather Bags</h4>
-                                    <span>Latest Collection</span>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="first-image">
-                                    <img src="{% static 'images/explore-image-01.jpg' %}" alt="">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="second-image">
-                                    <img src="{% static 'images/explore-image-02.jpg' %}" alt="">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="types">
-                                    <h4>Different Types</h4>
-                                    <span>Over 304 Products</span>
-                                </div>
-                            </div>
-                        </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="right-content">
+                    <div class="hover13 column">
+                        <figure>
+                            <img src="{% static 'images/mainpage_pc.jpg' %}" alt="Explore Our Products">
+                        </figure>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+<!-- ***** Explore Area Ends ***** -->
     <!-- ***** Explore Area Ends ***** -->
 
     <!-- ***** Social Area Starts ***** -->
-    <section class="section" id="social">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-heading">
-                        <h2>Social Media</h2>
-                        <span>Details to details is what makes Hexashop different from the other themes.</span>
-                    </div>
+    <!-- ***** Social Media Area Starts ***** -->
+<section class="section" id="social">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-heading">
+                    <h2>Social Media</h2>
+                    <span>Details to details is what makes TechCraft different from the other shops.</span>
                 </div>
             </div>
         </div>
-        <div class="container">
-            <div class="row images">
-                <div class="col-2">
-                    <div class="thumb">
-                        <div class="icon">
-                            <a href="http://instagram.com">
-                                <h6>Fashion</h6>
-                                <i class="fa fa-instagram"></i>
-                            </a>
-                        </div>
-                        <img src="{% static 'images/instagram-01.jpg' %}" alt="">
-                    </div>
-                </div>
-                <div class="col-2">
-                    <div class="thumb">
-                        <div class="icon">
-                            <a href="http://instagram.com">
-                                <h6>New</h6>
-                                <i class="fa fa-instagram"></i>
-                            </a>
-                        </div>
-                        <img src="{% static 'images/instagram-02.jpg' %}" alt="">
-                    </div>
-                </div>
-                <div class="col-2">
-                    <div class="thumb">
-                        <div class="icon">
-                            <a href="http://instagram.com">
-                                <h6>Brand</h6>
-                                <i class="fa fa-instagram"></i>
-                            </a>
-                        </div>
-                        <img src="{% static 'images/instagram-03.jpg' %}" alt="">
-                    </div>
-                </div>
-                <div class="col-2">
-                    <div class="thumb">
-                        <div class="icon">
-                            <a href="http://instagram.com">
-                                <h6>Makeup</h6>
-                                <i class="fa fa-instagram"></i>
-                            </a>
-                        </div>
-                        <img src="{% static 'images/instagram-04.jpg' %}" alt="">
-                    </div>
-                </div>
-                <div class="col-2">
-                    <div class="thumb">
-                        <div class="icon">
-                            <a href="http://instagram.com">
-                                <h6>Leather</h6>
-                                <i class="fa fa-instagram"></i>
-                            </a>
-                        </div>
-                        <img src="{% static 'images/instagram-05.jpg' %}" alt="">
-                    </div>
-                </div>
-                <div class="col-2">
-                    <div class="thumb">
-                        <div class="icon">
-                            <a href="http://instagram.com">
-                                <h6>Bag</h6>
-                                <i class="fa fa-instagram"></i>
-                            </a>
-                        </div>
-                        <img src="{% static 'images/instagram-06.jpg' %}" alt="">
+        <div class="row social-images">
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="social-item">
+                    <img src="{% static 'images/social1.jpg' %}" alt="Social Image 1">
+                    <div class="icon">
+                        <a href="http://instagram.com">
+                            <h6>Fashion</h6>
+                            <i class="fa fa-instagram"></i>
+                        </a>
                     </div>
                 </div>
             </div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="social-item">
+                    <img src="{% static 'images/social1.jpg' %}" alt="Social Image 2">
+                    <div class="icon">
+                        <a href="http://instagram.com">
+                            <h6>New</h6>
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="social-item">
+                    <img src="{% static 'images/social1.jpg' %}" alt="Social Image 3">
+                    <div class="icon">
+                        <a href="http://instagram.com">
+                            <h6>Brand</h6>
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="social-item">
+                    <img src="{% static 'images/social1.jpg' %}" alt="Social Image 4">
+                    <div class="icon">
+                        <a href="http://instagram.com">
+                            <h6>Makeup</h6>
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="social-item">
+                    <img src="{% static 'images/social1.jpg' %}" alt="Social Image 5">
+                    <div class="icon">
+                        <a href="http://instagram.com">
+                            <h6>Leather</h6>
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <div class="social-item">
+                    <img src="{% static 'images/social1.jpg' %}" alt="Social Image 6">
+                    <div class="icon">
+                        <a href="http://instagram.com">
+                            <h6>Bag</h6>
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
         </div>
-    </section>
+    </div>
+</section>
+<!-- ***** Social Media Area Ends ***** -->
     <!-- ***** Social Area Ends ***** -->
 
     <!-- ***** Subscribe Area Starts ***** -->
-    <div class="subscribe">
+    <!-- <div class="subscribe">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
@@ -535,7 +1961,7 @@ https://templatemo.com/tm-571-hexashop
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- ***** Subscribe Area Ends ***** -->
     
     <!-- ***** Footer Start ***** -->
@@ -549,7 +1975,7 @@ https://templatemo.com/tm-571-hexashop
                         </div>
                         <ul>
                             <li><a href="#">16501 Collins Ave, Sunny Isles Beach, FL 33160, United States</a></li>
-                            <li><a href="#">hexashop@company.com</a></li>
+                            <li><a href="#">techcraft@gmail.com</a></li>
                             <li><a href="#">010-020-0340</a></li>
                         </ul>
                     </div>
@@ -557,9 +1983,9 @@ https://templatemo.com/tm-571-hexashop
                 <div class="col-lg-3">
                     <h4>Shopping &amp; Categories</h4>
                     <ul>
-                        <li><a href="#">Men's Shopping</a></li>
-                        <li><a href="#">Women's Shopping</a></li>
-                        <li><a href="#">Kid's Shopping</a></li>
+                        <li><a href="#">Keyboards</a></li>
+                        <li><a href="#">Mouse</a></li>
+                        <li><a href="#">Monitors</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3">
@@ -582,9 +2008,7 @@ https://templatemo.com/tm-571-hexashop
                 </div>
                 <div class="col-lg-12">
                     <div class="under-footer">
-                        <p>Copyright © 2022 HexaShop Co., Ltd. All Rights Reserved. 
-                        
-                        <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
+                        <p>Copyright © 2024 TechCraft Co., Ltd. All Rights Reserved.</p>
                         <ul>
                             <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                             <li><a href="#"><i class="fa fa-twitter"></i></a></li>
@@ -636,6 +2060,77 @@ https://templatemo.com/tm-571-hexashop
             });
         });
 
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const bannerContainer = document.querySelector('.banner-container');
+            const slides = document.querySelectorAll('.banner-slide');
+            let currentSlide = 0;
+
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                bannerContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+            }
+
+            setInterval(nextSlide, 3000); // Change slide every 3 seconds
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const bannerContainer = document.querySelector('.banner-container');
+            const slides = document.querySelectorAll('.banner-slide');
+            const prevButton = document.querySelector('.banner-prev');
+            const nextButton = document.querySelector('.banner-next');
+            let currentSlide = 0;
+    
+            function showSlide(index) {
+                bannerContainer.style.transform = `translateX(-${index * 100}%)`;
+            }
+    
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }
+    
+            function prevSlide() {
+                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                showSlide(currentSlide);
+            }
+    
+            prevButton.addEventListener('click', prevSlide);
+            nextButton.addEventListener('click', nextSlide);
+    
+            setInterval(nextSlide, 3000); // Change slide every 3 seconds
+        });
+    </script>
+
+    <!-- Bottom Banner Slider -->
+    <script>
+        const bottomBannerContainer = document.querySelector('.bottom-banner .banner-container');
+        const bottomBannerSlides = document.querySelectorAll('.bottom-banner .banner-slide');
+        const bottomBannerPrevBtn = document.querySelector('.bottom-banner .banner-prev');
+        const bottomBannerNextBtn = document.querySelector('.bottom-banner .banner-next');
+        let bottomBannerCurrentSlide = 0;
+
+        function bottomBannerShowSlide(index) {
+            bottomBannerContainer.style.transform = `translateX(-${index * 100}%)`;
+        }
+
+        function bottomBannerNextSlide() {
+            bottomBannerCurrentSlide = (bottomBannerCurrentSlide + 1) % bottomBannerSlides.length;
+            bottomBannerShowSlide(bottomBannerCurrentSlide);
+        }
+
+        function bottomBannerPrevSlide() {
+            bottomBannerCurrentSlide = (bottomBannerCurrentSlide - 1 + bottomBannerSlides.length) % bottomBannerSlides.length;
+            bottomBannerShowSlide(bottomBannerCurrentSlide);
+        }
+
+        bottomBannerPrevBtn.addEventListener('click', bottomBannerPrevSlide);
+        bottomBannerNextBtn.addEventListener('click', bottomBannerNextSlide);
+
+        setInterval(bottomBannerNextSlide, 3000); // Change slide every 3 seconds
     </script>
 
   </body>

@@ -22,24 +22,17 @@ from django.views.decorators.csrf import csrf_exempt
 
 user = get_user_model()
 def index(request):
-    latest_monitors = Product.objects.filter(Q(category='monitor')).order_by('-productId')[:3]
-    print(f"Latest monitors: {latest_monitors}")
-    latest_keyboards = Product.objects.filter(category='keyboard').order_by('-productId')[:3]
-    print(f"Latest keyboards: {latest_keyboards}")
-    latest_assembledcpu = Product.objects.filter(category='assembled_cpu').order_by('-productId')[:3]
-    print(f"Latest assembled CPUs: {latest_assembledcpu}")
+    latest_products = Product.objects.order_by('-productId')[:7]
     context = {
-        'latest_monitors': latest_monitors,
-        'latest_keyboards': latest_keyboards,
-        'latest_assembledcpu': latest_assembledcpu,
+        'latest_products': latest_products
     }
     return render(request, 'index.html', context)
 
 def mainpage(request):
-    latest_monitors = Product.objects.filter(Q(category='monitor')).order_by('-productId')[:3]
-    latest_keyboards = Product.objects.filter(category='keyboard').order_by('-productId')[:3]
-    latest_assembledcpu = Product.objects.filter(category='assembled_cpu').order_by('-productId')[:3]
-    latest_mice = Product.objects.filter(category='mouse').order_by('-productId')[:3]
+    latest_monitors = Product.objects.filter(Q(category='monitor')).order_by('-productId')[:7]
+    latest_keyboards = Product.objects.filter(category='keyboard').order_by('-productId')[:7]
+    latest_assembledcpu = Product.objects.filter(category='assembled_cpu').order_by('-productId')[:7]
+    latest_mice = Product.objects.filter(category='mouse').order_by('-productId')[:7]
 
     context = {
         'latest_monitors': latest_monitors,
