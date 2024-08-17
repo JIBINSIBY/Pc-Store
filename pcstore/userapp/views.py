@@ -19,6 +19,10 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
+from django.utils.deprecation import MiddlewareMixin
+from django.contrib.auth import logout
+from django.utils import timezone
+from datetime import timedelta
 
 user = get_user_model()
 def index(request):
@@ -80,6 +84,8 @@ def loginu(request):
             request.session['user_id'] = u.id
             request.session['username'] = u.username
             request.session['user_role'] = u.role
+            request.session.set_expiry(3600)  # Set session to expire in 1 hour
+            request.session['last_activity'] = timezone.now().isoformat()
             redirect_url = reverse('userapp:mainpage')
             if u.role == 'admin':
                 redirect_url = reverse('userapp:admin_dashboard')
@@ -174,10 +180,14 @@ def editaddress(request, address_id):
     return render(request, 'editaddress.html', {'address': address})
 
 @require_POST
-def signout(request):
+def logout_view(request):
     logout(request)
-    request.session.flush()
-    return redirect('userapp:index')
+    messages.success(request, "You have been successfully logged out.")
+    response = redirect('userapp:index')  # Redirect to the index page
+    response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+    response['Pragma'] = 'no-cache'
+    response['Expires'] = '0'
+    return response
 
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
@@ -192,16 +202,64 @@ def delete_address(request, address_id):
 
 from django.shortcuts import render
 from django.contrib.admin.views.decorators import staff_member_required
+from django.db.models import Sum, Count
+from django.utils import timezone
+from datetime import timedelta
 
 
+from django.contrib.auth.decorators import login_required
+
+@login_required(login_url='userapp:index')
 def admin_dashboard(request):
-    return render(request, 'adminmain.html')
+    # Calculate today's sales
+    #today = timezone.now().date()
+    #today_sales = Order.objects.filter(order_date__date=today).aggregate(
+    #    total_sales=Sum('total_amount'),
+    #    total_orders=Count('id'),
+    #    products_sold=Sum('orderitem__quantity'),
+    #    new_customers=Count('user', distinct=True)
+    #)
 
+    # Calculate yesterday's sales for comparison
+    #yesterday = today - timedelta(days=1)
+    #yesterday_sales = Order.objects.filter(order_date__date=yesterday).aggregate(
+    #    total_sales=Sum('total_amount'),
+    #    total_orders=Count('id'),
+    #    products_sold=Sum('orderitem__quantity'),
+    #    new_customers=Count('user', distinct=True)
+    #)
 
+    # Calculate percentage changes
+    #sales_change = calculate_percentage_change(today_sales['total_sales'], yesterday_sales['total_sales'])
+    #orders_change = calculate_percentage_change(today_sales['total_orders'], yesterday_sales['total_orders'])
+    #products_change = calculate_percentage_change(today_sales['products_sold'], yesterday_sales['products_sold'])
+    #customers_change = calculate_percentage_change(today_sales['new_customers'], yesterday_sales['new_customers'])
+
+    # Get out of stock products
+    out_of_stock_products = Product.objects.filter(stockLevel=0)
+
+    context = {
+        #'today_sales': today_sales,
+        #'sales_change': sales_change,
+        #'orders_change': orders_change,
+        #'products_change': products_change,
+        #'customers_change': customers_change,
+        'out_of_stock_products': out_of_stock_products,
+    }
+    return render(request, 'adminmain.html', context)
+
+#def calculate_percentage_change(today_value, yesterday_value):
+#    if yesterday_value and yesterday_value != 0:
+#        return ((today_value or 0) - yesterday_value) / yesterday_value * 100
+ #   return 0
+
+from django.contrib.auth.decorators import login_required
+
+@login_required(login_url='userapp:login')
 def admin_profile(request):
     return render(request, 'admin_profile.html', {'user': request.user})
 
-
+@login_required(login_url='userapp:login')
 def update_admin_profile(request):
     if request.method == 'POST':
         user = request.user
@@ -214,6 +272,7 @@ def update_admin_profile(request):
         return redirect('userapp:admin_profile')
     return render(request, 'update_admin_profile.html', {'user': request.user})
 
+@login_required(login_url='userapp:login')
 def admin_userview(request):
     User = get_user_model()
     users = User.objects.exclude(is_superuser=True)
@@ -235,18 +294,20 @@ def change_user_role(request, user_id):
     data = json.loads(request.body)
     new_role = data.get('role')
     
-    if new_role in ['user', 'staff', 'admin']:
+    if new_role in ['user', 'staff']:
         user.role = new_role
-        user.is_staff = (new_role in ['staff', 'admin'])
-        user.is_superuser = (new_role == 'admin')
+        user.is_staff = (new_role == 'staff')
+        user.is_superuser = False
         user.save()
         return JsonResponse({'success': True})
     else:
         return JsonResponse({'success': False, 'error': 'Invalid role'})
 
+@login_required(login_url='userapp:login')
 def admin_productadd(request):
     if request.method == 'POST':
         name = request.POST.get('name')
+        brand = request.POST.get('brand_name')  # Get the brand name from the form
         category = request.POST.get('category')
         price = request.POST.get('price')
         stockLevel = request.POST.get('stockLevel')
@@ -256,6 +317,7 @@ def admin_productadd(request):
 
         product = Product(
             name=name,
+            brand=brand,  # Add the brand to the Product instance
             category=category,
             price=price,
             stockLevel=stockLevel,
@@ -272,6 +334,7 @@ def admin_productadd(request):
 
     return render(request, 'admin_productadd.html')
 
+@login_required(login_url='userapp:login')
 def admin_viewproduct(request):
     products = Product.objects.all()
     return render(request, 'admin_viewproduct.html', {'products': products})
@@ -296,7 +359,8 @@ def delete_product(request, product_id):
     except Exception as e:
         logger.error(f"Error deleting product with ID {product_id}: {str(e)}")
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
-    
+ 
+@login_required(login_url='userapp:login')   
 def admin_editproduct(request, product_id):
     product = get_object_or_404(Product, productId=product_id)
     additional_images = ProductImage.objects.filter(product=product)
@@ -328,14 +392,17 @@ def admin_editproduct(request, product_id):
     }
     return render(request, 'admin_editproduct.html', context)
 
+@login_required(login_url='userapp:login')
 def admin_viewcomponent(request):
     components = Component.objects.all()
     return render(request, 'admin_viewcomponent.html', {'components': components})
 
+@login_required(login_url='userapp:login')
 def admin_editcomponent(request, component_id):
     component = get_object_or_404(Component, componentId=component_id)
     if request.method == 'POST':
         component.name = request.POST.get('name')
+        component.brand = request.POST.get('brand')
         component.category = request.POST.get('category')
         component.price = request.POST.get('price')
         component.stockLevel = request.POST.get('stockLevel')
@@ -361,9 +428,11 @@ def delete_component(request, component_id):
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
+@login_required(login_url='userapp:login')
 def admin_addcomponent(request):
     if request.method == 'POST':
         name = request.POST.get('name')
+        brand = request.POST.get('brand')
         category = request.POST.get('category')
         price = request.POST.get('price')
         stockLevel = request.POST.get('stockLevel')
@@ -372,23 +441,13 @@ def admin_addcomponent(request):
 
         component = Component(
             name=name,
+            brand=brand,
             category=category,
             price=price,
             stockLevel=stockLevel,
-            description=description
+            description=description,
+            image=image
         )
-
-        if image:
-            # Generate a unique filename
-            file_name = f'{name}_{image.name}'
-            file_path = os.path.join(settings.COMPONENT_IMAGES_DIR, file_name)
-            os.makedirs(settings.COMPONENT_IMAGES_DIR, exist_ok=True)
-            with default_storage.open(file_path, 'wb+') as destination:
-                for chunk in image.chunks():
-                    destination.write(chunk)
-            # Set the image field to the relative path
-            component.image = os.path.join('component_images', file_name)
-
         component.save()
         messages.success(request, 'Component added successfully!')
         return redirect('userapp:admin_addcomponent')
@@ -593,6 +652,10 @@ def remove_main_image(request):
 @require_POST
 def remove_additional_image(request, image_id):
     image = get_object_or_404(ProductImage, id=image_id)
+    if image.image:
+        # Delete the file from storage
+        default_storage.delete(image.image.path)
+    # Delete the database record
     image.delete()
     return JsonResponse({'success': True})
 
@@ -622,3 +685,29 @@ def add_to_cart(request, product_id):
     cart_item.quantity += 1
     cart_item.save()
     return JsonResponse({'success': True})
+
+def check_session(request):
+    return JsonResponse({'is_authenticated': request.user.is_authenticated})
+
+class NoCacheMiddleware(MiddlewareMixin):
+    def process_response(self, request, response):
+        if request.user.is_authenticated:
+            response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+            response['Pragma'] = 'no-cache'
+            response['Expires'] = '0'
+        return response
+
+class SessionTimeoutMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        if request.user.is_authenticated:
+            last_activity = request.session.get('last_activity')
+            if last_activity:
+                last_activity = timezone.datetime.fromisoformat(last_activity)
+                if timezone.now() - last_activity > timedelta(hours=1):
+                    logout(request)
+                    return redirect('userapp:login')  # Replace with your login URL name
+            request.session['last_activity'] = timezone.now().isoformat()
+        return self.get_response(request)

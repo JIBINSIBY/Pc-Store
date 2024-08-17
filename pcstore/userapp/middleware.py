@@ -1,5 +1,6 @@
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.utils.deprecation import MiddlewareMixin
 
 class AuthMiddleware:
     def __init__(self, get_response):
@@ -14,4 +15,12 @@ class AuthMiddleware:
                 del request.session['username']
 
         response = self.get_response(request)
+        return response
+
+class NoCacheMiddleware(MiddlewareMixin):
+    def process_response(self, request, response):
+        if request.user.is_authenticated:
+            response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+            response['Pragma'] = 'no-cache'
+            response['Expires'] = '0'
         return response

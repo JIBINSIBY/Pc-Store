@@ -18,7 +18,7 @@ urlpatterns = [
     path('profile_edit/', views.profile_edit, name='profile_edit'),
     path('profile/edit/', views.profile_edit, name='profile_edit'),
     path('forgotpassword',views.forgotpassword,name='forgotpassword'),
-    path('logout',views.signout,name='logout'),
+    path('logout/',views.logout_view,name='logout'),
     path('address', views.address, name='address'),
     path('addaddress',views.addaddress,name='addaddress'),
     path('editaddress',views.editaddress,name='editaddress'),
@@ -50,7 +50,7 @@ urlpatterns = [
     path('delete-address/<int:address_id>/', views.delete_address, name='delete_address'),
     path('admin_productadd/', views.admin_productadd, name='admin_productadd'),
     path('admin_viewproduct/', views.admin_viewproduct, name='admin_viewproduct'),
-    path('delete-product/<int:product_id>/', views.delete_product, name='delete_product'),
+    path('admin_viewproduct/delete-product/<int:product_id>/', views.delete_product, name='delete_product'),
     path('admin_editproduct/<int:product_id>/', views.admin_editproduct, name='admin_editproduct'),
     path('admin_addcomponent/', views.admin_addcomponent, name='admin_addcomponent'),
     path('admin_viewcomponent/', views.admin_viewcomponent, name='admin_viewcomponent'),
@@ -84,6 +84,8 @@ urlpatterns = [
     path('<str:category>/<int:product_id>/', views.single_product, name='single_product'),
     path('check-cart-quantity/<int:product_id>/', views.check_cart_quantity, name='check_cart_quantity'),
     path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
+    path('delete-component/<int:component_id>/', views.delete_component, name='delete_component'),
+    path('check-session/', views.check_session, name='check_session'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

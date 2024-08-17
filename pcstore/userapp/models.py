@@ -49,6 +49,7 @@ class Product(models.Model):
 
     productId = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
+    brand = models.CharField(max_length=100)  # New field for brand name
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stockLevel = models.PositiveIntegerField()
@@ -56,7 +57,7 @@ class Product(models.Model):
     main_image = models.ImageField(upload_to='product_images/', null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return f"{self.brand} - {self.name}"
     
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name='additional_images', on_delete=models.CASCADE)
@@ -68,6 +69,7 @@ class ProductImage(models.Model):
 class Component(models.Model):
     componentId = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
+    brand = models.CharField(max_length=100)  # New field for brand name
     category = models.CharField(max_length=100)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stockLevel = models.PositiveIntegerField()
@@ -75,7 +77,8 @@ class Component(models.Model):
     image = models.ImageField(upload_to='component_images/', null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return f"{self.brand} - {self.name}"
+        return f"{self.brand} - {self.name}"
 
 class CustomPC(models.Model):
     configId = models.AutoField(primary_key=True)

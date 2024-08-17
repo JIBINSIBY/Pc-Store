@@ -10,8 +10,8 @@
     <meta name="author" content="">
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-    <title>Hexashop Ecommerce HTML CSS Template</title>
-
+    <title>TeachCraft</title>
+    <link rel="icon" href="{% static 'images/file.png' %}" type="image/icon type">
 
     <!-- Additional CSS Files -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
@@ -789,6 +789,9 @@ https://templatemo.com/tm-571-hexashop
             }
         }
     </style>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     </head>
     
     <body>
@@ -1537,6 +1540,9 @@ https://templatemo.com/tm-571-hexashop
             background-color: #2a2a2a;
             margin-top: 0px !important;
         }
+        .header-area .main-nav .logo {
+            width: 230px !important;
+        }
     </style>
     </head>
     
@@ -1561,7 +1567,7 @@ https://templatemo.com/tm-571-hexashop
                     <nav class="main-nav">
                         <div class="header-content">
                             <a href="index.html" class="logo">
-                                <img src="{% static 'images/logo.png' %}">
+                                <img src="{% static 'images/file.png' %}">
                             </a>
 
                             <div class="search-container">
@@ -1574,35 +1580,35 @@ https://templatemo.com/tm-571-hexashop
 
                             <ul class="nav">
                                 <li class="scroll-to-section"><a href="{% url 'userapp:index' %}" class="active">Home</a></li>
-                                <li class="scroll-to-section"><a href="loginuser">Cart</a></li>
-                                <li class="scroll-to-section"><a href="loginuser">Custom PC</a></li>
+                                <li class="scroll-to-section"><a href="{% url 'userapp:signupuser' %}">Cart</a></li>
+                                <li class="scroll-to-section"><a href="{% url 'userapp:signupuser' %}">Custom PC</a></li>
                                 <li class="submenu">
-                                    <a href="javascript:;">
+                                    <a href="{% url 'userapp:signupuser' %}">
                                         <i class="fa fa-box"></i> Products
                                     </a>
-                                    <ul class="dropdown">
+                                    <!-- <ul class="dropdown">
                                         <li><a href="loginuser"><i class="fa fa-desktop"></i> Monitors</a></li>
                                         <li><a href="loginuser"><i class="fa fa-keyboard"></i> Keyboards</a></li>
                                         <li><a href="loginuser"><i class="fa fa-mouse"></i> Mouses</a></li>
                                         <li><a href="loginuser"><i class="fa fa-microchip"></i> Assembled CPU</a></li>
                                         <li><a href="loginuser"><i class="fa fa-headphones"></i> Accessories</a></li>
-                                    </ul>
+                                    </ul> -->
                                 </li>
                                 {% if request.session.user_id %}
                                     <li class="submenu">
-                                        <a href="loginuser">
+                                        <a href="{% url 'userapp:signupuser' %}">
                                             Login
                                         </a>
-                                        <ul class="dropdown">
+                                        <!-- <ul class="dropdown">
                                             <li><a href="loginuser"><i class="fa fa-user"></i> Profile</a></li>
                                             <li><a href="loginuser"><i class="fa fa-shopping-bag"></i> Orders</a></li>
                                             <li><a href="loginuser"><i class="fa fa-heart"></i> Wishlist</a></li>
                                             <li><a href="loginuser"><i class="fa fa-bell"></i> Notifications</a></li>
                                             <li><a href="#" id="logout-link"><i class="fa fa-sign-out"></i> Logout</a></li>
-                                        </ul>
+                                        </ul> -->
                                     </li>
                                 {% else %}
-                                    <li><a href="{% url 'userapp:login' %}">Login</a></li>
+                                    <li><a href="{% url 'userapp:signupuser' %}">Login</a></li>
                                 {% endif %}
                             </ul>
                         </div>
@@ -1649,7 +1655,7 @@ https://templatemo.com/tm-571-hexashop
                                                 <h4>Monitors</h4>
                                                 <p>Explore the best monitors for your needs.</p>
                                                 <div class="main-border-button">
-                                                    <a href="#">Discover More</a>
+                                                    <a href="{% url 'userapp:signupuser' %}">Discover More</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -1669,7 +1675,7 @@ https://templatemo.com/tm-571-hexashop
                                                 <h4>Keyboards</h4>
                                                 <p>Explore the best keyboards for your needs.</p>
                                                 <div class="main-border-button">
-                                                    <a href="#">Discover More</a>
+                                                    <a href="{% url 'userapp:signupuser' %}">Discover More</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -1689,7 +1695,7 @@ https://templatemo.com/tm-571-hexashop
                                                 <h4>Assembled CPU</h4>
                                                 <p>Explore the best assembled CPU for your needs.</p>
                                                 <div class="main-border-button">
-                                                    <a href="#">Discover More</a>
+                                                    <a href="{% url 'userapp:signupuser' %}">Discover More</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -1709,7 +1715,7 @@ https://templatemo.com/tm-571-hexashop
                                                 <h4>Mouses</h4>
                                                 <p>Explore the best Mouses for your needs.</p>
                                                 <div class="main-border-button">
-                                                    <a href="#">Discover More</a>
+                                                    <a href="{% url 'userapp:signupuser' %}">Discover More</a>
                                                 </div>
                                             </div>
                                         </div>

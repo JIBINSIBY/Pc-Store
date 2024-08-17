@@ -58,6 +58,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
     'userapp.middleware.AuthMiddleware',
+    'userapp.middleware.NoCacheMiddleware',
 ]
 
 ROOT_URLCONF = 'pcstore.urls'

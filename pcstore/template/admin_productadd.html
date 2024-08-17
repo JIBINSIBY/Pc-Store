@@ -8,10 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
 
-    <title>Hexashop Ecommerce HTML CSS Template</title>
-
+    <title>TechCraft</title>
+    <link rel="icon" href="{% static 'images/file.png' %}" type="image/icon type">
 
     <!-- Additional CSS Files -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
@@ -23,18 +26,262 @@
     <link rel="stylesheet" href="{% static 'css/owl-carousel.css' %}">
 
     <link rel="stylesheet" href="{% static 'css/lightbox.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-    <link rel="stylesheet" type="text/css" href="{% static 'css/sidebarprofile.css' %}">
+    <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/sidebarprofile.css' %}"> -->
 
-    <style>
+    
         
+    <style>
+        .main-content {
+            margin-left: 310px;
+        margin-right: 20px;
+        padding: 30px;
+        background-color: #f8f9fa;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .side-nav {
+            width: 300px !important;
+            background-color: #ffffff;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+            padding-top: 80px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        .side-nav .nav-heading i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .side-nav .nav-content a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .side-nav .nav-heading .fa-chevron-down {
+            margin-left: auto;
+            transition: transform 0.3s ease;
+        }
+        
+        .side-nav .nav-item.active .nav-heading .fa-chevron-down {
+            transform: rotate(180deg);
+        }
+        .namedisplay {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .namedisplayimage {
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .namedisplaytext {
+            font-size: 14px;
+        }
+        
+        .namedisplaytexthello {
+            color: #6c757d;
+        }
+        
+        .namedisplaytextname {
+            font-weight: bold;
+            color: #343a40;
+        }
+        
+        .nav-item {
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .nav-heading {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-heading:hover {
+            background-color: #e9ecef;
+        }
+        
+        .nav-heading img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+        
+        .nav-heading span {
+            flex-grow: 1;
+            font-weight: bold;
+            color: #343a40;
+        }
+        
+        .nav-heading i {
+            transition: transform 0.3s;
+        }
+        
+        .nav-content {
+            display: none;
+            padding: 10px 15px;
+        }
+        
+        .nav-content a {
+            display: block;
+            padding: 5px 0;
+            color: #6c757d;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .nav-content a:hover {
+            color: #007bff;
+        }
+        
+        .nav-item.active .nav-heading {
+            background-color: #e9ecef;
+        }
+        
+        .nav-item.active .nav-heading i {
+            transform: rotate(180deg);
+        }
+        
+        .nav-item.active .nav-content {
+            display: block;
+        }
+        
+        .header-area {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        }
+
+        .header-area .main-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+        }
+
+        .header-area .logo img {
+            max-height: 100px;
+            margin-left: 0px;
+        }
+
+        .search-container {
+            flex-grow: 1;
+            margin: 0 20px;
+            max-width: 500px;
+        }
+
+        .search-container form {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-container input[type="text"] {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-right: none;
+            border-radius: 4px 0 0 4px;
+            outline: none;
+        }
+
+        .search-container button {
+            padding: 10px 15px;
+            background-color: #7e96dc;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background-color: #6a80c2;
+        }
+
+        .header-area .main-nav .nav {
+            display: flex;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header-area .main-nav .nav li {
+            list-style: none;
+            margin: 0 10px;
+        }
+
+        .header-area .main-nav .nav li a {
+            color: #333;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .header-area .main-nav .nav li a:hover {
+            color: #7e96dc;
+        }
+
+        .submenu {
+            position: relative;
+        }
+
+        .submenu > ul {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+            padding: 10px 0;
+            min-width: 150px;
+        }
+
+        .submenu:hover > ul {
+            display: block;
+        }
+
+        .submenu > ul li {
+            padding: 5px 15px;
+        }
+
+        .menu-trigger {
+            display: none;
+        }
+
+        @media (max-width: 991px) {
+            .header-area .main-nav {
+                flex-wrap: wrap;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0;
+                max-width: none;
+            }
+            .menu-trigger {
+                display: block;
+            }
+            .header-area .main-nav .nav {
+                display: none;
+            }
+        }
+
         .profilebody{
             background-color: #ffffff;
-            width: 1046px;
-            margin-left: 321px;
-            margin-top: -625px;
-            min-height: 850px; /* Changed from height to min-height */
-            padding-bottom: 50px; /* Add some padding at the bottom */
+    width: 1205px;
+    margin-left: 310px;
+    margin-top: 11px;
+    height: auto;
         }
         .profilebodypadding{
             padding: 24px 32px 0;       
@@ -70,7 +317,7 @@
             margin-top: 15px;
         }
         .o20LY5 {
-            max-width: 1000px;
+            max-width: 1200px;
             overflow: hidden;
             padding: 20px;
         }
@@ -188,18 +435,32 @@
             border-radius: 5px;
             cursor: pointer;
         }
-
+        .btn-primary {
+            background-color: #4a90e2;
+        border-color: #4a90e2;
+        padding: 12px 25px;
+        font-size: 18px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #3a7bc8;
+        border-color: #3a7bc8;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
         .file-upload-container {
-            border: 2px dashed #ccc;
-            border-radius: 5px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 20px;
-            cursor: pointer;
+            border: 3px dashed #4a90e2;
+        border-radius: 8px;
+        padding: 30px;
+        text-align: center;
+        margin-bottom: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
         }
 
         .file-upload-container:hover {
-            border-color: #aaa;
+            background-color: #f0f7ff;
         }
 
         .file-upload-container input[type="file"] {
@@ -208,28 +469,821 @@
 
         .file-upload-label {
             font-size: 18px;
+        color: #4a90e2;
+        font-weight: 600;
+        }
+        label {
+            font-weight: 600;
+            margin-bottom: 8px;
             color: #333;
         }
-
         .image-preview {
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-top: 15px;
         }
 
         .preview-image {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 5px;
+            max-width: 120px;
+        max-height: 120px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .error-message {
             color: #dc3545;
-            font-size: 14px;
-            margin-top: 5px;
+        font-size: 14px;
+        margin-top: 5px;
+        font-weight: 500;
+            
+        }
+        .accountdisplay{
+            height: 550px;
+        }
+        .main-banner {
+            padding-top: 46px;
+            padding-bottom: 0px !important;
+        }
+        #keyboards .thumb {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #keyboards .hover-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.7);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        #keyboards .thumb:hover .hover-content {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .header-area .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin: 0 20px;
+            max-width: 50%; /* Adjust this value to control the maximum width */
+        }
+
+        .search-container form {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .search-container input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+            flex-grow: 1;
+            min-width: 0;
+            width: 100%;
+        }
+
+        .search-container button {
+            padding: 10px 15px;
+            background-color: #7e96dc;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background-color: #d32f2f;
+        }
+
+        .header-area .main-nav .nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        .header-area .main-nav .nav li {
+            padding: 0 15px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-area .main-nav .nav li a {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            height: 100%;
+            border: transparent;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 991px) {
+            .header-area .main-nav {
+                flex-wrap: wrap;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0;
+            }
+            .search-container form {
+                width: 100%;
+            }
+            .search-container input[type="text"] {
+                flex-grow: 1;
+            }
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            max-height: 200px;
+            overflow-y: auto;
             display: none;
+            z-index: 1000;
+        }
+
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .fixed-top {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1030;
+        }
+
+        body {
+            padding-top: 80px; /* Adjust this value based on your header height */
+        }
+
+        .submenu {
+            position: relative;
+        }
+
+        .submenu .dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            padding: 10px 0;
+            min-width: 200px;
+            z-index: 1000;
+        }
+
+        .submenu:hover .dropdown {
+            display: block;
+        }
+
+        .submenu .dropdown li {
+            display: block;
+            padding: 5px 15px;
+        }
+
+        .submenu .dropdown li a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .submenu .dropdown li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .submenu .dropdown li a:hover {
+            background-color: #f5f5f5;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            flex-shrink: 0;
+        }
+
+        .search-container {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+
+        .search-container form {
+            display: flex;
+        }
+
+        .search-container input[type="text"] {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .nav {
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 991px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+
+        .scrolling-banner {
+            overflow: hidden;
+            position: relative;
+            height: 300px;
+            margin-bottom: 50px;
+            padding-top: 0px !important;
+        }
+
+        .banner-container {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .banner-slide {
+            flex: 0 0 100%;
+            position: relative;
+        }
+
+        .banner-slide img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .banner-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+        }
+
+        .banner-content h2 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .banner-content p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .btn-shop-now {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-shop-now:hover {
+            background-color: #0056b3;
+        }
+
+        .scrolling-banner {
+            position: relative;
+        }
+
+        .banner-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            font-size: 24px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .banner-arrow:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .banner-prev {
+            left: 10px;
+        }
+
+        .banner-next {
+            right: 10px;
+        }
+
+        .section {
+            padding: 0px 0;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1518px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .owl-carousel {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+        }
+
+        .owl-carousel .item {
+            flex: 0 0 auto;
+            width: 280px;
+            margin-right: 20px;
+            scroll-snap-align: start;
+        }
+
+        .owl-carousel .item:last-child {
+            margin-right: 0;
+        }
+
+        @media (max-width: 768px) {
+            .owl-carousel .item {
+                width: 220px;
+            }
+        }
+
+        .down-content .category {
+            display: block;
+            font-size: 14px;
+            color: #7a7a7a;
+            margin-top: 5px;
+        }
+        .header-area .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin: 0 20px;
+            max-width: 50%; /* Adjust this value to control the maximum width */
+        }
+
+        .search-container form {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .search-container input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+            flex-grow: 1;
+            min-width: 0;
+            width: 100%;
+        }
+
+        .search-container button {
+            padding: 10px 15px;
+            background-color: #7e96dc;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background-color: #d32f2f;
+        }
+
+        .header-area .main-nav .nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        .header-area .main-nav .nav li {
+            padding: 0 15px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-area .main-nav .nav li a {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            height: 100%;
+            border: transparent;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 991px) {
+            .header-area .main-nav {
+                flex-wrap: wrap;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0;
+            }
+            .search-container form {
+                width: 100%;
+            }
+            .search-container input[type="text"] {
+                flex-grow: 1;
+            }
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+        }
+
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .fixed-top {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1030;
+        }
+
+        body {
+            padding-top: 80px; /* Adjust this value based on your header height */
+        }
+
+        .submenu {
+            position: relative;
+        }
+
+        .submenu .dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            padding: 10px 0;
+            min-width: 200px;
+            z-index: 1000;
+        }
+
+        .submenu:hover .dropdown {
+            display: block;
+        }
+
+        .submenu .dropdown li {
+            display: block;
+            padding: 5px 15px;
+        }
+
+        .submenu .dropdown li a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .submenu .dropdown li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .submenu .dropdown li a:hover {
+            background-color: #f5f5f5;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            flex-shrink: 0;
+        }
+
+        .search-container {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+
+        .search-container form {
+            display: flex;
+        }
+
+        .search-container input[type="text"] {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .nav {
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 991px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+
+        .scrolling-banner {
+            overflow: hidden;
+            position: relative;
+            height: 300px;
+            margin-bottom: 50px;
+            padding-top: 0px !important;
+        }
+
+        .banner-container {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .banner-slide {
+            flex: 0 0 100%;
+            position: relative;
+        }
+
+        .banner-slide img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .banner-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+        }
+
+        .banner-content h2 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .banner-content p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .btn-shop-now {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-shop-now:hover {
+            background-color: #0056b3;
+        }
+
+        .scrolling-banner {
+            position: relative;
+        }
+
+        .banner-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            font-size: 24px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .banner-arrow:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .banner-prev {
+            left: 10px;
+        }
+
+        .banner-next {
+            right: 10px;
+        }
+
+        .section {
+            padding: 0px 0;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1518px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .owl-carousel {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+        }
+
+        .owl-carousel .item {
+            flex: 0 0 auto;
+            width: 280px;
+            margin-right: 20px;
+            scroll-snap-align: start;
+        }
+
+        .owl-carousel .item:last-child {
+            margin-right: 0;
+        }
+
+        @media (max-width: 768px) {
+            .owl-carousel .item {
+                width: 220px;
+            }
+        }
+
+        .down-content .category {
+            display: block;
+            font-size: 14px;
+            color: #7a7a7a;
+            margin-top: 5px;
+        }
+        .header-area .main-nav .logo {
+            width: 230px !important;
+        }
+        .dashboard-summary, .stock-summary {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .sales-summary {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .summary-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 15px;
+            width: calc(25% - 15px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .summary-card i {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .summary-card h3 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .summary-card p {
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+        
+        .change {
+            font-size: 12px;
+        }
+        
+        .change.positive {
+            color: #28a745;
+        }
+        
+        .change.negative {
+            color: #dc3545;
+        }
+        
+        .out-of-stock-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .out-of-stock-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .out-of-stock-list li:last-child {
+            border-bottom: none;
+        }
+        footer {
+            margin-top: 10px;
+            margin-left: 310px;
+            padding: 59px 0px 19px 0px;
+            background-color: #2a2a2a;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-control {
+            height: auto;
+            border-radius: 8px;
+        border: 2px solid #e0e0e0;
+        padding: 12px 15px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            border-color: #4a90e2;
+        box-shadow: 0 0 0 0.2rem rgba(74,144,226,.25);
         }
     </style>
 
@@ -257,223 +1311,186 @@ https://templatemo.com/tm-571-hexashop
     
     
     <!-- ***** Header Area Start ***** -->
-    <header class="header-area header-sticky">
-        <div class=" mx-5">
-            <div class="row">
-                <div class="col-12">
-                    <nav class="main-nav">
-                        <!-- ***** Logo Start ***** -->
-                        <a href="index.html" class="logo">
-                            <img src="{% static 'images/logo.png' %}">
-                        </a>
-                        <!-- ***** Logo End ***** -->
-                        <!-- ***** Menu Start ***** -->
-                        <ul class="nav">
-                            <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
-                            <li class="scroll-to-section"><a href="#men">Men's</a></li>
-                            <li class="scroll-to-section"><a href="#women">Women's</a></li>
-                            <li class="scroll-to-section"><a href="#kids">Kid's</a></li>
-                            <li class="submenu">
-                                <a href="javascript:;">Pages</a>
-                                <ul>
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="products.html">Products</a></li>
-                                    <li><a href="single-product.html">Single Product</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
-                                </ul>
-                            </li>
-                            {% if user.is_authenticated%}
-                            <li class="submenu">
-                                <a href="javascript:;">{{ user.username }}</a>
-                                <ul>
-                                    <li><a href="{% url 'userapp:logout' %}">Logout</a></li>
-                                    {% else %}
-                                    <li><a href="loginuser">Login</a></li>
-                            {% endif %}
-                                    <li><a href="profile">Profile</a></li>
-                                    <li><a href="#">Features Page 3</a></li>
-                                    <li><a rel="nofollow" href="https://templatemo.com/page/4" target="_blank">Template Page 4</a></li>
-                                </ul>
-                            </li>
-                        </ul>        
-                        <a class='menu-trigger'>
-                            <span>Menu</span>
-                        </a>
-                        <!-- ***** Menu End ***** -->
-                    </nav>
-                </div>
+    <!-- ***** Header Area Start ***** -->
+<header class="header-area header-sticky">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                    <a href="{% url 'userapp:admin_dashboard' %}" class="logo">
+                        <img src="{% static 'images/file.png' %}" alt="Logo">
+                    </a>
+                    <div class="search-container">
+                        <form action="#" method="get">
+                            <input type="text" id="search-input" placeholder="Search products..." name="q" autocomplete="off">
+                            <button type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+                        <div id="search-suggestions" class="search-suggestions"></div>
+                    </div>
+                    <ul class="nav">
+                        <li><a href="{% url 'userapp:admin_dashboard' %}">Home</a></li>
+                        <li><a href="#">Cart</a></li>
+                        <li><a href="#">Custom PC</a></li>
+                        <li class="submenu">
+                            <a href="javascript:;">Products</a>
+                            <ul>
+                                <li><a href="#">Monitors</a></li>
+                                <li><a href="#">Keyboards</a></li>
+                                <li><a href="#">Mouses</a></li>
+                                <li><a href="#">Assembled CPU</a></li>
+                                <li><a href="#">Accessories</a></li>
+                            </ul>
+                        </li>
+                        <li class="submenu">
+                            <a href="javascript:;">{{ request.user.username }}</a>
+                            <ul>
+                                <li><a href="{% url 'userapp:admin_profile' %}">Profile</a></li>
+                                <li>
+                                    <form method="post" action="{% url 'userapp:logout' %}" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" style="background: none; border: none; color: inherit; font: inherit; cursor: pointer; padding: 0;">Logout</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                </nav>
             </div>
         </div>
-    </header>
+    </div>
+</header>
+<!-- ***** Header Area End ***** -->
     <!-- ***** Header Area End ***** -->
+    
     <!-- ***** side nav start ***** -->
+     <!-- ***** side nav start ***** -->
      <div class="side-nav">
         <div class="namedisplay">
             <img class="namedisplayimage" height="50px" width="50px" src="{% static 'images/profileimage.png' %}">    
             <div class="namedisplaytext">
-                <div class="namedisplaytexthello">
-                    Hello
-                    ,
-                </div>
-                <div class="namedisplaytextname">
-                    {{ user.username }}
-                </div>
+                <div class="namedisplaytexthello">Hello,</div>
+                <div class="namedisplaytextname">{{ user.username }}</div>
             </div>
         </div>
         <div class="accountdisplay">
-            <div class="accountdisplayorderline">
-                <hr>
-            </div>
-            <div class="accountdisplaysettings">
-                <div class="accountdisplaysettingdetails">
-                    <img class="accountdisplayorderdetailsimage" src="{% static 'images/setting.png' %}">
-                    <a class="accountdisplayorderdetailsorder" href="#">
-                        ACCOUNT SETTINGS
-                    </a>
+            <div class="nav-item">
+                <div class="nav-heading">
+                    <i class="fas fa-cog"></i>
+                    <span>ACCOUNT SETTINGS</span>
+                    <i class="fa fa-chevron-down"></i>
                 </div>
-                <div class="profileaddress">
-                    <a href="{% url 'userapp:admin_profile' %}">
-                        <div class="profileinformation" >Profile Information</div>
-                    </a>
-                    
+                <div class="nav-content">
+                    <a href="{% url 'userapp:admin_profile' %}"><i class="fas fa-user"></i> Profile Information</a>
                 </div>
             </div>
-            <div class="accountdisplayorderline">
-                <hr>
-            </div>
-            <!-- extra field start -->
-            <div class="accountdisplaysettings">
-                <div class="accountdisplaysettingdetails">
-                    <img class="accountdisplayorderdetailsimage" src="{% static 'images/setting.png' %}">
-                    <a class="accountdisplayorderdetailsorder" href="#">
-                        Users Management
-                    </a>
+            <div class="nav-item">
+                <div class="nav-heading">
+                    <i class="fas fa-users"></i>
+                    <span>Users Management</span>
+                    <i class="fa fa-chevron-down"></i>
                 </div>
-                <div class="profileaddress">
-                    <a href="{% url 'userapp:admin_userview' %}">
-                        <div class="profileinformation">User View</div>
-                    </a>
-                    <!-- <a href="#">
-                        <div class="manageaddress">Extra Field 2</div>
-                    </a> -->
+                <div class="nav-content">
+                    <a href="{% url 'userapp:admin_userview' %}"><i class="fas fa-eye"></i> User View</a>
                 </div>
             </div>
-            <div class="accountdisplayorderline">
-                <hr>
-            </div>
-            <!-- extra field end -->
-              <!-- extra field start -->
-            <div class="accountdisplaysettings">
-                <div class="accountdisplaysettingdetails">
-                    <img class="accountdisplayorderdetailsimage" src="{% static 'images/setting.png' %}">
-                    <a class="accountdisplayorderdetailsorder" href="#">
-                        Product Management
-                    </a>
+            <div class="nav-item">
+                <div class="nav-heading">
+                    <i class="fas fa-box"></i>
+                    <span>Product Management</span>
+                    <i class="fa fa-chevron-down"></i>
                 </div>
-                <div class="profileaddress">
-                    <a href="admin_productadd">
-                        <div class="profileinformation" style="background-color:#dfeafd; color:#2874f0">Product Add</div>
-                    </a>
-                    <a href="{% url 'userapp:admin_viewproduct' %}">
-                        <div class="manageaddress">View Products</div>
-                    </a>
+                <div class="nav-content">
+                    <a href="admin_productadd"><i class="fas fa-plus"></i> Product Add</a>
+                    <a href="{% url 'userapp:admin_viewproduct' %}"><i class="fas fa-list"></i> View Products</a>
                 </div>
             </div>
-            <div class="accountdisplayorderline">
-                <hr>
-            </div>
-            <!-- extra field end -->
-              <!-- extra field start -->
-            <div class="accountdisplaysettings">
-                <div class="accountdisplaysettingdetails">
-                    <img class="accountdisplayorderdetailsimage" src="{% static 'images/setting.png' %}">
-                    <a class="accountdisplayorderdetailsorder" href="#">
-                        Component Management
-                    </a>
+            <div class="nav-item">
+                <div class="nav-heading">
+                    <i class="fas fa-microchip"></i>
+                    <span>Component Management</span>
+                    <i class="fa fa-chevron-down"></i>
                 </div>
-                <div class="profileaddress">
-                    <a href="{% url 'userapp:admin_addcomponent' %}">
-                        <div class="profileinformation">Components Add</div>
-                    </a>
-                    <a href="{% url 'userapp:admin_viewcomponent' %}">
-                        <div class="profileinformation" >View Components</div>
-                    </a>
+                <div class="nav-content">
+                    <a href="{% url 'userapp:admin_addcomponent' %}"><i class="fas fa-plus"></i> Component Add</a>
+                    <a href="{% url 'userapp:admin_viewcomponent' %}"><i class="fas fa-list"></i> View Components</a>
                 </div>
             </div>
-            <div class="accountdisplayorderline">
-                <hr>
-            </div>
-            <!-- extra field end -->
-            <div class="accountdisplaysettings">
-                <div class="accountdisplaysettingdetails">
-                    <img class="accountdisplayorderdetailsimage" src="{% static 'images/turn-off.png' %}">
-                    <a class="accountdisplayorderdetailsorder" href="{% url 'userapp:logout' %}">
-                        LOGOUT
-                    </a>
+            <div class="nav-item">
+                <div class="nav-heading">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <form method="post" action="{% url 'userapp:logout' %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" style="background: none; border: none; color: #dc3545; cursor: pointer; font-weight: bold;">LOGOUT</button>
+                    </form>
                 </div>
             </div>
         </div>
-        <div class="profilebody">
-            <div class="o20LY5">
-                <h2>Add New Product</h2>
-                <form method="POST" enctype="multipart/form-data" id="productAddForm">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="name">Product Name</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="category">Category</label>
-                        <select class="form-control" id="category" name="category" required>
-                            <option value="monitor">Monitor</option>
-                            <option value="keyboard">Keyboard</option>
-                            <option value="mouse">Mouse</option>
-                            <option value="assembled_cpu">Assembled CPU</option>
-                            <option value="accessory">Accessory</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="price">Price</label>
-                        <input type="number" class="form-control" id="price" name="price" step="0.01" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="stockLevel">Stock Level</label>
-                        <input type="number" class="form-control" id="stockLevel" name="stockLevel" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">Description</label>
-                        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="main_image">Main Product Image</label>
-                        <div class="file-upload-container" id="mainImageUploadContainer">
-                            <label for="main_image" class="file-upload-label">
-                                <i class="fa fa-cloud-upload"></i> Drag & Drop or Click to Upload Main Image
-                            </label>
-                            <input type="file" class="form-control-file" id="main_image" name="main_image" accept="image/*">
-                        </div>
-                        <div id="mainImagePreview" class="image-preview"></div>
-                    </div>
-                    <div class="form-group">
-                        <label for="additional_images">Additional Product Images</label>
-                        <div class="file-upload-container" id="additionalImagesUploadContainer">
-                            <label for="additional_images" class="file-upload-label">
-                                <i class="fa fa-cloud-upload"></i> Drag & Drop or Click to Upload Additional Images
-                            </label>
-                            <input type="file" class="form-control-file" id="additional_images" name="additional_images" multiple accept="image/*">
-                        </div>
-                        <div id="additionalImagesPreview" class="image-preview"></div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Add Product</button>
-                </form>
-            </div>
-        </div>
-     </div>
+    </div>
+<!-- ***** side nav end ***** -->
     
     <!-- ***** side nav end ***** -->
-     <div>
-
-     </div>
+    <div class="profilebody">
+        <div class="o20LY5">
+            <h2>Add New Product</h2>
+            <form method="POST" enctype="multipart/form-data" id="productAddForm">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="name">Product Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="brand_name">Brand Name</label>
+                    <input type="text" class="form-control" id="brand_name" name="brand_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select class="form-control" id="category" name="category" required>
+                        <option value="monitor">Monitor</option>
+                        <option value="keyboard">Keyboard</option>
+                        <option value="mouse">Mouse</option>
+                        <option value="assembled_cpu">Assembled CPU</option>
+                        <option value="accessory">Accessory</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <input type="number" class="form-control" id="price" name="price" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="stockLevel">Stock Level</label>
+                    <input type="number" class="form-control" id="stockLevel" name="stockLevel" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="main_image">Main Product Image</label>
+                    <div class="file-upload-container" id="mainImageUploadContainer">
+                        <label for="main_image" class="file-upload-label">
+                            <i class="fa fa-cloud-upload"></i> Drag & Drop or Click to Upload Main Image
+                        </label>
+                        <input type="file" class="form-control-file" id="main_image" name="main_image" accept="image/*">
+                    </div>
+                    <div id="mainImagePreview" class="image-preview"></div>
+                </div>
+                <div class="form-group">
+                    <label for="additional_images">Additional Product Images</label>
+                    <div class="file-upload-container" id="additionalImagesUploadContainer">
+                        <label for="additional_images" class="file-upload-label">
+                            <i class="fa fa-cloud-upload"></i> Drag & Drop or Click to Upload Additional Images
+                        </label>
+                        <input type="file" class="form-control-file" id="additional_images" name="additional_images" multiple accept="image/*">
+                    </div>
+                    <div id="additionalImagesPreview" class="image-preview"></div>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Product</button>
+            </form>
+        </div>
+    </div>
     
     <!-- ***** Footer Start ***** -->
     <footer>
@@ -651,6 +1668,134 @@ https://templatemo.com/tm-571-hexashop
             return cookieValue;
         }
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                const heading = item.querySelector('.nav-heading');
+                heading.addEventListener('click', () => {
+                    item.classList.toggle('active');
+                });
+            });
+        });
+        </script>
+        <!-- jQuery -->
+    <script src="{% static 'js/jquery-2.1.0.min.js' %}"></script>
+
+    <!-- Bootstrap -->
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    <!-- Plugins -->
+    <script src="{% static 'js/owl-carousel.js' %}"></script>
+    <script src="{% static 'js/accordions.js' %}"></script>
+    <script src="{% static 'js/datepicker.js' %}"></script>
+    <script src="{% static 'js/scrollreveal.min.js' %}"></script>
+    <script src="{% static 'js/waypoints.min.js' %}"></script>
+    <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'js/imgfix.min.js' %}"></script> 
+    <script src="{% static 'js/slick.js' %}"></script> 
+    <script src="{% static 'js/lightbox.js' %}"></script> 
+    <script src="{% static 'js/isotope.js' %}"></script> 
+    
+    <!-- Global Init -->
+    <script src="{% static 'js/custom.js' %}"></script>
+
+    <script>
+
+        $(function() {
+            var selectedClass = "";
+            $("p").click(function(){
+            selectedClass = $(this).attr("data-rel");
+            $("#portfolio").fadeTo(50, 0.1);
+                $("#portfolio div").not("."+selectedClass).fadeOut();
+            setTimeout(function() {
+              $("."+selectedClass).fadeIn();
+              $("#portfolio").fadeTo(50, 1);
+            }, 500);
+                
+            });
+        });
+
+
+        $('.btn').click(function(){
+            $(this).toggleClass("click");
+            $('.sidebar').toggleClass("show");
+          });
+            $('.feat-btn').click(function(){
+              $('nav ul .feat-show').toggleClass("show");
+              $('nav ul .first').toggleClass("rotate");
+            });
+            $('.serv-btn').click(function(){
+              $('nav ul .serv-show').toggleClass("show1");
+              $('nav ul .second').toggleClass("rotate");
+            });
+            $('nav ul li').click(function(){
+              $(this).addClass("active").siblings().removeClass("active");
+            });
+            
+    </script>
+
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeDeleteModal()">&times;</span>
+            <h2>Confirm Deletion</h2>
+            <p>Are you sure you want to delete this address?</p>
+            <button class="deletebutton" onclick="deleteAddress()">Yes, Delete</button>
+            <button class="cancelbutton" onclick="closeDeleteModal()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        let currentAddressId;
+
+        function showDeleteModal(addressId) {
+            currentAddressId = addressId;
+            document.getElementById('deleteModal').style.display = 'block';
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+
+        function deleteAddress() {
+            fetch(`/delete-address/${currentAddressId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Failed to delete address');
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+            closeDeleteModal();
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -712,6 +1857,7 @@ https://templatemo.com/tm-571-hexashop
         const form = document.getElementById('productAddForm');
         
         form.addEventListener('submit', function(event) {
+            event.preventDefault();
             let isValid = true;
             
             // Check all required fields
@@ -732,16 +1878,45 @@ https://templatemo.com/tm-571-hexashop
             if (!/^\d+(\.\d{1,2})?$/.test(price.value)) {
                 isValid = false;
                 showError(price, 'Please enter a valid price');
+            } else {
+                hideError(price);
             }
             
             if (!/^\d+$/.test(stockLevel.value)) {
                 isValid = false;
                 showError(stockLevel, 'Please enter a valid quantity');
+            } else {
+                hideError(stockLevel);
             }
             
-            if (!isValid) {
-                event.preventDefault();
+            // Check main image
+            const mainImage = document.getElementById('main_image');
+            if (mainImage.files.length === 0) {
+                isValid = false;
+                showError(mainImage, 'Please upload a main image');
+            } else {
+                hideError(mainImage);
             }
+            
+            // Check additional images
+            const additionalImages = document.getElementById('additional_images');
+            if (additionalImages.files.length < 2) {
+                isValid = false;
+                showError(additionalImages, 'Please upload at least 2 additional images');
+            } else {
+                hideError(additionalImages);
+            }
+            
+            if (isValid) {
+                form.submit();
+            }
+        });
+        
+        // Add input event listeners to all form fields
+        form.querySelectorAll('input, textarea, select').forEach(field => {
+            field.addEventListener('input', function() {
+                hideError(this);
+            });
         });
         
         function showError(field, message) {
@@ -764,5 +1939,27 @@ https://templatemo.com/tm-571-hexashop
     });
     </script>
 
-  </body>
+    <script>
+        // Function to check session status
+        function checkSession() {
+            fetch('{% url "userapp:check_session" %}', {
+                method: 'GET',
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (!data.is_authenticated) {
+                    window.location.href = '{% url "userapp:login" %}';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Check session every 5 minutes (300000 milliseconds)
+        setInterval(checkSession, 300000);
+
+        // Also check when the page is focused
+        window.addEventListener('focus', checkSession);
+    </script>
+</body>
 </html>
