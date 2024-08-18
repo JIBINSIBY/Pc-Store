@@ -494,25 +494,33 @@ def get_components(request):
             component['image'] = settings.STATIC_URL + 'images/default-component.png'
     return JsonResponse(component_list, safe=False)
 
+@login_required(login_url='userapp:login')
 def keyboards_view(request):
     keyboards = Product.objects.filter(category='keyboard')
-    print(f"Number of keyboards: {keyboards.count()}")
-    for keyboard in keyboards:
-        print(f"Keyboard ID: {keyboard.productId}")
-    return render(request, 'keyboards.html', {'keyboards': keyboards})
+    available_brands = keyboards.values_list('brand', flat=True).distinct()
+    context = {
+        'keyboards': keyboards,
+        'available_brands': available_brands,
+    }
+    return render(request, 'keyboards.html', context)
 
+@login_required(login_url='userapp:login')
 def mouses_view(request):
     mouses = Product.objects.filter(category='mouse')
     return render(request, 'mouse.html', {'mouses': mouses})
 
+@login_required(login_url='userapp:login')
 def monitors_view(request):
     monitors = Product.objects.filter(category='monitor')
-    return render(request, 'monitors.html', {'monitors': monitors})
+    available_brands = monitors.values_list('brand', flat=True).distinct()
+    return render(request, 'monitors.html', {'monitors': monitors, 'available_brands': available_brands})
 
+@login_required(login_url='userapp:login')
 def assembledcpus_view(request):
     assembledcpus = Product.objects.filter(category='assembled_cpu')
     return render(request, 'assembled_cpu.html', {'assembledcpus': assembledcpus})
 
+@login_required(login_url='userapp:login')
 def accessories_view(request):
     accessories = Product.objects.filter(category='accessory')
     return render(request, 'accessory.html', {'accessories': accessories})
