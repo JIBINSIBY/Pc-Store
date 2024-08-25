@@ -1,5 +1,11 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator, MaxValueValidator
+
+def validate_rating(value):
+    if value < 1 or value > 5:
+        raise ValidationError('Rating must be between 1 and 5.')
 
 class User(AbstractUser):
     ROLE_CHOICES = (
@@ -107,3 +113,17 @@ class Cart(models.Model):
 
     def __str__(self):
         return f"Cart {self.cartId} for {self.user.username}"
+
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    rating = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
+    description = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('user', 'product')
+
+    def __str__(self):
+        return f"{self.user.username}'s rating for {self.product.name}"

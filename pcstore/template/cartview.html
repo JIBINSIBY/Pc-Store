@@ -29,26 +29,64 @@ TemplateMo 571 Hexashop
 
 https://templatemo.com/tm-571-hexashop
 
---><script>
-   
-</script>
-
+-->
     <style>
+        .main-banner {
+            padding-top: 46px;
+            padding-bottom: 0px !important;
+        }
+        #keyboards .thumb {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #keyboards .hover-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.7);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        #keyboards .thumb:hover .hover-content {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .header-area .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+        }
+
         .search-container {
             display: flex;
             align-items: center;
-            margin-right: 20px;
+            margin: 0 20px;
+            max-width: 50%; /* Adjust this value to control the maximum width */
         }
+
         .search-container form {
             display: flex;
             align-items: center;
+            width: 100%;
         }
+
         .search-container input[type="text"] {
             padding: 10px;
-            border: none;
+            border: 1px solid #ddd;
             border-radius: 5px 0 0 5px;
             outline: none;
+            flex-grow: 1;
+            min-width: 0;
+            width: 100%;
         }
+
         .search-container button {
             padding: 10px 15px;
             background-color: #7e96dc;
@@ -57,8 +95,1107 @@ https://templatemo.com/tm-571-hexashop
             border-radius: 0 5px 5px 0;
             cursor: pointer;
         }
+
         .search-container button:hover {
             background-color: #d32f2f;
+        }
+
+        .header-area .main-nav .nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        .header-area .main-nav .nav li {
+            padding: 0 15px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-area .main-nav .nav li a {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            height: 100%;
+            border: transparent;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 991px) {
+            .header-area .main-nav {
+                flex-wrap: wrap;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0;
+            }
+            .search-container form {
+                width: 100%;
+            }
+            .search-container input[type="text"] {
+                flex-grow: 1;
+            }
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 4px 4px;
+        }
+
+        .suggestion-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .suggestion-item:not(:last-child) {
+            border-bottom: 1px solid #eee;
+        }
+
+        .fixed-top {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1030;
+        }
+
+        body {
+            padding-top: 80px; /* Adjust this value based on your header height */
+        }
+
+        .submenu {
+            position: relative;
+        }
+
+        .submenu .dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            padding: 10px 0;
+            min-width: 200px;
+            z-index: 1000;
+        }
+
+        .submenu:hover .dropdown {
+            display: block;
+        }
+
+        .submenu .dropdown li {
+            display: block;
+            padding: 5px 15px;
+        }
+
+        .submenu .dropdown li a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .submenu .dropdown li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .submenu .dropdown li a:hover {
+            background-color: #f5f5f5;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            flex-shrink: 0;
+        }
+
+        .search-container {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+
+        .search-container form {
+            display: flex;
+        }
+
+        .search-container input[type="text"] {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .nav {
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 991px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+
+        .scrolling-banner {
+            overflow: hidden;
+            position: relative;
+            height: 300px;
+            margin-bottom: 50px;
+            padding-top: 0px !important;
+        }
+
+        .banner-container {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .banner-slide {
+            flex: 0 0 100%;
+            position: relative;
+        }
+
+        .banner-slide img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .banner-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+        }
+
+        .banner-content h2 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .banner-content p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .btn-shop-now {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-shop-now:hover {
+            background-color: #0056b3;
+        }
+
+        .scrolling-banner {
+            position: relative;
+        }
+
+        .banner-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            font-size: 24px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .banner-arrow:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .banner-prev {
+            left: 10px;
+        }
+
+        .banner-next {
+            right: 10px;
+        }
+
+        .section {
+            padding: 0px 0;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .owl-carousel {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+        }
+
+        .owl-carousel .item {
+            flex: 0 0 auto;
+            width: 280px;
+            margin-right: 20px;
+            scroll-snap-align: start;
+        }
+
+        .owl-carousel .item:last-child {
+            margin-right: 0;
+        }
+
+        @media (max-width: 768px) {
+            .owl-carousel .item {
+                width: 220px;
+            }
+        }
+
+        .down-content .category {
+            display: block;
+            font-size: 14px;
+            color: #7a7a7a;
+            margin-top: 5px;
+        }
+        #latest-products{
+            background: #f8f9fa;
+            height: 490px;
+        }
+        #latest-products .item {
+            margin-bottom: 30px;
+        }
+
+        #latest-products .item .thumb {
+            position: relative;
+            overflow: hidden;
+        }
+
+        #latest-products .item .thumb img {
+            width: 100%;
+            height: auto;
+        }
+
+        #latest-products .item .down-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        #latest-products .item .down-content h4 {
+            font-size: 17px;
+            color: #1a6692;
+            margin-bottom: 10px;
+        }
+
+        #latest-products .item .down-content span {
+            color: #000000;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        #latest-products .row {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 0 10px;
+        }
+
+        #latest-products .row::-webkit-scrollbar {
+            display: none;
+        }
+
+        #latest-products .col-lg-2 {
+            flex: 0 0 auto;
+            width: calc(16.666% - 20px);
+            min-width: 200px;
+            scroll-snap-align: start;
+            margin-right: 20px;
+        }
+
+        #latest-products .item {
+            border: 1px solid #e6e6e6;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #latest-products .thumb img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        #latest-products .down-content {
+            padding: 15px;
+            text-align: center;
+        }
+
+        #latest-products h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #latest-products span {
+            font-size: 14px;
+            color: #000000;
+            font-weight: 500;
+        }
+
+        #latest-products .section-heading {
+            text-align: left;
+            margin-bottom: 30px;
+            padding: 0 10px;
+        }
+
+        #latest-products .section-heading h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        #latest-products .section-heading span {
+            color: #7a7a7a;
+        }
+
+        #latest-products .product-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 20px 0;
+        }
+
+        #latest-products .product-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        #latest-products .product-item {
+            flex: 0 0 auto;
+            width: calc(100% / 7);
+            padding: 0 10px;
+            scroll-snap-align: start;
+        }
+
+        #latest-products .item {
+            border: 1px solid #e6e6e6;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #latest-products .thumb img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        #latest-products .down-content {
+            padding: 15px;
+            text-align: center;
+        }
+
+        #latest-products h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #latest-products span {
+            font-size: 14px;
+            color: #000000;
+            font-weight: 500;
+        }
+
+        @media (max-width: 1200px) {
+            #latest-products .product-item {
+                width: calc(100% / 5);
+            }
+        }
+
+        @media (max-width: 992px) {
+            #latest-products .product-item {
+                width: calc(100% / 4);
+            }
+        }
+
+        @media (max-width: 768px) {
+            #latest-products .product-item {
+                width: calc(100% / 3);
+            }
+        }
+
+        @media (max-width: 576px) {
+            #latest-products .product-item {
+                width: calc(100% / 2);
+            }
+        }
+
+        #latest-products .product-item {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #latest-products .product-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #latest-products .item {
+            transition: background-color 0.3s ease;
+        }
+
+        #latest-products .product-item:hover .item {
+            background-color: #f8f8f8;
+        }
+
+        #latest-products .down-content {
+            transition: color 0.3s ease;
+        }
+
+        #latest-products .product-item:hover .down-content h4,
+        #latest-products .product-item:hover .down-content span {
+            color: #7d7d7d;
+        }
+
+        .bottom-banner {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .bottom-banner .banner-container {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .bottom-banner .banner-slide {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+
+        .bottom-banner .banner-slide img {
+            width: 100%;
+            height: auto;
+        }
+
+        .bottom-banner .banner-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .bottom-banner .banner-prev {
+            left: 10px;
+        }
+
+        .bottom-banner .banner-next {
+            right: 10px;
+        }
+        #explore{
+            padding-top: 30px !important;
+            padding-bottom: 30px !important ;
+        }
+        #explore .container-fluid {
+            max-width: 100%;
+            padding: 0;
+        }
+
+        #explore .row {
+            display: flex;
+            align-items: center;
+        }
+
+        #explore .left-content {
+            background-color: #f8f9fa;
+            padding: 60px 0;
+        }
+
+        #explore .content-wrapper {
+            max-width: 540px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 30px;
+        }
+
+        #explore .right-content {
+            padding: 0;
+        }
+
+        #explore .big-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @media (max-width: 991px) {
+            #explore .row {
+                flex-direction: column;
+            }
+            #explore .content-wrapper {
+                max-width: 100%;
+                padding: 0 15px;
+                margin: 0 auto;
+            }
+            #explore .big-image img {
+                margin-top: 30px;
+            }
+        }
+
+        .hover13 figure {
+            background: #fff;
+            overflow: hidden;
+        }
+        
+        .hover13 figure:hover img {
+            opacity: 1;
+            -webkit-animation: flash 1.5s;
+            animation: flash 1.5s;
+        }
+        
+        @-webkit-keyframes flash {
+            0% {
+                opacity: .4;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes flash {
+            0% {
+                opacity: .4;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        #social {
+            margin-top: 35px;
+            padding-bottom: 10px !important;
+            border-bottom: 3px dotted #eee;
+            margin-left: -130px;
+        }
+
+        #social .social-images {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        #social .social-item {
+            position: relative;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        #social .social-item img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+
+        #social .social-item:hover img {
+            transform: scale(1.1);
+        }
+
+        #social .social-item .icon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #social .social-item:hover .icon {
+            opacity: 1;
+        }
+
+        #social .social-item .icon a {
+            text-align: center;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        #social .social-item .icon h6 {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        #social .social-item .icon i {
+            font-size: 24px;
+        }
+
+        @media (max-width: 991px) {
+            #social .social-item {
+                flex-basis: calc(33.333% - 10px);
+            }
+        }
+
+        @media (max-width: 767px) {
+            #social .social-item {
+                flex-basis: calc(50% - 10px);
+            }
+        }
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 4px 4px;
+        }
+        
+        .suggestion-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .suggestion-item:not(:last-child) {
+            border-bottom: 1px solid #eee;
+        }
+        .search-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .search-container form {
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-container input[type="text"] {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 14px;
+        }
+        
+        .search-container button {
+            padding: 10px 15px;
+            background-color: #f33f3f;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .search-container button:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+    </head>
+    
+    <body>
+    
+    <!-- ***** Preloader Start ***** -->
+    <!-- <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>   -->
+    <!-- ***** Preloader End ***** -->
+    
+    
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+
+    <title>Hexashop Ecommerce HTML CSS Template</title>
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/templatemo-hexashop.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/owl-carousel.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/lightbox.css' %}">
+<!--
+
+TemplateMo 571 Hexashop
+
+https://templatemo.com/tm-571-hexashop
+
+-->
+    <style>
+        .main-banner {
+            padding-top: 46px;
+            padding-bottom: 0px !important;
+        }
+        #keyboards .thumb {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #keyboards .hover-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.7);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        #keyboards .thumb:hover .hover-content {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .header-area .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin: 0 20px;
+            max-width: 50%; /* Adjust this value to control the maximum width */
+        }
+
+        .search-container form {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .search-container input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+            flex-grow: 1;
+            min-width: 0;
+            width: 100%;
+        }
+
+        .search-container button {
+            padding: 10px 15px;
+            background-color: #7e96dc;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background-color: #d32f2f;
+        }
+
+        .header-area .main-nav .nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        .header-area .main-nav .nav li {
+            padding: 0 15px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-area .main-nav .nav li a {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            height: 100%;
+            border: transparent;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 991px) {
+            .header-area .main-nav {
+                flex-wrap: wrap;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0;
+            }
+            .search-container form {
+                width: 100%;
+            }
+            .search-container input[type="text"] {
+                flex-grow: 1;
+            }
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 4px 4px;
+        }
+
+        .suggestion-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .suggestion-item:not(:last-child) {
+            border-bottom: 1px solid #eee;
+        }
+
+        .fixed-top {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1030;
+        }
+
+        body {
+            padding-top: 80px; /* Adjust this value based on your header height */
+        }
+
+        .submenu {
+            position: relative;
+        }
+
+        .submenu .dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            padding: 10px 0;
+            min-width: 200px;
+            z-index: 1000;
+        }
+
+        .submenu:hover .dropdown {
+            display: block;
+        }
+
+        .submenu .dropdown li {
+            display: block;
+            padding: 5px 15px;
+        }
+
+        .submenu .dropdown li a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .submenu .dropdown li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .submenu .dropdown li a:hover {
+            background-color: #f5f5f5;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            flex-shrink: 0;
+        }
+
+        .search-container {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+
+        .search-container form {
+            display: flex;
+        }
+
+        .search-container input[type="text"] {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .nav {
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 991px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+
+        .section {
+            padding: 0px 0;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .owl-carousel {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+        }
+
+        .owl-carousel .item {
+            flex: 0 0 auto;
+            width: 280px;
+            margin-right: 20px;
+            scroll-snap-align: start;
+        }
+
+        .owl-carousel .item:last-child {
+            margin-right: 0;
+        }
+
+        @media (max-width: 768px) {
+            .owl-carousel .item {
+                width: 220px;
+            }
+        }
+
+        .down-content .category {
+            display: block;
+            font-size: 14px;
+            color: #7a7a7a;
+            margin-top: 5px;
+        }
+        footer {
+            padding-top: 43px;
+            margin-top: 60px;
+            padding: 60px 0px 30px 0px;
+            background-color: #2a2a2a;
+            margin-top: 0px !important;
+        }
+        .header-area .main-nav .logo {
+            width: 230px !important;
         }
         .d-flex{
             display: flex;
@@ -101,6 +1238,13 @@ https://templatemo.com/tm-571-hexashop
         .cart-summary {
             background-color: #f9f9f9;
             padding: 20px;
+            width: 451px;
+            margin-left: 45px;
+            position: fixed;
+        }
+        .cart-items{
+            margin-left: -127px;
+            width: 923px;
         }
         .summary-item {
             display: flex;
@@ -171,7 +1315,6 @@ https://templatemo.com/tm-571-hexashop
             background-color: #e0e0e0;
         }
     </style>
-
     </head>
     
     <body>
@@ -188,69 +1331,65 @@ https://templatemo.com/tm-571-hexashop
     
     
     <!-- ***** Header Area Start ***** -->
-    <header class="header-area header-sticky">
-        <div class=" mx-5">
+    <header class="header-area header-sticky fixed-top">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
                     <nav class="main-nav">
-                        <!-- ***** Logo Start ***** -->
-                        <a href="index.html" class="logo">
-                            <img src="{% static 'images/logo.png' %}">
-                        </a>
-                        <!-- ***** Logo End ***** -->
-                        
-                        <!-- ***** Search Start ***** -->
-                        <!-- <div class="search-container ">
-                            <form action="search_results" method="get" class="d-flex">
-                                <input type="text" placeholder="Search products..." name="q">
-                                <button type="submit"><i class="fa fa-search"></i></button>
-                            </form>
-                        </div> -->
-                        <!-- ***** Search End ***** -->
+                        <div class="header-content">
+                            <a href="{% url 'userapp:mainpage' %}" class="logo">
+                                <img src="{% static 'images/file.png' %}">
+                            </a>
 
-                        <!-- ***** Menu Start ***** -->
-                        <ul class="nav" style="margin-top: -43px;">
-                            <li class="scroll-to-section"><a href="{% url 'userapp:mainpage' %}" >Home</a></li>
-                            <li class="scroll-to-section"><a href="">About Us</a></li>
-                            <li class="scroll-to-section"><a href="{% url 'userapp:cart_view' %}" class="active">Cart</a></li>
-                            <li class="scroll-to-section"><a href="{% url 'userapp:pc_custom' %}">Custom PC</a></li>
-                            <li class="submenu">
-                                <a href="javascript:;">Products</a>
-                                <ul>
-                                    <li><a href="{% url 'userapp:monitors' %}">Monitors</a></li>
-                                    <li><a href="{% url 'userapp:keyboards' %}">Keyboards</a></li>
-                                    <li><a href="{% url 'userapp:mouses' %}">Mouses</a></li>
-                                    <li><a href="{% url 'userapp:assembledcpus' %}">Assembled CPU</a></li>
-                                    <li><a href="{% url 'userapp:accessories' %}">Accessories</a></li>
-                                </ul>
-                            </li>
-                            {% if user.is_authenticated %}
-                            <li class="submenu">
-                                <a href="javascript:;">{{ user.username }}</a>
-                                <ul>
-                                    <li><a href="{% url 'userapp:logout' %}">Logout</a></li>
-                                    {% else %}
-                            <li><a href="{% url 'userapp:login' %}">Login</a></li>
-                            {% endif %}
-                            <li><a href="{% url 'userapp:profile' %}">Profile</a></li>
-                            <li><a href="#">Features Page 3</a></li>
-                            <li><a rel="nofollow" href="https://templatemo.com/page/4" target="_blank">Template Page 4</a></li>
-                                </ul>
-                            </li>
-                            
-                        </ul>
+                            <div class="search-container">
+                                <form action="{% url 'userapp:search_results' %}" method="get">
+                                    <input type="text" id="search-input" placeholder="Search products..." name="q" autocomplete="off">
+                                    <button type="submit"><i class="fa fa-search"></i></button>
+                                </form>
+                                <div id="search-suggestions" class="search-suggestions"></div>
+                            </div>
+
+                            <ul class="nav">
+                                <li class="scroll-to-section"><a href="{% url 'userapp:mainpage' %}" class="active">Home</a></li>
+                                <li class="scroll-to-section"><a href="{% url 'userapp:cart_view' %}">Cart</a></li>
+                                <li class="scroll-to-section"><a href="{% url 'userapp:pc_custom' %}">Custom PC</a></li>
+                                <li class="submenu">
+                                    <a href="javascript:;">
+                                        <i class="fa fa-box"></i> Products
+                                    </a>
+                                    <ul class="dropdown">
+                                        <li><a href="{% url 'userapp:monitors' %}"><i class="fa fa-desktop"></i> Monitors</a></li>
+                                        <li><a href="{% url 'userapp:keyboards' %}"><i class="fa fa-keyboard"></i> Keyboards</a></li>
+                                        <li><a href="{% url 'userapp:mouses' %}"><i class="fa fa-mouse"></i> Mouses</a></li>
+                                        <li><a href="#"><i class="fa fa-microchip"></i> Assembled CPU</a></li>
+                                        <li><a href="{% url 'userapp:accessories' %}"><i class="fa fa-headphones"></i> Accessories</a></li>
+                                    </ul>
+                                </li>
+                                {% if request.session.user_id %}
+                                    <li class="submenu">
+                                        <a href="javascript:;">{{ request.session.username }}</a>
+                                        <ul class="dropdown">
+                                            <li><a href="{% url 'userapp:profile' %}"><i class="fa fa-user"></i> Profile</a></li>
+                                            <li><a href="loginuser"><i class="fa fa-shopping-bag"></i> Orders</a></li>
+                                            <li><a href="loginuser"><i class="fa fa-heart"></i> Wishlist</a></li>
+                                            <li><a href="loginuser"><i class="fa fa-bell"></i> Notifications</a></li>
+                                            <li><a href="{% url 'userapp:logout'%}" id="logout-link"><i class="fa fa-sign-out"></i> Logout</a></li>
+                                        </ul>
+                                    </li>
+                                {% else %}
+                                    <li><a href="{% url 'userapp:login' %}">Login</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
                         <a class='menu-trigger'>
                             <span>Menu</span>
                         </a>
-                        <!-- ***** Menu End ***** -->
                     </nav>
                 </div>
             </div>
         </div>
     </header>
     <!-- ***** Header Area End ***** -->
-<br>
-<br>
     <!-- ***** Cart Area Starts ***** -->
     <section class="section" id="cart">
         <div class="container">
@@ -259,50 +1398,52 @@ https://templatemo.com/tm-571-hexashop
                     <div class="col-lg-8">
                         <div class="cart-items">
                             {% for item in cart_items %}
-                            <div class="cart-item" data-item-id="{{ item.cartId }}">
-                                <div class="row">
-                                    <div class="col-lg-3">
-                                        <img src="{{ item.product.main_image.url }}" alt="{{ item.product.name }}">
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <h4>{{ item.product.name }}</h4>
-                                        <p>{{ item.product.description|truncatewords:20 }}</p>
-                                        <div class="quantity">
-                                            <button class="minus-btn" onclick="updateQuantity({{ item.cartId }}, -1)">-</button>
-                                            <input type="number" value="{{ item.quantity }}" min="1" id="quantity-{{ item.cartId }}" readonly>
-                                            <button class="plus-btn" onclick="updateQuantity({{ item.cartId }}, 1)">+</button>
+                                <div class="cart-item" data-product-id="{{ item.product.id }}">
+                                    <div class="row">
+                                        <div class="col-lg-3">
+                                            <img src="{{ item.product.main_image.url }}" alt="{{ item.product.name }}">
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <h4>{{ item.product.name }}</h4>
+                                            <p>{{ item.product.description|truncatewords:20 }}</p>
+                                            <div class="quantity">
+                                                <button class="minus-btn" data-product-id="{{ item.product.productId }}">-</button>
+                                                <input type="number" value="{{ item.quantity }}" min="1" max="{{ item.product.stockLevel }}" class="quantity-input" data-product-id="{{ item.product.productId }}">
+                                                <button class="plus-btn" data-product-id="{{ item.product.productId }}">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <p class="price">₹<span id="price-{{ item.product.id }}">{{ item.product.price }}</span></p>
+                                            <button class="remove-btn" data-product-id="{{ item.product.productId }}">Remove</button>
                                         </div>
                                     </div>
-                                    <div class="col-lg-3">
-                                        <p class="price">₹<span id="price-{{ item.cartId }}">{{ item.totalPrice }}</span></p>
-                                        <button class="remove-btn" onclick="showCustomAlert({{ item.cartId }})">REMOVE</button>
-                                    </div>
                                 </div>
-                            </div>
                             {% endfor %}
                         </div>
                     </div>
                     <div class="col-lg-4">
-                        <div class="cart-summary">
-                            <h3>PRICE DETAILS</h3>
-                            <div class="summary-item">
-                                <span>Price ({{ cart_items|length }} items)</span>
-                                <span>₹{{ total_price }}</span>
+                        <div class="cart-summary-wrapper">
+                            <div class="cart-summary">
+                                <h3>PRICE DETAILS</h3>
+                                <div class="summary-item">
+                                    <span>Price ({{ cart_items|length }} items)</span>
+                                    <span>₹<span id="total-price">{{ total_price }}</span></span>
+                                </div>
+                                <div class="summary-item">
+                                    <span>Discount</span>
+                                    <span>- ₹<span id="total-discount">{{ total_discount }}</span></span>
+                                </div>
+                                <div class="summary-item">
+                                    <span>Delivery Charges</span>
+                                    <span>₹<span id="delivery-charges">{{ delivery_charges }}</span></span>
+                                </div>
+                                <div class="summary-item total">
+                                    <span>Total Amount</span>
+                                    <span>₹<span id="total-amount">{{ total_amount }}</span></span>
+                                </div>
+                                <p class="savings">You will save ₹<span id="total-savings">{{ total_savings }}</span> on this order</p>
+                                <button class="place-order-btn">PLACE ORDER</button>
                             </div>
-                            <div class="summary-item">
-                                <span>Discount</span>
-                                <span>- ₹{{ total_discount }}</span>
-                            </div>
-                            <div class="summary-item">
-                                <span>Delivery Charges</span>
-                                <span>₹{{ delivery_charges }}</span>
-                            </div>
-                            <div class="summary-item total">
-                                <span>Total Amount</span>
-                                <span>₹{{ total_amount }}</span>
-                            </div>
-                            <p class="savings">You will save ₹{{ total_savings }} on this order</p>
-                            <button class="place-order-btn">PLACE ORDER</button>
                         </div>
                     </div>
                 </div>
@@ -319,195 +1460,6 @@ https://templatemo.com/tm-571-hexashop
         </div>
     </section>
     <!-- ***** Cart Area Ends ***** -->
-
-    <!-- ***** Explore Area Starts ***** -->
-    <section class="section" id="explore">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="left-content">
-                        <h2>Explore Our Products</h2>
-                        <span>You are allowed to use this HexaShop HTML CSS template. You can feel free to modify or edit this layout. You can convert this template as any kind of ecommerce CMS theme as you wish.</span>
-                        <div class="quote">
-                            <i class="fa fa-quote-left"></i><p>You are not allowed to redistribute this template ZIP file on any other website.</p>
-                        </div>
-                        <p>There are 5 pages included in this HexaShop Template and we are providing it to you for absolutely free of charge at our TemplateMo website. There are web development costs for us.</p>
-                        <p>If this template is beneficial for your website or business, please kindly <a rel="nofollow" href="https://paypal.me/templatemo" target="_blank">support us</a> a little via PayPal. Please also tell your friends about our great website. Thank you.</p>
-                        <div class="main-border-button">
-                            <a href="products.html">Discover More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="right-content">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="leather">
-                                    <h4>Leather Bags</h4>
-                                    <span>Latest Collection</span>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="first-image">
-                                    <img src="{% static 'images/explore-image-01.jpg' %}" alt="">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="second-image">
-                                    <img src="{% static 'images/explore-image-02.jpg' %}" alt="">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="types">
-                                    <h4>Different Types</h4>
-                                    <span>Over 304 Products</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- ***** Explore Area Ends ***** -->
-
-    <!-- ***** Social Area Starts ***** -->
-    <section class="section" id="social">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-heading">
-                        <h2>Social Media</h2>
-                        <span>Details to details is what makes Hexashop different from the other themes.</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row images">
-                <div class="col-2">
-                    <div class="thumb">
-                        <div class="icon">
-                            <a href="http://instagram.com">
-                                <h6>Fashion</h6>
-                                <i class="fa fa-instagram"></i>
-                            </a>
-                        </div>
-                        <img src="{% static 'images/instagram-01.jpg' %}" alt="">
-                    </div>
-                </div>
-                <div class="col-2">
-                    <div class="thumb">
-                        <div class="icon">
-                            <a href="http://instagram.com">
-                                <h6>New</h6>
-                                <i class="fa fa-instagram"></i>
-                            </a>
-                        </div>
-                        <img src="{% static 'images/instagram-02.jpg' %}" alt="">
-                    </div>
-                </div>
-                <div class="col-2">
-                    <div class="thumb">
-                        <div class="icon">
-                            <a href="http://instagram.com">
-                                <h6>Brand</h6>
-                                <i class="fa fa-instagram"></i>
-                            </a>
-                        </div>
-                        <img src="{% static 'images/instagram-03.jpg' %}" alt="">
-                    </div>
-                </div>
-                <div class="col-2">
-                    <div class="thumb">
-                        <div class="icon">
-                            <a href="http://instagram.com">
-                                <h6>Makeup</h6>
-                                <i class="fa fa-instagram"></i>
-                            </a>
-                        </div>
-                        <img src="{% static 'images/instagram-04.jpg' %}" alt="">
-                    </div>
-                </div>
-                <div class="col-2">
-                    <div class="thumb">
-                        <div class="icon">
-                            <a href="http://instagram.com">
-                                <h6>Leather</h6>
-                                <i class="fa fa-instagram"></i>
-                            </a>
-                        </div>
-                        <img src="{% static 'images/instagram-05.jpg' %}" alt="">
-                    </div>
-                </div>
-                <div class="col-2">
-                    <div class="thumb">
-                        <div class="icon">
-                            <a href="http://instagram.com">
-                                <h6>Bag</h6>
-                                <i class="fa fa-instagram"></i>
-                            </a>
-                        </div>
-                        <img src="{% static 'images/instagram-06.jpg' %}" alt="">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- ***** Social Area Ends ***** -->
-
-    <!-- ***** Subscribe Area Starts ***** -->
-    <div class="subscribe">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="section-heading">
-                        <h2>By Subscribing To Our Newsletter You Can Get 30% Off</h2>
-                        <span>Details to details is what makes Hexashop different from the other themes.</span>
-                    </div>
-                    <form id="subscribe" action="" method="get">
-                        <div class="row">
-                          <div class="col-lg-5">
-                            <fieldset>
-                              <input name="name" type="text" id="name" placeholder="Your Name" required="">
-                            </fieldset>
-                          </div>
-                          <div class="col-lg-5">
-                            <fieldset>
-                              <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*" placeholder="Your Email Address" required="">
-                            </fieldset>
-                          </div>
-                          <div class="col-lg-2">
-                            <fieldset>
-                              <button type="submit" id="form-submit" class="main-dark-button"><i class="fa fa-paper-plane"></i></button>
-                            </fieldset>
-                          </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-lg-4">
-                    <div class="row">
-                        <div class="col-6">
-                            <ul>
-                                <li>Store Location:<br><span>Sunny Isles Beach, FL 33160, United States</span></li>
-                                <li>Phone:<br><span>010-020-0340</span></li>
-                                <li>Office Location:<br><span>North Miami Beach</span></li>
-                            </ul>
-                        </div>
-                        <div class="col-6">
-                            <ul>
-                                <li>Work Hours:<br><span>07:30 AM - 9:30 PM Daily</span></li>
-                                <li>Email:<br><span>info@company.com</span></li>
-                                <li>Social Media:<br><span><a href="#">Facebook</a>, <a href="#">Instagram</a>, <a href="#">Behance</a>, <a href="#">Linkedin</a></span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ***** Subscribe Area Ends ***** -->
-    
     <!-- ***** Footer Start ***** -->
     <footer>
         <div class="container">
@@ -519,7 +1471,7 @@ https://templatemo.com/tm-571-hexashop
                         </div>
                         <ul>
                             <li><a href="#">16501 Collins Ave, Sunny Isles Beach, FL 33160, United States</a></li>
-                            <li><a href="#">hexashop@company.com</a></li>
+                            <li><a href="#">techcraft@gmail.com</a></li>
                             <li><a href="#">010-020-0340</a></li>
                         </ul>
                     </div>
@@ -527,9 +1479,9 @@ https://templatemo.com/tm-571-hexashop
                 <div class="col-lg-3">
                     <h4>Shopping &amp; Categories</h4>
                     <ul>
-                        <li><a href="#">Men's Shopping</a></li>
-                        <li><a href="#">Women's Shopping</a></li>
-                        <li><a href="#">Kid's Shopping</a></li>
+                        <li><a href="#">Keyboards</a></li>
+                        <li><a href="#">Mouse</a></li>
+                        <li><a href="#">Monitors</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3">
@@ -552,9 +1504,7 @@ https://templatemo.com/tm-571-hexashop
                 </div>
                 <div class="col-lg-12">
                     <div class="under-footer">
-                        <p>Copyright © 2022 HexaShop Co., Ltd. All Rights Reserved. 
-                        
-                        <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
+                        <p>Copyright © 2024 TechCraft Co., Ltd. All Rights Reserved.</p>
                         <ul>
                             <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                             <li><a href="#"><i class="fa fa-twitter"></i></a></li>
@@ -609,84 +1559,320 @@ https://templatemo.com/tm-571-hexashop
     </script>
 
     <script>
-    function updateQuantity(itemId, change) {
-        const quantityInput = document.getElementById(`quantity-${itemId}`);
-        let newQuantity = parseInt(quantityInput.value) + change;
-        if (newQuantity < 1) newQuantity = 1;
-        
-        fetch(`/update-cart-item/${itemId}/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': '{{ csrf_token }}'
-            },
-            body: JSON.stringify({quantity: newQuantity})
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                location.reload(); // This will reload the page
-            } else if (data.error === 'insufficient_stock') {
-                alert(`Sorry, only ${data.available_stock} items are available in stock.`);
-                quantityInput.value = data.available_stock;
-                location.reload(); // Reload even in case of insufficient stock
+        document.addEventListener('DOMContentLoaded', function() {
+            const bannerContainer = document.querySelector('.banner-container');
+            const slides = document.querySelectorAll('.banner-slide');
+            let currentSlide = 0;
+
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                bannerContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while updating the quantity.');
+
+            setInterval(nextSlide, 3000); // Change slide every 3 seconds
         });
-    }
-
-    function showCustomAlert(itemId) {
-        document.getElementById('customAlert').style.display = 'flex';
-        document.getElementById('confirmRemove').onclick = function() {
-            removeItem(itemId);
-            document.getElementById('customAlert').style.display = 'none';
-        };
-        document.getElementById('cancelRemove').onclick = function() {
-            document.getElementById('customAlert').style.display = 'none';
-        };
-    }
-
-    function removeItem(itemId) {
-        fetch(`/remove-cart-item/${itemId}/`, {
-            method: 'POST',
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}'
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-input');
+            const suggestionsContainer = document.getElementById('search-suggestions');
+    
+            searchInput.addEventListener('input', function() {
+                const query = this.value;
+                if (query.length > 1) {
+                    fetch(`/search-suggestions/?q=${query}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            suggestionsContainer.innerHTML = '';
+                            data.forEach(suggestion => {
+                                const div = document.createElement('div');
+                                div.classList.add('suggestion-item');
+                                div.textContent = suggestion.name;
+                                div.addEventListener('click', function() {
+                                    window.location.href = `/${suggestion.category}/${suggestion.productId}/`;
+                                });
+                                suggestionsContainer.appendChild(div);
+                            });
+                            suggestionsContainer.style.display = data.length ? 'block' : 'none';
+                        });
+                } else {
+                    suggestionsContainer.style.display = 'none';
+                }
+            });
+    
+            document.addEventListener('click', function(e) {
+                if (e.target !== searchInput && e.target !== suggestionsContainer) {
+                    suggestionsContainer.style.display = 'none';
+                }
+            });
+    
+            const logoutLink = document.getElementById('logout-link');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    fetch('{% url "userapp:logout" %}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                });
             }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                location.reload(); // This will reload the page
+        });
+        </script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        const searchInput = $('#search-input');
+        const suggestionsContainer = $('#search-suggestions');
+    
+        searchInput.on('input', function() {
+            const query = $(this).val().toLowerCase();
+            if (query.length > 0) {
+                const suggestions = ['keyboards', 'monitors', 'mouses', 'assembled cpu', 'accessories'].filter(item => item.includes(query));
+                displaySuggestions(suggestions);
             } else {
-                alert('Failed to remove the product from your cart.');
+                suggestionsContainer.hide();
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while removing the product from your cart.');
         });
-    }
-
-    function updateCartSummary(total, itemCount, discount, deliveryCharges, totalAmount) {
-        document.querySelector('.summary-item:nth-child(1) span:last-child').textContent = `₹${total}`;
-        document.querySelector('.summary-item:nth-child(1) span:first-child').textContent = `Price (${itemCount} items)`;
-        document.querySelector('.summary-item:nth-child(2) span:last-child').textContent = `- ₹${discount}`;
-        document.querySelector('.summary-item:nth-child(3) span:last-child').textContent = `₹${deliveryCharges}`;
-        document.querySelector('.summary-item:nth-child(4) span:last-child').textContent = `₹${totalAmount}`;
-        document.querySelector('.savings').textContent = `You will save ₹${discount} on this order`;
-    }
-    </script>
-
-    <div id="customAlert" class="custom-alert" style="display: none;">
-        <div class="alert-content">
-            <p>Are you sure you want to remove this item from your cart?</p>
-            <button id="confirmRemove">Yes, Remove</button>
-            <button id="cancelRemove">Cancel</button>
-        </div>
+    
+        function displaySuggestions(suggestions) {
+            suggestionsContainer.empty();
+            if (suggestions.length > 0) {
+                suggestions.forEach(suggestion => {
+                    const item = $('<div class="suggestion-item"></div>').text(suggestion);
+                    item.on('click', function() {
+                        searchInput.val(suggestion);
+                        suggestionsContainer.hide();
+                        redirectToPage(suggestion);
+                    });
+                    suggestionsContainer.append(item);
+                });
+                suggestionsContainer.show();
+            } else {
+                suggestionsContainer.hide();
+            }
+        }
+    
+        function redirectToPage(suggestion) {
+            const pages = {
+                'keyboards': '{% url "userapp:keyboards" %}',
+                'monitors': '{% url "userapp:monitors" %}',
+                'mouses': '{% url "userapp:mouses" %}',
+                'assembled cpu': '{% url "userapp:assembledcpus" %}',
+                'accessories': '{% url "userapp:accessories" %}'
+            };
+            if (pages[suggestion]) {
+                window.location.href = pages[suggestion];
+            }
+        }
+    
+        $(document).on('click', function(event) {
+            if (!$(event.target).closest('.search-container').length) {
+                suggestionsContainer.hide();
+            }
+        });
+    });
+</script>
+<div id="confirmModal" class="custom-alert" style="display: none;">
+    <div class="alert-content">
+        <p>Are you sure you want to remove this item from your cart?</p>
+        <button id="confirmRemove">Yes, Remove</button>
+        <button id="cancelRemove">Cancel</button>
     </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const removeButtons = document.querySelectorAll('.remove-btn');
+        
+        removeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const productId = this.getAttribute('data-product-id');
+                showConfirmModal(productId);
+            });
+        });
+    
+        function showConfirmModal(productId) {
+            const modal = document.getElementById('confirmModal');
+            modal.style.display = 'flex';
+            
+            document.getElementById('confirmRemove').onclick = function() {
+                modal.style.display = 'none';
+                removeFromCart(productId);
+            };
+            
+            document.getElementById('cancelRemove').onclick = function() {
+                modal.style.display = 'none';
+            };
+        }
+    
+        function removeFromCart(productId) {
+            fetch('{% url "userapp:remove_from_cart" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({
+                    productId: productId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Remove the cart item from the DOM
+                    const cartItem = document.querySelector(`.cart-item[data-product-id="${productId}"]`);
+                    cartItem.remove();
 
+                    // Update the cart summary
+                    updateCartSummary(data);
+
+                    // Show success message
+                    showAlert('Product successfully removed from cart', 'success');
+
+                    // If the cart is empty, reload the page to show the empty cart message
+                    if (data.cart_items_count === 0) {
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1500);
+                    }
+                } else {
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                location.reload();
+                console.error('Error:', error);
+            });
+        }
+    
+        function updateCartSummary(data) {
+            document.getElementById('total-price').textContent = data.total_price;
+            document.getElementById('total-discount').textContent = data.total_discount;
+            document.getElementById('delivery-charges').textContent = data.delivery_charges;
+            document.getElementById('total-amount').textContent = data.total_amount;
+            document.getElementById('total-savings').textContent = data.total_savings;
+        }
+    
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show`;
+            alertDiv.role = 'alert';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            `;
+            document.querySelector('.cart-items').insertAdjacentElement('beforebegin', alertDiv);
+
+            // Automatically remove the alert after 3 seconds
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 3000);
+        }
+    });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const quantityInputs = document.querySelectorAll('.quantity-input');
+            const minusButtons = document.querySelectorAll('.minus-btn');
+            const plusButtons = document.querySelectorAll('.plus-btn');
+        
+            function updateQuantity(productId, newQuantity, maxQuantity) {
+                if (newQuantity > maxQuantity) {
+                    alert(`Product out of stock. Maximum available quantity is ${maxQuantity}`, 'error');
+                    return;
+                }
+
+                fetch('{% url "userapp:update_cart_quantity" %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({
+                        productId: productId,
+                        quantity: newQuantity
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        updateCartSummary(data);
+                        showAlert('Cart updated successfully', 'success');
+                    } else {
+                        showAlert(data.error, 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        
+            quantityInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    const productId = this.dataset.productId;
+                    const newQuantity = parseInt(this.value);
+                    const maxQuantity = parseInt(this.max);
+        
+                    if (newQuantity > maxQuantity) {
+                        this.value = maxQuantity;
+                        showAlert(`Product out of stock. Maximum available quantity is ${maxQuantity}`, 'error');
+                    } else if (newQuantity < 1) {
+                        this.value = 1;
+                        showAlert('Minimum quantity is 1', 'error');
+                    } else {
+                        updateQuantity(productId, newQuantity, maxQuantity);
+                    }
+                });
+            });
+        
+            minusButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = this.dataset.productId;
+                    const input = document.querySelector(`.quantity-input[data-product-id="${productId}"]`);
+                    let newQuantity = parseInt(input.value) - 1;
+                    const maxQuantity = parseInt(input.max);
+                    if (newQuantity >= 1) {
+                        input.value = newQuantity;
+                        updateQuantity(productId, newQuantity, maxQuantity);
+                    }
+                });
+            });
+        
+            plusButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productId = this.dataset.productId;
+                    const input = document.querySelector(`.quantity-input[data-product-id="${productId}"]`);
+                    let newQuantity = parseInt(input.value) + 1;
+                    const maxQuantity = parseInt(input.max);
+                    if (newQuantity <= maxQuantity) {
+                        input.value = newQuantity;
+                        updateQuantity(productId, newQuantity, maxQuantity);
+                    } else {
+                        showAlert(`Product out of stock. Maximum available quantity is ${maxQuantity}`, 'error');
+                    }
+                });
+            });
+        });
+        function showAlert(message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show`;
+            alertDiv.role = 'alert';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            `;
+            document.querySelector('.cart-items').insertAdjacentElement('beforebegin', alertDiv);
+        
+            // Automatically remove the alert after 3 seconds
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 3000);
+        }
+        </script>
   </body>
 </html>

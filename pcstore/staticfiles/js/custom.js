@@ -185,4 +185,36 @@
 	}
 
 
+	// Custom JavaScript code for review submission
+	$(document).ready(function() {
+		$('#reviewForm').submit(function(e) {
+			e.preventDefault();
+			var productId = $('#productId').val();
+			var rating = $('#rating').val();
+			var description = $('#reviewDescription').val();
+
+			$.ajax({
+				url: `/product/${productId}/add_rating/`,
+				type: 'POST',
+				data: {
+					'rating': rating,
+					'description': description,
+					'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+				},
+				success: function(response) {
+					if (response.success) {
+						alert('Review submitted successfully!');
+						location.reload(); // Refresh the page to show the new review
+					} else {
+						alert('Error submitting review: ' + response.error);
+					}
+				},
+				error: function(xhr, status, error) {
+					console.error('Error:', error);
+					alert('An error occurred while submitting the review. Please try again.');
+				}
+			});
+		});
+	});
+
 })(window.jQuery);

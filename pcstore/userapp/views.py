@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse,HttpResponseRedirect
 from django.contrib.auth import authenticate, login,get_user_model,logout
 from django.contrib import messages
@@ -7,13 +7,13 @@ import re
 from django.urls import reverse
 from django.contrib.auth.hashers import make_password, check_password
 from .forms import UserUpdateForm
-from .models import Address, Product, Component, ProductImage, Cart
+from .models import Address, Product, Component, ProductImage, Cart, Rating
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 import json
 import os
 from django.conf import settings
-from django.db.models import Q
+from django.db.models import Q, Avg, Sum
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
@@ -23,6 +23,10 @@ from django.utils.deprecation import MiddlewareMixin
 from django.contrib.auth import logout
 from django.utils import timezone
 from datetime import timedelta
+import logging
+import math
+
+logger = logging.getLogger(__name__)
 
 user = get_user_model()
 def index(request):
@@ -507,23 +511,43 @@ def keyboards_view(request):
 @login_required(login_url='userapp:login')
 def mouses_view(request):
     mouses = Product.objects.filter(category='mouse')
-    return render(request, 'mouse.html', {'mouses': mouses})
+    available_brands = mouses.values_list('brand', flat=True).distinct()
+    context = {
+        'mouses': mouses,
+        'available_brands': available_brands,
+    }
+    return render(request, 'mouse.html', context)
 
 @login_required(login_url='userapp:login')
 def monitors_view(request):
     monitors = Product.objects.filter(category='monitor')
     available_brands = monitors.values_list('brand', flat=True).distinct()
-    return render(request, 'monitors.html', {'monitors': monitors, 'available_brands': available_brands})
+    context = {
+        'monitors': monitors,
+        'available_brands': available_brands,
+    }
+    return render(request, 'monitors.html', context)
 
 @login_required(login_url='userapp:login')
 def assembledcpus_view(request):
     assembledcpus = Product.objects.filter(category='assembled_cpu')
-    return render(request, 'assembled_cpu.html', {'assembledcpus': assembledcpus})
+    available_brands = assembledcpus.values_list('brand', flat=True).distinct()
+    context = {
+        'assembledcpus': assembledcpus,
+        'available_brands': available_brands,
+    }
+    return render(request, 'assembled_cpu.html', context)
 
 @login_required(login_url='userapp:login')
 def accessories_view(request):
     accessories = Product.objects.filter(category='accessory')
-    return render(request, 'accessory.html', {'accessories': accessories})
+    available_brands = accessories.values_list('brand', flat=True).distinct()
+    context = {
+        'accessories': accessories,
+        'available_brands': available_brands,
+    }
+    return render(request, 'accessory.html', context)
+
 
 
 
@@ -546,32 +570,24 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from .models import Product
 
-def single_product(request, category, product_id):
-    product = get_object_or_404(Product, productId=product_id)
-    return render(request, 'singleproduct.html', {'product': product})
+from django.db.models import Avg
 
-@login_required
-def add_to_cart(request, product_id):
-    if request.method == 'POST':
-        product = get_object_or_404(Product, productId=product_id)
-        user = request.user
-        
-        cart_item, created = Cart.objects.get_or_create(
-            user=user,
-            product=product,
-            defaults={'quantity': 1, 'totalPrice': product.price}
-        )
-        
-        if not created:
-            if cart_item.quantity >= product.stockLevel:
-                return JsonResponse({'success': False, 'message': 'Cannot add more of this product to cart.'})
-            cart_item.quantity += 1
-            cart_item.totalPrice = cart_item.quantity * product.price
-            cart_item.save()
-        
-        return JsonResponse({'success': True})
+def single_product(request, product_id, category):
+    product = get_object_or_404(Product, productId=product_id)
+    average_rating = Rating.objects.filter(product=product).aggregate(Avg('rating'))['rating__avg']
+    ratings = Rating.objects.filter(product=product).order_by('-created_at')
+    user_rating = None
+    if request.user.is_authenticated:
+        user_rating = Rating.objects.filter(user=request.user, product=product).first()
     
-    return JsonResponse({'success': False}, status=400)
+    context = {
+        'product': product,
+        'category': category,
+        'user_rating': user_rating,
+        'average_rating': average_rating,
+        'ratings': ratings,
+    }
+    return render(request, 'singleproduct.html', context)
 
 def cart_view(request):
     cart_items = Cart.objects.filter(user=request.user)
@@ -595,56 +611,116 @@ def cart_view(request):
     }
     return render(request, 'cartview.html', context)
 
+
+
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+import json
+from .models import Cart, Product
+
 @require_POST
 @csrf_exempt
-def update_cart_item(request, item_id):
+def add_to_cart(request):
     data = json.loads(request.body)
-    new_quantity = data['quantity']
-    cart_item = Cart.objects.get(cartId=item_id)
-    product = cart_item.product
+    product_id = data.get('productId')
+    quantity = data.get('quantity', 1)
 
-    if new_quantity > product.stockLevel:
-        return JsonResponse({
-            'success': False,
-            'error': 'insufficient_stock',
-            'available_stock': product.stockLevel
-        })
+    try:
+        product = Product.objects.get(productId=product_id)
+        cart_item, created = Cart.objects.get_or_create(
+            user=request.user,
+            product=product,
+            defaults={'quantity': 0, 'totalPrice': 0}
+        )
 
-    cart_item.quantity = new_quantity
-    cart_item.totalPrice = cart_item.product.price * new_quantity
-    cart_item.save()
-    
-    cart_total = sum(item.totalPrice for item in Cart.objects.filter(user=request.user))
-    total_items = sum(item.quantity for item in Cart.objects.filter(user=request.user))
-    
-    return JsonResponse({
-        'success': True,
-        'new_price': cart_item.totalPrice,
-        'cart_total': cart_total,
-        'total_items': total_items
-    })
+        total_quantity = cart_item.quantity + quantity
+        if total_quantity > product.stockLevel:
+            return JsonResponse({'success': False, 'error': 'Out of stock', 'available': product.stockLevel})
 
-@require_POST
+        cart_item.quantity = total_quantity
+        cart_item.totalPrice = total_quantity * product.price
+        cart_item.save()
+
+        return JsonResponse({'success': True})
+    except Product.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Product not found'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
 @csrf_exempt
-def remove_cart_item(request, item_id):
-    Cart.objects.filter(cartId=item_id).delete()
-    
-    cart_items = Cart.objects.filter(user=request.user)
-    cart_total = sum(item.totalPrice for item in cart_items)
-    total_items = sum(item.quantity for item in cart_items)
-    total_discount = 0  # Calculate this based on your discount logic
-    delivery_charges = 174  # You can adjust this or make it dynamic
-    total_amount = cart_total - total_discount + delivery_charges
-    
-    return JsonResponse({
-        'success': True,
-        'cart_total': cart_total,
-        'total_items': total_items,
-        'total_discount': total_discount,
-        'delivery_charges': delivery_charges,
-        'total_amount': total_amount
-    })
+def remove_from_cart(request):
+    data = json.loads(request.body)
+    product_id = data.get('productId')
 
+    try:
+        cart_item = Cart.objects.get(user=request.user, product__productId=product_id)
+        cart_item.delete()
+
+        # Recalculate cart totals
+        cart_items = Cart.objects.filter(user=request.user)
+        total_price = sum(item.totalPrice for item in cart_items)
+        total_discount = 0  # Calculate this based on your discount logic
+        delivery_charges = 174  # You can adjust this or make it dynamic
+        total_amount = total_price - total_discount + delivery_charges
+        total_savings = total_discount
+
+        return JsonResponse({
+            'success': True,
+            'cart_items_count': cart_items.count(),
+            'total_price': total_price,
+            'total_discount': total_discount,
+            'delivery_charges': delivery_charges,
+            'total_amount': total_amount,
+            'total_savings': total_savings,
+        })
+    except Cart.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Item not found in cart'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
+@csrf_exempt
+def update_cart_quantity(request):
+    data = json.loads(request.body)
+    product_id = data.get('productId')
+    new_quantity = data.get('quantity')
+
+    try:
+        cart_item = Cart.objects.get(user=request.user, product__productId=product_id)
+        product = cart_item.product
+
+        if new_quantity > product.stockLevel:
+            return JsonResponse({'success': False, 'error': f'Maximum available quantity is {product.stockLevel}'})
+
+        if new_quantity < 1:
+            return JsonResponse({'success': False, 'error': 'Minimum quantity is 1'})
+
+        cart_item.quantity = new_quantity
+        cart_item.totalPrice = new_quantity * product.price
+        cart_item.save()
+
+        # Recalculate cart totals
+        cart_items = Cart.objects.filter(user=request.user)
+        total_price = sum(item.totalPrice for item in cart_items)
+        total_discount = 0  # Calculate this based on your discount logic
+        delivery_charges = 174  # You can adjust this or make it dynamic
+        total_amount = total_price - total_discount + delivery_charges
+        total_savings = total_discount
+
+        return JsonResponse({
+            'success': True,
+            'cart_items_count': cart_items.count(),
+            'total_price': total_price,
+            'total_discount': total_discount,
+            'delivery_charges': delivery_charges,
+            'total_amount': total_amount,
+            'total_savings': total_savings,
+        })
+    except Cart.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Item not found in cart'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+     
 @require_POST
 def remove_main_image(request):
     product_id = request.POST.get('product_id')
@@ -676,24 +752,6 @@ def search_suggestions(request):
         return JsonResponse(list(suggestions), safe=False)
     return JsonResponse([], safe=False)
 
-def check_cart_quantity(request, product_id):
-    product = Product.objects.get(productId=product_id)
-    cart_item = Cart.objects.filter(user=request.user, product=product).first()
-    current_quantity = cart_item.quantity if cart_item else 0
-    return JsonResponse({'current_quantity': current_quantity})
-
-@require_POST
-def add_to_cart(request, product_id):
-    product = Product.objects.get(productId=product_id)
-    cart_item, created = Cart.objects.get_or_create(user=request.user, product=product)
-    
-    if not created and cart_item.quantity >= product.stockLevel:
-        return JsonResponse({'success': False, 'message': 'Cannot add more of this product to cart.'})
-    
-    cart_item.quantity += 1
-    cart_item.save()
-    return JsonResponse({'success': True})
-
 def check_session(request):
     return JsonResponse({'is_authenticated': request.user.is_authenticated})
 
@@ -719,3 +777,54 @@ class SessionTimeoutMiddleware:
                     return redirect('userapp:login')  # Replace with your login URL name
             request.session['last_activity'] = timezone.now().isoformat()
         return self.get_response(request)
+
+def product_detail(request, product_id):
+    product = get_object_or_404(Product, productId=product_id)
+    
+    # Calculate average rating and count of ratings for this product
+    rating_data = Rating.objects.filter(product=product).aggregate(
+        average_rating=Avg('rating'),
+        rating_count=Count('rating')
+    )
+    
+    average_rating = rating_data['average_rating'] or 0
+    average_rating = round(average_rating, 1)  # Round to one decimal place
+    rating_count = rating_data['rating_count'] or 0
+    
+    # Get all ratings for this product
+    ratings = Rating.objects.filter(product=product).order_by('-created_at')
+    
+    context = {
+        'product': product,
+        'ratings': ratings,
+        'average_rating': average_rating,
+        'rating_count': rating_count,
+    }
+    return render(request, 'singleproduct.html', context)
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .models import Product, Rating
+from django.http import HttpResponse
+import logging
+
+logger = logging.getLogger(__name__)
+
+@login_required
+@require_POST
+def add_rating(request, product_id):
+    try:
+        product = Product.objects.get(productId=product_id)
+        rating_value = int(request.POST['rating'])
+        description = request.POST['description']
+        
+        rating, created = Rating.objects.update_or_create(
+            user=request.user,
+            product=product,
+            defaults={'rating': rating_value, 'description': description}
+        )
+        
+        return JsonResponse({'success': True, 'message': 'Rating and review successfully submitted.'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=400)

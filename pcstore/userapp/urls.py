@@ -8,7 +8,22 @@ from django.contrib.auth import views as auth_views
 from .views import search_suggestions
 
 app_name='userapp'
+print("Loading userapp URLs")
+
 urlpatterns = [
+    # ... other URL patterns ...
+    path('product/<int:product_id>/add_rating/', views.add_rating, name='add_rating'),
+    # ... other URL patterns ...
+    # ... other URL patterns ...
+    path('<str:category>/<int:product_id>/', views.single_product, name='single_product'),
+    path('add_rating/<int:product_id>/', views.add_rating, name='add_rating'),  # Removed this line
+    # ... other URL patterns ...
+    path('keyboard/<int:product_id>/', views.single_product, name='single_product', kwargs={'category': 'keyboards'}),
+    path('monitors/<int:product_id>/', views.single_product, name='single_product', kwargs={'category': 'monitors'}),
+    path('mouses/<int:product_id>/', views.single_product, name='single_product', kwargs={'category': 'mouses'}),
+    path('assembledcpus/<int:product_id>/', views.single_product, name='single_product', kwargs={'category': 'assembledcpus'}),
+    path('accessories/<int:product_id>/', views.single_product, name='single_product', kwargs={'category': 'accessories'}),
+    path('product/<int:product_id>/add_rating/', views.add_rating, name='add_rating'),  # Kept this line
     path('', views.index, name='index'),
     
     path('loginuser', views.loginu, name='loginu'),
@@ -73,19 +88,20 @@ urlpatterns = [
     path('mouses/<int:product_id>/', views.single_product, name='single_product', kwargs={'category': 'mouses'}),
     path('assembledcpus/<int:product_id>/', views.single_product, name='single_product', kwargs={'category': 'assembledcpus'}),
     path('accessories/<int:product_id>/', views.single_product, name='single_product', kwargs={'category': 'accessories'}),
-    path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path('cart/', views.cart_view, name='cart_view'),
-    path('update-cart-item/<int:item_id>/', views.update_cart_item, name='update_cart_item'),
-    path('remove-cart-item/<int:item_id>/', views.remove_cart_item, name='remove_cart_item'),
     path('login/', views.loginu, name='login'),
     path('remove-main-image/', views.remove_main_image, name='remove_main_image'),
     path('remove-additional-image/<int:image_id>/', views.remove_additional_image, name='remove_additional_image'),
     path('search-suggestions/', search_suggestions, name='search_suggestions'),
     path('<str:category>/<int:product_id>/', views.single_product, name='single_product'),
-    path('check-cart-quantity/<int:product_id>/', views.check_cart_quantity, name='check_cart_quantity'),
-    path('add-to-cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path('delete-component/<int:component_id>/', views.delete_component, name='delete_component'),
     path('check-session/', views.check_session, name='check_session'),
+    path('product/<int:product_id>/add_rating/', views.add_rating, name='add_rating'),
+    path('keyboard/<int:product_id>/', views.single_product, name='single_product'),
+    path('add_rating/<int:product_id>/', views.add_rating, name='add_rating'),  # Removed this line
+    path('add-to-cart/', views.add_to_cart, name='add_to_cart'),  # Added this line
+    path('remove-from-cart/', views.remove_from_cart, name='remove_from_cart'),  # Added this line
+    path('update_cart_quantity/', views.update_cart_quantity, name='update_cart_quantity'),  # Added this line
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1297,6 +1297,9 @@
             width: 100%;
             margin-top: 10px;
         }
+        .img-fluid {
+            width: 391px !important;
+        }
     </style>
 
     <!-- <link rel="stylesheet" href="{% static 'css/profile-sidenav.css' %}"> -->
@@ -1745,7 +1748,7 @@ https://templatemo.com/tm-571-hexashop
                 const allRows = Array.from(tbody.querySelectorAll('tr'));
 
                 // Populate categories
-                const categories = ['monitor', 'keyboard', 'mouse', 'accessory', 'assembled_cpu'];
+                const categories = ['monitor', 'keyboard', 'mouse', 'assembled_cpu', 'accessory'];
                 categories.forEach(category => {
                     const option = document.createElement('option');
                     option.value = category;
@@ -1763,13 +1766,13 @@ https://templatemo.com/tm-571-hexashop
 
                     // Filter rows based on selected category
                     if (category) {
-                        rows = rows.filter(row => row.cells[1].textContent.trim().toLowerCase() === category);
+                        rows = rows.filter(row => row.cells[2].textContent.trim() === category);
                     }
 
                     rows.sort((a, b) => {
                         if (price) {
-                            const priceA = parseFloat(a.cells[2].textContent.replace('$', ''));
-                            const priceB = parseFloat(b.cells[2].textContent.replace('$', ''));
+                            const priceA = parseFloat(a.cells[3].textContent.replace('$', ''));
+                            const priceB = parseFloat(b.cells[3].textContent.replace('$', ''));
                             if (price === 'low-to-high') {
                                 return priceA - priceB;
                             } else {
@@ -1778,8 +1781,8 @@ https://templatemo.com/tm-571-hexashop
                         }
 
                         if (stock) {
-                            const stockA = parseInt(a.cells[3].textContent);
-                            const stockB = parseInt(b.cells[3].textContent);
+                            const stockA = parseInt(a.cells[4].textContent);
+                            const stockB = parseInt(b.cells[4].textContent);
                             if (stock === 'low-to-high') {
                                 return stockA - stockB;
                             } else {
@@ -1788,8 +1791,8 @@ https://templatemo.com/tm-571-hexashop
                         }
 
                         if (brand) {
-                            const brandA = a.cells[2].textContent.trim().toLowerCase();
-                            const brandB = b.cells[2].textContent.trim().toLowerCase();
+                            const brandA = a.cells[1].textContent.trim().toLowerCase();
+                            const brandB = b.cells[1].textContent.trim().toLowerCase();
                             if (brand === 'a-z') {
                                 return brandA.localeCompare(brandB);
                             } else {
@@ -1812,8 +1815,8 @@ https://templatemo.com/tm-571-hexashop
                     if (rows.length === 0) {
                         const noResultsRow = document.createElement('tr');
                         const noResultsCell = document.createElement('td');
-                        noResultsCell.colSpan = 6; // Span across all columns
-                        noResultsCell.textContent = 'No products found for the selected criteria.';
+                        noResultsCell.colSpan = 7; // Span across all columns
+                        noResultsCell.textContent = 'No components found for the selected criteria.';
                         noResultsCell.style.textAlign = 'center';
                         noResultsRow.appendChild(noResultsCell);
                         tbody.appendChild(noResultsRow);
