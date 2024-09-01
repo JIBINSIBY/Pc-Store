@@ -7,7 +7,7 @@ import re
 from django.urls import reverse
 from django.contrib.auth.hashers import make_password, check_password
 from .forms import UserUpdateForm
-from .models import Address, Product, Component, ProductImage, Cart, Rating
+from .models import Address, Product, Component, ProductImage, Cart, Rating, CustomPC, CustomPCComponent
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 import json
@@ -467,36 +467,10 @@ def search_results(request):
     else:
         results = []
     return render(request, 'search_results.html', {'results': results, 'query': query})
-
+@login_required(login_url='userapp:login')
 def pc_custom(request):
     return render(request, 'pc_custom.html')
 
-from django.http import JsonResponse
-from .models import Component
-
-def get_components(request):
-    components = Component.objects.all().values('componentId', 'name', 'category', 'price', 'image')
-    component_list = list(components)
-    for component in component_list:
-        category = component['category'].lower().replace(' ', '')
-        if category == 'cpu/processor':
-            component['category'] = 'cpu'
-        elif category == 'powersupplyunit':
-            component['category'] = 'psu'
-        elif category == 'graphicscard':
-            component['category'] = 'gpu'
-        elif category == 'bluetoothcard':
-            component['category'] = 'bluetooth'
-        elif category == 'wificard':
-            component['category'] = 'wifi'
-        else:
-            component['category'] = category
-
-        if component.get('image'):
-            component['image'] = settings.MEDIA_URL + str(component['image'])
-        else:
-            component['image'] = settings.STATIC_URL + 'images/default-component.png'
-    return JsonResponse(component_list, safe=False)
 
 @login_required(login_url='userapp:login')
 def keyboards_view(request):
@@ -778,6 +752,37 @@ class SessionTimeoutMiddleware:
             request.session['last_activity'] = timezone.now().isoformat()
         return self.get_response(request)
 
+@require_POST
+def add_address(request):
+    user = request.user
+    address = Address.objects.create(
+        user=user,
+        full_name=request.POST.get('full_name'),
+        mobile_number=request.POST.get('mobile_number'),
+        pincode=request.POST.get('pincode'),
+        flat_house=request.POST.get('flat_house'),
+        area_street=request.POST.get('area_street'),
+        town_city=request.POST.get('town_city'),
+        state=request.POST.get('state'),
+        landmark=request.POST.get('landmark'),
+        country='India'  # Assuming the country is always India
+    )
+    return JsonResponse({
+        'success': True,
+        'address': {
+            'id': address.id,
+            'full_name': address.full_name,
+            'mobile_number': address.mobile_number,
+            'pincode': address.pincode,
+            'flat_house': address.flat_house,
+            'area_street': address.area_street,
+            'town_city': address.town_city,
+            'state': address.state,
+            'landmark': address.landmark,
+            'country': address.country
+        }
+    })
+
 def product_detail(request, product_id):
     product = get_object_or_404(Product, productId=product_id)
     
@@ -828,3 +833,134 @@ def add_rating(request, product_id):
         return JsonResponse({'success': True, 'message': 'Rating and review successfully submitted.'})
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)}, status=400)
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from userapp.models import User  # Import your User model
+
+@login_required
+def checkout(request):
+    user = request.user
+    cart_items = Cart.objects.filter(user=user)
+    user_addresses = Address.objects.filter(user=user)
+    total_price = sum(item.totalPrice for item in cart_items)
+    total_discount = 0  # Calculate this based on your discount logic
+    delivery_charges = 174  # You can adjust this or make it dynamic
+    total_amount = total_price - total_discount + delivery_charges
+    total_savings = total_discount
+    
+    context = {
+        'user': user,
+        'cart_items': cart_items,
+        'user_addresses': user_addresses,
+        'total_price': total_price,
+        'total_discount': total_discount,
+        'delivery_charges': delivery_charges,
+        'total_amount': total_amount,
+        'total_savings': total_savings,
+    }
+    
+    return render(request, 'checkout.html', context)
+
+    from django.contrib.auth import logout
+from django.shortcuts import redirect
+from django.urls import reverse
+
+def logout_and_redirect(request):
+    logout(request)
+    return redirect(reverse('userapp:login'))
+
+def upi_payment(request):
+    # Handle UPI payment logic
+    return render(request, 'upi_payment.html')
+
+def card_payment(request):
+    # Handle card payment logic
+    return render(request, 'card_payment.html')
+
+def cod_confirmation(request):
+    # Handle Cash on Delivery confirmation
+    return render(request, 'cod_confirmation.html')
+
+import logging
+from django.http import JsonResponse
+from .models import Component
+
+logger = logging.getLogger(__name__)
+@login_required(login_url='userapp:login')
+def get_components(request):
+    category = request.GET.get('category', '')
+    logger.info(f"Fetching components for category: {category}")
+    
+    category_mapping = {
+        'ram': 'RAM',
+        'hard drive': 'Hard drive',
+        'case': 'Case',
+        'power supply unit': 'Power supply unit',
+        'graphics card': 'Graphics card',
+        'cpu cooler': 'CPU Cooler',
+        'wifi card': 'Wifi card',
+        'bluetooth card': 'Bluetooth card',
+        'motherboard': 'Motherboard',
+        'cpu': 'CPU/processor'
+    }
+    
+    db_category = category_mapping.get(category.lower(), category)
+    logger.info(f"Mapped category: {db_category}")
+    
+    if db_category:
+        components = Component.objects.filter(category__iexact=db_category)
+    else:
+        components = Component.objects.all()
+    
+    logger.info(f"Found {components.count()} components")
+    
+    data = [{
+        'componentId': c.componentId,
+        'name': c.name,
+        'price': str(c.price),
+        'image': c.image.url if c.image else '',
+        'category': c.category,
+        'brand': c.brand,
+        'description': c.description
+    } for c in components]
+    
+    logger.info(f"Returning {len(data)} components")
+    return JsonResponse(data, safe=False)
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+from .models import CustomPC, CustomPCComponent, Component
+import json
+
+@login_required
+@csrf_exempt
+def check_compatibility(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            components = data.get('components', [])
+            total_price = data.get('totalPrice', 0)
+
+            # Create a new CustomPC instance
+            custom_pc = CustomPC.objects.create(
+                user=request.user,
+                total_price=total_price,
+                status='Pending'  # You can set an initial status
+            )
+
+            # Add components to CustomPCComponent
+            for component_data in components:
+                component = Component.objects.get(componentId=component_data['componentId'])
+                CustomPCComponent.objects.create(
+                    custom_pc=custom_pc,
+                    component=component,
+                    quantity=component_data['quantity']
+                )
+
+            return JsonResponse({'success': True, 'message': 'Configuration submitted successfully'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)})
+    else:
+        return JsonResponse({'success': False, 'message': 'Invalid request method'})

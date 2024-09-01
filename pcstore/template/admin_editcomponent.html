@@ -1450,12 +1450,16 @@ https://templatemo.com/tm-571-hexashop
                     <label for="category">Category</label>
                     <select class="form-control" id="category" name="category" required>
                         <option value="CPU" {% if component.category == 'CPU' %}selected{% endif %}>CPU</option>
-                        <option value="GPU" {% if component.category == 'GPU' %}selected{% endif %}>GPU</option>
-                        <option value="RAM" {% if component.category == 'RAM' %}selected{% endif %}>RAM</option>
                         <option value="Motherboard" {% if component.category == 'Motherboard' %}selected{% endif %}>Motherboard</option>
-                        <option value="Storage" {% if component.category == 'Storage' %}selected{% endif %}>Storage</option>
-                        <option value="Power Supply" {% if component.category == 'Power Supply' %}selected{% endif %}>Power Supply</option>
-                        <option value="Cooling" {% if component.category == 'Cooling' %}selected{% endif %}>Cooling</option>
+                        <option value="RAM" {% if component.category == 'RAM' %}selected{% endif %}>RAM (random access memory)</option>
+                        <option value="Hard drive" {% if component.category == 'Hard drive' %}selected{% endif %}>Hard drive</option>
+                        <option value="Solid drive" {% if component.category == 'Solid drive' %}selected{% endif %}>Solid State drive</option>
+                        <option value="Case" {% if component.category == 'Case' %}selected{% endif %}>Case</option>
+                        <option value="Power supply unit" {% if component.category == 'Power Supply Unit' %}selected{% endif %}>Power supply unit</option>
+                        <option value="Graphics card" {% if component.category == 'Graphics card' %}selected{% endif %}>Graphics card</option>
+                        <option value="CPU Cooler" {% if component.category == 'CPU Cooler' %}selected{% endif %}>CPU Cooler</option>
+                        <option value="Bluetooth card" {% if component.category == 'Bluetooth card' %}selected{% endif %}>Bluetooth card</option>
+                        <option value="Wifi card" {% if component.category == 'Wifi card' %}selected{% endif %}>Wifi card</option>
                     </select>
                 </div>
                 <div class="form-group">

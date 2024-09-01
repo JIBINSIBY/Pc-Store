@@ -73,9 +73,9 @@ urlpatterns = [
     path('delete-component/<int:component_id>/', views.delete_component, name='delete_component'),
     path('search/', views.search_results, name='search_results'),
     path('pc_custom/', views.pc_custom, name='pc_custom'),
+    path('get_components/', views.get_components, name='get_components'),
     path('profile', views.profile, name='profile'),
     path('address/', views.address, name='address'),
-    path('get_components/', views.get_components, name='get_components'),
     path('keyboards/', views.keyboards_view, name='keyboards'),
     path('monitors/', views.monitors_view, name='monitors'),
     path('mouses/', views.mouses_view, name='mouses'),
@@ -102,6 +102,13 @@ urlpatterns = [
     path('add-to-cart/', views.add_to_cart, name='add_to_cart'),  # Added this line
     path('remove-from-cart/', views.remove_from_cart, name='remove_from_cart'),  # Added this line
     path('update_cart_quantity/', views.update_cart_quantity, name='update_cart_quantity'),  # Added this line
+    path('checkout/', views.checkout, name='checkout'),
+    path('add-address/', views.add_address, name='add_address'),
+    path('logout-and-redirect/', views.logout_and_redirect, name='logout_and_redirect'),
+    path('upi-payment/', views.upi_payment, name='upi_payment'),
+    path('card-payment/', views.card_payment, name='card_payment'),
+    path('cod-confirmation/', views.cod_confirmation, name='cod_confirmation'),
+    path('check-compatibility/', views.check_compatibility, name='check_compatibility'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

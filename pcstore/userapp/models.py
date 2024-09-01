@@ -84,25 +84,23 @@ class Component(models.Model):
 
     def __str__(self):
         return f"{self.brand} - {self.name}"
-        return f"{self.brand} - {self.name}"
 
 class CustomPC(models.Model):
-    configId = models.AutoField(primary_key=True)
-    userId = models.ForeignKey(User, on_delete=models.CASCADE)
-    totalPrice = models.DecimalField(max_digits=10, decimal_places=2)
-
-    def __str__(self):
-        return f"Custom PC {self.configId} for User {self.userId}"
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20)  # e.g., 'Pending', 'Approved', 'Rejected'
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class CustomPCComponent(models.Model):
-    config = models.ForeignKey(CustomPC, on_delete=models.CASCADE)
+    custom_pc = models.ForeignKey(CustomPC, on_delete=models.CASCADE)
     component = models.ForeignKey(Component, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
 
     class Meta:
-        unique_together = ('config', 'component')
+        unique_together = ('custom_pc', 'component')
 
     def __str__(self):
-        return f"Component {self.component} for Custom PC {self.config.configId}"
+        return f"Component {self.component} for Custom PC {self.custom_pc.user.username}"
 
 class Cart(models.Model):
     cartId = models.AutoField(primary_key=True)

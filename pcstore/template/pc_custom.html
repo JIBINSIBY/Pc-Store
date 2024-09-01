@@ -29,26 +29,65 @@ TemplateMo 571 Hexashop
 
 https://templatemo.com/tm-571-hexashop
 
---><script>
-   
-</script>
-
+-->
     <style>
+        .main-banner {
+            padding-top: 46px;
+            padding-bottom: 0px !important;
+        }
+        #keyboards .thumb {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #keyboards .hover-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.7);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        #keyboards .thumb:hover .hover-content {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .header-area .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+        }
+
         .search-container {
             display: flex;
             align-items: center;
-            margin-right: 20px;
+            margin: 0 20px;
+            max-width: 50%; /* Adjust this value to control the maximum width */
+            margin-left: 0px;
         }
+
         .search-container form {
             display: flex;
             align-items: center;
+            width: 100%;
         }
+
         .search-container input[type="text"] {
             padding: 10px;
-            border: none;
+            border: 1px solid #ddd;
             border-radius: 5px 0 0 5px;
             outline: none;
+            flex-grow: 1;
+            min-width: 0;
+            width: 100%;
         }
+
         .search-container button {
             padding: 10px 15px;
             background-color: #7e96dc;
@@ -57,61 +96,950 @@ https://templatemo.com/tm-571-hexashop
             border-radius: 0 5px 5px 0;
             cursor: pointer;
         }
+
         .search-container button:hover {
             background-color: #d32f2f;
         }
-        .d-flex{
+
+        .header-area .main-nav .nav {
             display: flex;
+            justify-content: flex-end;
             align-items: center;
-            margin-left: 87px;
-            margin-top: 34px;
+            margin: 0;
+            padding: 0;
+            height: 100%;
         }
 
-        .component-selection h3 {
-            margin-top: 20px;
+        .header-area .main-nav .nav li {
+            padding: 0 15px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-area .main-nav .nav li a {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            height: 100%;
+            border: transparent;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 991px) {
+            .header-area .main-nav {
+                flex-wrap: wrap;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0;
+            }
+            .search-container form {
+                width: 100%;
+            }
+            .search-container input[type="text"] {
+                flex-grow: 1;
+            }
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 4px 4px;
+        }
+
+        .suggestion-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .suggestion-item:not(:last-child) {
+            border-bottom: 1px solid #eee;
+        }
+
+        .fixed-top {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1030;
+        }
+
+        body {
+            padding-top: 80px; /* Adjust this value based on your header height */
+        }
+
+        .submenu {
+            position: relative;
+        }
+
+        .submenu .dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            padding: 10px 0;
+            min-width: 200px;
+            z-index: 1000;
+        }
+
+        .submenu:hover .dropdown {
+            display: block;
+        }
+
+        .submenu .dropdown li {
+            display: block;
+            padding: 5px 15px;
+        }
+
+        .submenu .dropdown li a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .submenu .dropdown li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .submenu .dropdown li a:hover {
+            background-color: #f5f5f5;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            flex-shrink: 0;
+        }
+
+        .search-container {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+
+        .search-container form {
+            display: flex;
+        }
+
+        .search-container input[type="text"] {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .nav {
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 991px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+
+        .scrolling-banner {
+            overflow: hidden;
+            position: relative;
+            height: 300px;
+            margin-bottom: 50px;
+            padding-top: 0px !important;
+        }
+
+        .banner-container {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .banner-slide {
+            flex: 0 0 100%;
+            position: relative;
+        }
+
+        .banner-slide img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .banner-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+        }
+
+        .banner-content h2 {
+            font-size: 2.5em;
             margin-bottom: 10px;
         }
 
-        .cart {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 5px;
-        }
-
-        #selected-components {
-            min-height: 200px;
-        }
-
-        .component-container {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 15px;
+        .banner-content p {
+            font-size: 1.2em;
             margin-bottom: 20px;
         }
 
-        .component-container h4 {
+        .btn-shop-now {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-shop-now:hover {
+            background-color: #0056b3;
+        }
+
+        .scrolling-banner {
+            position: relative;
+        }
+
+        .banner-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            font-size: 24px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .banner-arrow:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .banner-prev {
+            left: 10px;
+        }
+
+        .banner-next {
+            right: 10px;
+        }
+
+        .section {
+            padding: 0px 0;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1485px !important;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .owl-carousel {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+        }
+
+        .owl-carousel .item {
+            flex: 0 0 auto;
+            width: 280px;
+            margin-right: 20px;
+            scroll-snap-align: start;
+        }
+
+        .owl-carousel .item:last-child {
+            margin-right: 0;
+        }
+
+        @media (max-width: 768px) {
+            .owl-carousel .item {
+                width: 220px;
+            }
+        }
+
+        .down-content .category {
+            display: block;
+            font-size: 14px;
+            color: #7a7a7a;
+            margin-top: 5px;
+        }
+        #latest-products{
+            background: #f8f9fa;
+            height: 490px;
+        }
+        #latest-products .item {
+            margin-bottom: 30px;
+        }
+
+        #latest-products .item .thumb {
+            position: relative;
+            overflow: hidden;
+        }
+
+        #latest-products .item .thumb img {
+            width: 100%;
+            height: auto;
+        }
+
+        #latest-products .item .down-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        #latest-products .item .down-content h4 {
+            font-size: 17px;
+            color: #1a6692;
             margin-bottom: 10px;
         }
 
-        .selected-component {
-            min-height: 60px;
+        #latest-products .item .down-content span {
+            color: #000000;
+            font-size: 15px;
+            font-weight: 700;
         }
 
-        .selected-item {
+        #latest-products .row {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 0 10px;
+        }
+
+        #latest-products .row::-webkit-scrollbar {
+            display: none;
+        }
+
+        #latest-products .col-lg-2 {
+            flex: 0 0 auto;
+            width: calc(16.666% - 20px);
+            min-width: 200px;
+            scroll-snap-align: start;
+            margin-right: 20px;
+        }
+
+        #latest-products .item {
+            border: 1px solid #e6e6e6;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #latest-products .thumb img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        #latest-products .down-content {
+            padding: 15px;
+            text-align: center;
+        }
+
+        #latest-products h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #latest-products span {
+            font-size: 14px;
+            color: #000000;
+            font-weight: 500;
+        }
+
+        #latest-products .section-heading {
+            text-align: left;
+            margin-bottom: 30px;
+            padding: 0 10px;
+        }
+
+        #latest-products .section-heading h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        #latest-products .section-heading span {
+            color: #7a7a7a;
+        }
+
+        #latest-products .product-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 20px 0;
+        }
+
+        #latest-products .product-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        #latest-products .product-item {
+            flex: 0 0 auto;
+            width: calc(100% / 7);
+            padding: 0 10px;
+            scroll-snap-align: start;
+        }
+
+        #latest-products .item {
+            border: 1px solid #e6e6e6;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #latest-products .thumb img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        #latest-products .down-content {
+            padding: 15px;
+            text-align: center;
+        }
+
+        #latest-products h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #latest-products span {
+            font-size: 14px;
+            color: #000000;
+            font-weight: 500;
+        }
+
+        @media (max-width: 1200px) {
+            #latest-products .product-item {
+                width: calc(100% / 5);
+            }
+        }
+
+        @media (max-width: 992px) {
+            #latest-products .product-item {
+                width: calc(100% / 4);
+            }
+        }
+
+        @media (max-width: 768px) {
+            #latest-products .product-item {
+                width: calc(100% / 3);
+            }
+        }
+
+        @media (max-width: 576px) {
+            #latest-products .product-item {
+                width: calc(100% / 2);
+            }
+        }
+
+        #latest-products .product-item {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #latest-products .product-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #latest-products .item {
+            transition: background-color 0.3s ease;
+        }
+
+        #latest-products .product-item:hover .item {
+            background-color: #f8f8f8;
+        }
+
+        #latest-products .down-content {
+            transition: color 0.3s ease;
+        }
+
+        #latest-products .product-item:hover .down-content h4,
+        #latest-products .product-item:hover .down-content span {
+            color: #7d7d7d;
+        }
+
+        .bottom-banner {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .bottom-banner .banner-container {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .bottom-banner .banner-slide {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+
+        .bottom-banner .banner-slide img {
+            width: 100%;
+            height: auto;
+        }
+
+        .bottom-banner .banner-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .bottom-banner .banner-prev {
+            left: 10px;
+        }
+
+        .bottom-banner .banner-next {
+            right: 10px;
+        }
+        #explore{
+            padding-top: 30px !important;
+            padding-bottom: 30px !important ;
+        }
+        #explore .container-fluid {
+            max-width: 100%;
+            padding: 0;
+        }
+
+        #explore .row {
             display: flex;
             align-items: center;
+        }
+
+        #explore .left-content {
+            background-color: #f8f9fa;
+            padding: 60px 0;
+        }
+
+        #explore .content-wrapper {
+            max-width: 540px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 30px;
+        }
+
+        #explore .right-content {
+            padding: 0;
+        }
+
+        #explore .big-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @media (max-width: 991px) {
+            #explore .row {
+                flex-direction: column;
+            }
+            #explore .content-wrapper {
+                max-width: 100%;
+                padding: 0 15px;
+                margin: 0 auto;
+            }
+            #explore .big-image img {
+                margin-top: 30px;
+            }
+        }
+
+        .hover13 figure {
+            background: #fff;
+            overflow: hidden;
+        }
+        
+        .hover13 figure:hover img {
+            opacity: 1;
+            -webkit-animation: flash 1.5s;
+            animation: flash 1.5s;
+        }
+        
+        @-webkit-keyframes flash {
+            0% {
+                opacity: .4;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes flash {
+            0% {
+                opacity: .4;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        #social {
+            margin-top: 35px;
+            padding-bottom: 10px !important;
+            border-bottom: 3px dotted #eee;
+            margin-left: -130px;
+        }
+
+        #social .social-images {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        #social .social-item {
+            position: relative;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        #social .social-item img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+
+        #social .social-item:hover img {
+            transform: scale(1.1);
+        }
+
+        #social .social-item .icon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #social .social-item:hover .icon {
+            opacity: 1;
+        }
+
+        #social .social-item .icon a {
+            text-align: center;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        #social .social-item .icon h6 {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        #social .social-item .icon i {
+            font-size: 24px;
+        }
+
+        @media (max-width: 991px) {
+            #social .social-item {
+                flex-basis: calc(33.333% - 10px);
+            }
+        }
+
+        @media (max-width: 767px) {
+            #social .social-item {
+                flex-basis: calc(50% - 10px);
+            }
+        }
+
+        .product-link {
+            display: block;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .product-link:hover {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .cart-item .quantity,
+        .cart-item .remove-btn {
+            position: relative;
+            z-index: 10;
+        }
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 4px 4px;
+        }
+        
+        .suggestion-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .suggestion-item:not(:last-child) {
+            border-bottom: 1px solid #eee;
+        }
+        .search-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            margin-left: 0px;
+        }
+        
+        .search-container form {
+            display: flex;
+            align-items: center;
+        }
+        
+        .search-container input[type="text"] {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 14px;
+        }
+        
+        .search-container button {
+            padding: 10px 15px;
+            background-color: #f33f3f;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .search-container button:hover {
+            background-color: #d32f2f;
+        }
+        .component-selection {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    
+        .component-item {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+    
+        .component-item:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+    
+        .component-item h5 {
             margin-bottom: 10px;
+            color: #333;
+            font-weight: 600;
         }
-
-        .component-details {
-            margin-left: 10px;
+    
+        .component-item .d-flex {
+            align-items: center;
         }
-
+    
+        .component-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            margin-right: 15px;
+        }
+    
+        .component-item .btn {
+            padding: 5px 15px;
+            font-size: 14px;
+        }
+    
+        .selected-component-container {
+            background-color: #e9ecef;
+            border-radius: 6px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+    
+        .selected-component {
+            display: flex;
+            align-items: center;
+        }
+    
+        .selected-component img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin-right: 15px;
+        }
+    
+        .selected-component .flex-grow-1 {
+            font-size: 14px;
+        }
+    
+        .selected-component strong {
+            display: block;
+            margin-bottom: -26px;
+        }
+    
+        .selected-component .text-muted {
+            font-size: 12px;
+        }
+    
+        .selected-component .text-primary {
+            font-weight: 600;
+        }
+    
         .remove-component {
-            margin-left: 10px;
+            padding: 2px 8px;
+            font-size: 12px;
+        }
+        .btn-danger btn-sm remove-component{
+            margin-left: 15px;
+            margin-top: 62px;
+            /* width: 83px; */
+            height: 30px;
+        }
+        #conreb{
+            margin-left: 6px;
+            margin-bottom: -64px;
+            /* width: 11px; */
+            height: 31px;
+        }
+        .modal-content {
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .modal-header {
+            background-color: #f8f9fa;
+            border-bottom: none;
+            border-radius: 15px 15px 0 0;
+            padding: 20px 30px;
+        }
+        .modal-title {
+            font-weight: bold;
+            color: #333;
+        }
+        .modal-body {
+            padding: 30px;
+        }
+        .modal-footer {
+            border-top: none;
+            padding: 20px 30px;
+        }
+        .component-item {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        .component-item:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .component-details h6 {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .component-details{
+            margin-left: 90px;
+    margin-top: -83px;
+        }
+        .btn btn-sm btn-primary select-component{
+            margin-left: 90px;
+        }
+        .component-price {
+            font-weight: bold;
+            color: #007bff;
+        }
+        .select-component {
+            transition: all 0.3s ease;
+        }
+        .select-component:hover {
+            transform: translateY(-2px);
+        }
+        #brandFilter {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        #brandFilter li {
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: background-color 0.3s ease;
+        }
+        #brandFilter li:hover {
+            background-color: #f8f9fa;
+        }
+        #componentSearch {
+            border-radius: 20px;
+            padding-left: 15px;
         }
     </style>
-
+    
     </head>
     
     <body>
@@ -128,143 +1056,181 @@ https://templatemo.com/tm-571-hexashop
     
     
     <!-- ***** Header Area Start ***** -->
-    <header class="header-area header-sticky">
-        <div class=" mx-5">
+    <header class="header-area header-sticky fixed-top">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
                     <nav class="main-nav">
-                        <!-- ***** Logo Start ***** -->
-                        <a href="index.html" class="logo">
-                            <img src="{% static 'images/logo.png' %}">
-                        </a>
-                        <!-- ***** Logo End ***** -->
-                        
-                        <!-- ***** Search Start ***** -->
-                        <!-- <div class="search-container ">
-                            <form action="{% url 'userapp:search_results' %}" method="get" class="d-flex">
-                                <input type="text" placeholder="Search products..." name="q">
-                                <button type="submit"><i class="fa fa-search"></i></button>
-                            </form>
-                        </div> -->
-                        <!-- ***** Search End ***** -->
+                        <div class="header-content">
+                            <a href="{% url 'userapp:mainpage' %}" class="logo">
+                                <img src="{% static 'images/file.png' %}">
+                            </a>
 
-                        <!-- ***** Menu Start ***** -->
-                        <ul class="nav" style="margin-top: -43px;">
-                            <li class="scroll-to-section"><a href="{% url 'userapp:mainpage' %}" >Home</a></li>
-                            <li class="scroll-to-section"><a href="">About Us</a></li>
-                            <li class="scroll-to-section"><a href="{% url 'userapp:cart_view' %}" >Cart</a></li>
-                            <li class="scroll-to-section"><a href="{% url 'userapp:pc_custom' %}" class="active">Custom PC</a></li>
-                            <li class="submenu">
-                                <a href="javascript:;">Products</a>
-                                <ul>
-                                    <li><a href="{% url 'userapp:monitors' %}">Monitors</a></li>
-                                    <li><a href="{% url 'userapp:keyboards' %}">Keyboards</a></li>
-                                    <li><a href="{% url 'userapp:mouses' %}">Mouses</a></li>
-                                    <li><a href="{% url 'userapp:assembledcpus' %}">Assembled CPU</a></li>
-                                    <li><a href="{% url 'userapp:accessories' %}">Accessories</a></li>
-                                </ul>
-                            </li>
-                            {% if user.is_authenticated%}
-                            <li class="submenu">
-                                <a href="javascript:;">{{ user.username }}</a>
-                                <ul>
-                                    <li><a href="{% url 'userapp:logout' %}">Logout</a></li>
-                                    {% else %}
-                                    <li><a href="loginuser">Login</a></li>
-                            {% endif %}
-                            {% if user.is_authenticated %}
-                            <li><a href="{% url 'userapp:profile' %}">Profile</a></li>
-                    {% endif %}
-                                    <li><a href="#">Features Page 3</a></li>
-                                    <li><a rel="nofollow" href="https://templatemo.com/page/4" target="_blank">Template Page 4</a></li>
-                                </ul>
-                            </li>
-                        </ul>
+                            <!-- <div class="search-container">
+                                <form action="{% url 'userapp:search_results' %}" method="get">
+                                    <input type="text" id="search-input" placeholder="Search products..." name="q" autocomplete="off">
+                                    <button type="submit"><i class="fa fa-search"></i></button>
+                                </form>
+                                <div id="search-suggestions" class="search-suggestions"></div>
+                            </div> -->
+
+                            <ul class="nav" style="    margin-left: 892px;">
+                                <li class="scroll-to-section"><a href="{% url 'userapp:mainpage' %}" class="active">Home</a></li>
+                                <li class="scroll-to-section"><a href="{% url 'userapp:cart_view' %}">Cart</a></li>
+                                <li class="submenu">
+                                    <a href="javascript:;">
+                                        <i class="fa fa-box"></i> Custom PC
+                                    </a>
+                                    <ul class="dropdown">
+                                        <li><a href="{% url 'userapp:pc_custom' %}"><i class=""></i>Buid</a></li>
+                                        <li><a href="#"><i class=""></i>Your Build</a></li>
+                                        <li><a href="#"><i class=""></i>Messages</a></li>
+                                    </ul>
+                                </li>
+                                <li class="submenu">
+                                    <a href="javascript:;">
+                                        <i class="fa fa-box"></i> Products
+                                    </a>
+                                    <ul class="dropdown">
+                                        <li><a href="{% url 'userapp:monitors' %}"><i class="fa fa-desktop"></i> Monitors</a></li>
+                                        <li><a href="{% url 'userapp:keyboards' %}"><i class="fa fa-keyboard"></i> Keyboards</a></li>
+                                        <li><a href="{% url 'userapp:mouses' %}"><i class="fa fa-mouse"></i> Mouses</a></li>
+                                        <li><a href="#"><i class="fa fa-microchip"></i> Assembled CPU</a></li>
+                                        <li><a href="{% url 'userapp:accessories' %}"><i class="fa fa-headphones"></i> Accessories</a></li>
+                                    </ul>
+                                </li>
+                                {% if request.session.user_id %}
+                                    <li class="submenu">
+                                        <a href="javascript:;">{{ request.session.username }}</a>
+                                        <ul class="dropdown">
+                                            <li><a href="{% url 'userapp:profile' %}"><i class="fa fa-user"></i> Profile</a></li>
+                                            <li><a href="loginuser"><i class="fa fa-shopping-bag"></i> Orders</a></li>
+                                            <li><a href="loginuser"><i class="fa fa-heart"></i> Wishlist</a></li>
+                                            <li><a href="loginuser"><i class="fa fa-bell"></i> Notifications</a></li>
+                                            <li><a href="{% url 'userapp:logout'%}" id="logout-link"><i class="fa fa-sign-out"></i> Logout</a></li>
+                                        </ul>
+                                    </li>
+                                {% else %}
+                                    <li><a href="{% url 'userapp:login' %}">Login</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
                         <a class='menu-trigger'>
                             <span>Menu</span>
                         </a>
-                        <!-- ***** Menu End ***** -->
                     </nav>
                 </div>
             </div>
         </div>
     </header>
     <!-- ***** Header Area End ***** -->
-
-    <!-- ***** PC Customization Area Start ***** -->
+    <!-- ***** Cart Area Starts ***** -->
     <div class="container mt-5">
-        <br><br>
-        <h1 class="text-center mb-4">Build Your PC Online | Customize Your PC</h1>
+        <h1 class="text-center mb-4">Build Your Custom PC</h1>
         <p class="text-center mb-5">
-            Welcome to our PC Studio, your trusted destination for PC builds and customization. Choose from a wide range of high-quality components to create your perfect PC.
+            Choose high-quality components to create your perfect PC.
         </p>
         <div class="row">
-            <div class="col-md-8">
+            <div class="col-lg-8 col-md-7">
                 <div class="component-selection">
-                    <div class="component-container" id="motherboard-container">
-                        <h4>Motherboard</h4>
-                        <div class="selected-component">No component selected</div>
-                        <button class="btn btn-primary mb-3" id="motherboard-btn">Select Motherboard</button>
+                    <div class="component-item" data-component="motherboard">
+                        <h5>Select Motherboard</h5>
+                        <div class="d-flex align-items-center">
+                            <div class="selected-component-container" style="display: none;"></div>
+                            <img src="{% static 'images/motherboard.png' %}" alt="Motherboard" class="mr-3" style="width: 50px;">
+                            <button class="btn btn-primary ml-auto" data-toggle="modal" data-target="#componentModal" data-component="motherboard">+</button>
+                        </div>
                     </div>
-                    <div class="component-container" id="cpu-container">
-                        <h4>CPU/Processor</h4>
-                        <div class="selected-component">No component selected</div>
-                        <button class="btn btn-primary mb-3" id="cpu-btn">Select CPU/Processor</button>
+                    <div class="component-item" data-component="cpu">
+                        <h5>Select CPU/Processor</h5>
+                        <div class="d-flex align-items-center">
+                            <div class="selected-component-container" style="display: none;"></div>
+                            <img src="{% static 'images/chip.png' %}" alt="CPU" class="mr-3" style="width: 50px;">
+                            <button class="btn btn-primary ml-auto" data-toggle="modal" data-target="#componentModal" data-component="cpu">+</button>
+                        </div>
                     </div>
-                    <div class="component-container" id="ram-container">
-                        <h4>RAM</h4>
-                        <div class="selected-component">No component selected</div>
-                        <button class="btn btn-primary mb-3" id="ram-btn">Select RAM</button>
+                    <div class="component-item" data-component="ram">
+                        <h5>Select RAM</h5>
+                        <div class="d-flex align-items-center">
+                            <div class="selected-component-container" style="display: none;"></div>
+                            <img src="{% static 'images/ram.png' %}" alt="RAM" class="mr-3" style="width: 50px;">
+                            <button class="btn btn-primary ml-auto" data-toggle="modal" data-target="#componentModal" data-component="ram">+</button>
+                        </div>
                     </div>
-                    <div class="component-container" id="harddrive-container">
-                        <h4>Hard Drive</h4>
-                        <div class="selected-component">No component selected</div>
-                        <button class="btn btn-primary mb-3" id="harddrive-btn">Select Hard Drive</button>
+                    <div class="component-item" data-component="hard drive">
+                        <h5>Select Storage(Hard drive)</h5>
+                        <div class="d-flex align-items-center">
+                            <div class="selected-component-container" style="display: none;"></div>
+                            <img src="{% static 'images/computer.png' %}" alt="Hard Drive" class="mr-3" style="width: 50px;">
+                            <button class="btn btn-primary ml-auto" data-toggle="modal" data-target="#componentModal" data-component="hard drive">+</button>
+                        </div>
                     </div>
-                    <div class="component-container" id="case-container">
-                        <h4>Case</h4>
-                        <div class="selected-component">No component selected</div>
-                        <button class="btn btn-primary mb-3" id="case-btn">Select Case</button>
+                    
+                    <div class="component-item" data-component="case">
+                        <h5>Select Case</h5>
+                        <div class="d-flex align-items-center">
+                            <div class="selected-component-container" style="display: none;"></div>
+                            <img src="{% static 'images/computer (1).png' %}" alt="Case" class="mr-3" style="width: 50px;">
+                            <button class="btn btn-primary ml-auto" data-toggle="modal" data-target="#componentModal" data-component="case">+</button>
+                        </div>
                     </div>
-                    <div class="component-container" id="psu-container">
-                        <h4>Power Supply Unit</h4>
-                        <div class="selected-component">No component selected</div>
-                        <button class="btn btn-primary mb-3" id="psu-btn">Select Power Supply Unit</button>
+                    <div class="component-item" data-component="power supply unit">
+                        <h5>Select Power Supply Unit</h5>
+                        <div class="d-flex align-items-center">
+                            <div class="selected-component-container" style="display: none;"></div>
+                            <img src="{% static 'images/power-supply.png' %}" alt="Power Supply unit" class="mr-3" style="width: 50px;">
+                            <button class="btn btn-primary ml-auto" data-toggle="modal" data-target="#componentModal" data-component="power supply unit">+</button>
+                        </div>
                     </div>
-                    <div class="component-container" id="gpu-container">
-                        <h4>Graphics Card</h4>
-                        <div class="selected-component">No component selected</div>
-                        <button class="btn btn-primary mb-3" id="gpu-btn">Select Graphics Card</button>
+                    <div class="component-item" data-component="graphics card">
+                        <h5>Select Graphics Card</h5>
+                        <div class="d-flex align-items-center">
+                            <div class="selected-component-container" style="display: none;"></div>
+                            <img src="{% static 'images/graphics-card.png' %}" alt="Graphics Card" class="mr-3" style="width: 50px;">
+                            <button class="btn btn-primary ml-auto" data-toggle="modal" data-target="#componentModal" data-component="graphics card">+</button>
+                        </div>
                     </div>
-                    <div class="component-container" id="cpucooler-container">
-                        <h4>CPU Cooler</h4>
-                        <div class="selected-component">No component selected</div>
-                        <button class="btn btn-primary mb-3" id="cpucooler-btn">Select CPU Cooler</button>
+                    <div class="component-item" data-component="cpu cooler">
+                        <h5>Select CPU Cooler</h5>
+                        <div class="d-flex align-items-center">
+                            <div class="selected-component-container" style="display: none;"></div>
+                            <img src="{% static 'images/cooling-fan.png' %}" alt="CPU Cooler" class="mr-3" style="width: 50px;">
+                            <button class="btn btn-primary ml-auto" data-toggle="modal" data-target="#componentModal" data-component="cpu cooler">+</button>
+                        </div>
                     </div>
-                    <div class="component-container" id="bluetooth-container">
-                        <h4>Bluetooth Card</h4>
-                        <div class="selected-component">No component selected</div>
-                        <button class="btn btn-primary mb-3" id="bluetooth-btn">Select Bluetooth Card</button>
+                    <div class="component-item" data-component="bluetooth card">
+                        <h5>Select Bluetooth Card</h5>
+                        <div class="d-flex align-items-center">
+                            <div class="selected-component-container" style="display: none;"></div>
+                            <img src="{% static 'images/bluetooth.png' %}" alt="Bluetooth Card" class="mr-3" style="width: 50px;">
+                            <button class="btn btn-primary ml-auto" data-toggle="modal" data-target="#componentModal" data-component="bluetooth card">+</button>
+                        </div>
                     </div>
-                    <div class="component-container" id="wifi-container">
-                        <h4>WiFi Card</h4>
-                        <div class="selected-component">No component selected</div>
-                        <button class="btn btn-primary mb-3" id="wifi-btn">Select WiFi Card</button>
+                    <div class="component-item" data-component="wifi card">
+                        <h5>Select WiFi Card</h5>
+                        <div class="d-flex align-items-center">
+                            <div class="selected-component-container" style="display: none;"></div>
+                            <img src="{% static 'images/credit-card.png' %}" alt="WiFi Card" class="mr-3" style="width: 50px;">
+                            <button class="btn btn-primary ml-auto" data-toggle="modal" data-target="#componentModal" data-component="wifi card">+</button>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="cart">
-                    <h3>Your Build</h3>
+            <div class="col-lg-4 col-md-5">
+                <div class="cart-summary sticky-top" style="top: 100px;">
+                    <h4 class="text-center" style="    margin-bottom: 12px;">Your Build</h4>
                     <ul id="selected-components" class="list-group mb-3">
-                        <!-- Selected components will be added here dynamically -->
+                        <!-- Selected components will be listed here -->
                     </ul>
+                    <h4>Total: <span id="total-price" class="text-primary" style=>₹0</span></h4>
+                    <button id="check-compatibility" class="btn btn-success btn-block mb-3">Check Compatibility</button>
+                    <button id="remove-all" class="btn btn-outline-danger btn-block mb-3">Remove All</button>
                     <div class="d-flex justify-content-between">
-                        <h4>Total:</h4>
-                        <h4 id="total-price">₹0</h4>
+                        <button class="btn btn-outline-secondary"><i class="fa fa-share"></i></button>
+                        <button class="btn btn-outline-secondary"><i class="fa fa-envelope"></i></button>
+                        <button class="btn btn-outline-secondary"><i class="fa fa-print"></i></button>
+                        <button class="btn btn-outline-secondary"><i class="fa fa-file-pdf-o"></i></button>
                     </div>
-                    <div id="cart-message" class="alert alert-success mt-2" style="display: none;"></div>
-                    <button class="btn btn-primary btn-lg btn-block mt-3" id="add-to-cart">Add to Cart</button>
                 </div>
             </div>
         </div>
@@ -281,65 +1247,35 @@ https://templatemo.com/tm-571-hexashop
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body" id="componentModalBody">
-                    <!-- Component items will be dynamically added here -->
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h6>Filter by Brand</h6>
+                            <ul class="list-unstyled" id="brandFilter">
+                                <!-- Brand filters will be dynamically added here -->
+                            </ul>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="search-container">
+                                <input type="text" id="componentSearch" class="form-control mb-3" placeholder="Search components...">
+                                <div id="searchSuggestions" class="search-suggestions"></div>
+                            </div>
+                            <div id="componentList">
+                                <!-- Component items will be dynamically added here -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Add this quantity input for storage components -->
+                    <div id="storageQuantityContainer" style="display: none;">
+                        <label for="storageQuantity">Quantity:</label>
+                        <input type="number" id="storageQuantity" min="1" value="1" class="form-control">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ***** Subscribe Area Starts ***** -->
-    <div class="subscribe">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="section-heading">
-                        <h2>By Subscribing To Our Newsletter You Can Get 30% Off</h2>
-                        <span>Details to details is what makes Hexashop different from the other themes.</span>
-                    </div>
-                    <form id="subscribe" action="" method="get">
-                        <div class="row">
-                          <div class="col-lg-5">
-                            <fieldset>
-                              <input name="name" type="text" id="name" placeholder="Your Name" required="">
-                            </fieldset>
-                          </div>
-                          <div class="col-lg-5">
-                            <fieldset>
-                              <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*" placeholder="Your Email Address" required="">
-                            </fieldset>
-                          </div>
-                          <div class="col-lg-2">
-                            <fieldset>
-                              <button type="submit" id="form-submit" class="main-dark-button"><i class="fa fa-paper-plane"></i></button>
-                            </fieldset>
-                          </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-lg-4">
-                    <div class="row">
-                        <div class="col-6">
-                            <ul>
-                                <li>Store Location:<br><span>Sunny Isles Beach, FL 33160, United States</span></li>
-                                <li>Phone:<br><span>010-020-0340</span></li>
-                                <li>Office Location:<br><span>North Miami Beach</span></li>
-                            </ul>
-                        </div>
-                        <div class="col-6">
-                            <ul>
-                                <li>Work Hours:<br><span>07:30 AM - 9:30 PM Daily</span></li>
-                                <li>Email:<br><span>info@company.com</span></li>
-                                <li>Social Media:<br><span><a href="#">Facebook</a>, <a href="#">Instagram</a>, <a href="#">Behance</a>, <a href="#">Linkedin</a></span></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ***** Subscribe Area Ends ***** -->
-    
+    <!-- ***** Cart Area Ends ***** -->
     <!-- ***** Footer Start ***** -->
     <footer>
         <div class="container">
@@ -351,7 +1287,7 @@ https://templatemo.com/tm-571-hexashop
                         </div>
                         <ul>
                             <li><a href="#">16501 Collins Ave, Sunny Isles Beach, FL 33160, United States</a></li>
-                            <li><a href="#">hexashop@company.com</a></li>
+                            <li><a href="#">techcraft@gmail.com</a></li>
                             <li><a href="#">010-020-0340</a></li>
                         </ul>
                     </div>
@@ -359,9 +1295,9 @@ https://templatemo.com/tm-571-hexashop
                 <div class="col-lg-3">
                     <h4>Shopping &amp; Categories</h4>
                     <ul>
-                        <li><a href="#">Men's Shopping</a></li>
-                        <li><a href="#">Women's Shopping</a></li>
-                        <li><a href="#">Kid's Shopping</a></li>
+                        <li><a href="#">Keyboards</a></li>
+                        <li><a href="#">Mouse</a></li>
+                        <li><a href="#">Monitors</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3">
@@ -384,9 +1320,7 @@ https://templatemo.com/tm-571-hexashop
                 </div>
                 <div class="col-lg-12">
                     <div class="under-footer">
-                        <p>Copyright © 2022 HexaShop Co., Ltd. All Rights Reserved. 
-                        
-                        <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">TemplateMo</a></p>
+                        <p>Copyright © 2024 TechCraft Co., Ltd. All Rights Reserved.</p>
                         <ul>
                             <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                             <li><a href="#"><i class="fa fa-twitter"></i></a></li>
@@ -441,152 +1375,752 @@ https://templatemo.com/tm-571-hexashop
     </script>
 
     <script>
-        $(document).ready(function() {
-            const components = {
-                motherboard: [],
-                cpu: [],
-                ram: [],
-                harddrive: [],
-                case: [],
-                psu: [],
-                gpu: [],
-                cpucooler: [],
-                bluetooth: [],
-                wifi: []
-            };
+        document.addEventListener('DOMContentLoaded', function() {
+            const bannerContainer = document.querySelector('.banner-container');
+            const slides = document.querySelectorAll('.banner-slide');
+            let currentSlide = 0;
 
-            let selectedComponents = {};
-            let total = 0;
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                bannerContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+            }
 
-            function populateComponents() {
-                $.ajax({
-                    url: '{% url "userapp:get_components" %}',
-                    method: 'GET',
-                    success: function(data) {
-                        data.forEach(component => {
-                            let category = component.category.toLowerCase().replace(/\s+/g, '').replace('/processor', '');
-                            if (category === 'cpu') {
-                                category = 'cpu';
-                            }
-                            if (!components[category]) {
-                                components[category] = [];
-                            }
-                            components[category].push(component);
+            setInterval(nextSlide, 3000); // Change slide every 3 seconds
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-input');
+            const suggestionsContainer = document.getElementById('search-suggestions');
+    
+            searchInput.addEventListener('input', function() {
+                const query = this.value;
+                if (query.length > 1) {
+                    fetch(`/search-suggestions/?q=${query}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            suggestionsContainer.innerHTML = '';
+                            data.forEach(suggestion => {
+                                const div = document.createElement('div');
+                                div.classList.add('suggestion-item');
+                                div.textContent = suggestion.name;
+                                div.addEventListener('click', function() {
+                                    window.location.href = `/${suggestion.category}/${suggestion.productId}/`;
+                                });
+                                suggestionsContainer.appendChild(div);
+                            });
+                            suggestionsContainer.style.display = data.length ? 'block' : 'none';
                         });
-                        console.log('Components loaded:', components);
-                        setupEventListeners();
-                        showInitialComponents();
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error fetching components:", error);
-                    }
-                });
-            }
-
-            function setupEventListeners() {
-                $('.component-selection button').click(function() {
-                    const componentType = $(this).attr('id').replace('-btn', '');
-                    showComponentModal(componentType);
-                });
-
-                $(document).on('click', '.select-component', function() {
-                    const componentId = $(this).data('id');
-                    const componentType = $(this).data('type');
-                    const selected = components[componentType].find(c => c.componentId == componentId);
-
-                    if (selected) {
-                        selectedComponents[componentType] = selected;
-                        updateSelectedComponent(componentType, selected);
-                        updateSelectedList();
-                        calculateTotal();
-                        $('#componentModal').modal('hide');
-                    }
-                });
-
-                $(document).on('click', '.remove-component', function() {
-                    const componentType = $(this).data('type');
-                    removeComponent(componentType);
-                });
-
-                $('#add-to-cart').click(function() {
-                    $('#cart-message').text('Added to cart! Total: ₹' + total.toFixed(2)).show();
-                    setTimeout(function() {
-                        $('#cart-message').fadeOut();
-                    }, 3000);
-                });
-            }
-
-            function showComponentModal(componentType) {
-                const modalBody = $('#componentModalBody');
-                modalBody.empty();
-
-                if (components[componentType] && components[componentType].length > 0) {
-                    components[componentType].forEach(component => {
-                        const componentHtml = `
-                            <div class="component-item d-flex justify-content-between align-items-center mb-3">
-                                <img src="${component.image}" alt="${component.name}" style="width: 50px; height: 50px;">
-                                <span>${component.name}</span>
-                                <span>₹${component.price}</span>
-                                <button class="btn btn-sm btn-primary select-component" data-id="${component.componentId}" data-type="${componentType}">Select</button>
-                            </div>
-                        `;
-                        modalBody.append(componentHtml);
-                    });
                 } else {
-                    modalBody.append('<p>No components available for this category.</p>');
+                    suggestionsContainer.style.display = 'none';
                 }
-
-                $('#componentModalLabel').text(`Select ${componentType.charAt(0).toUpperCase() + componentType.slice(1)}`);
-                $('#componentModal').modal('show');
+            });
+    
+            document.addEventListener('click', function(e) {
+                if (e.target !== searchInput && e.target !== suggestionsContainer) {
+                    suggestionsContainer.style.display = 'none';
+                }
+            });
+    
+            const logoutLink = document.getElementById('logout-link');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    fetch('{% url "userapp:logout" %}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                });
             }
+        });
+        </script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    const components = {
+        motherboard: [],
+        cpu: [],
+        ram: [],
+        'hard drive': [],
+        case: [],
+        'power supply unit': [],
+        'graphics card': [],
+        'cpu cooler': [],
+        'bluetooth card': [],
+        'wifi card': []
+    }; 
 
-            function updateSelectedComponent(type, component) {
-                const container = $(`#${type}-container`);
-                container.find('.selected-component').html(`
-                    <div class="selected-item">
-                        <img src="${component.image}" alt="${component.name}" style="width: 50px; height: 50px;">
-                        <div class="component-details">
-                            <strong>${component.name}</strong><br>
-                            Price: ₹${component.price}
-                        </div>
-                        <button class="btn btn-sm btn-danger remove-component" data-type="${type}">Remove</button>
-                    </div>
-                `);
-            }
+    let selectedComponents = {};
+    let total = 0;
 
-            function removeComponent(type) {
-                delete selectedComponents[type];
-                $(`#${type}-container`).find('.selected-component').html('No component selected');
+    function setupEventListeners() {
+        $('.component-selection button').click(function() {
+            const componentType = $(this).closest('.component-item').data('component');
+            showComponentModal(componentType);
+        });
+
+        $(document).on('click', '.select-component', function() {
+            const componentId = $(this).data('id');
+            const componentType = $(this).data('type');
+            const storageSlot = $(this).data('storage-slot');
+            console.log("Select button clicked for:", componentType, componentId, storageSlot);
+            const selected = window.allComponents.find(c => c.componentId == componentId);
+
+            if (selected) {
+                console.log("Found selected component:", selected);
+                const quantity = 1; // Default quantity
+                if (storageSlot) {
+                    selectedComponents[storageSlot] = {
+                        ...selected,
+                        quantity: quantity
+                    };
+                    updateSelectedComponent(storageSlot, selectedComponents[storageSlot], quantity);
+                } else {
+                    selectedComponents[componentType] = {
+                        ...selected,
+                        quantity: quantity
+                    };
+                    updateSelectedComponent(componentType, selectedComponents[componentType], quantity);
+                }
                 updateSelectedList();
                 calculateTotal();
+                
+                // Close the modal after selecting the component
+                $('#componentModal').modal('hide');
+            } else {
+                console.error("Selected component not found");
             }
+        });
 
-            function updateSelectedList() {
-                $('#selected-components').empty();
-                for (const [type, component] of Object.entries(selectedComponents)) {
-                    $('#selected-components').append(`
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>${component.name}</span>
-                            <span>₹${component.price}</span>
-                        </li>
-                    `);
+        $(document).on('click', '.remove-component', function() {
+            const type = $(this).data('type');
+            delete selectedComponents[type];
+            updateSelectedList();
+            calculateTotal();
+            updateComponentUI(type);
+        });
+
+        $('#remove-all').click(function() {
+            selectedComponents = {};
+            updateSelectedList();
+            calculateTotal();
+            $('.selected-component-container').hide();
+            $('.component-item > .d-flex > img').show();
+            $('.component-item > .d-flex > button').show();
+        });
+
+        $('#add-to-cart').click(function() {
+            const cartItems = Object.values(selectedComponents).map(component => {
+                return {
+                    componentId: component.componentId,
+                    quantity: component.quantity || 1
+                };
+            });
+            if (cartItems.length > 0) {
+                $.ajax({
+                    url: '{% url "userapp:add_to_cart" %}',
+                    method: 'POST',
+                    data: JSON.stringify({ cartItems: cartItems }),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        console.log("Add to cart response:", response);
+                        if (response.success) {
+                            alert('Components added to cart successfully!');
+                            window.location.href = '{% url "userapp:cart_view" %}';
+                        } else {
+                            alert('Failed to add components to cart. Please try again.');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error adding to cart:", error);
+                        alert('An error occurred while adding components to cart. Please try again.');
+                    }
+                });
+            } else {
+                alert('Please select at least one component to add to cart.');
+            }
+        });
+
+        $('#check-compatibility').click(function() {
+            const components = Object.values(selectedComponents).map(component => ({
+                componentId: component.componentId,
+                quantity: component.quantity || 1
+            }));
+        
+            $.ajax({
+                url: '{% url "userapp:check_compatibility" %}',
+                method: 'POST',
+                data: JSON.stringify({
+                    components: components,
+                    totalPrice: total
+                }),
+                contentType: 'application/json',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert('Your configuration has been submitted for compatibility check.');
+                    } else {
+                        alert('Failed to submit configuration. Please try again.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error submitting configuration:", error);
+                    alert('An error occurred while submitting your configuration. Please try again.');
                 }
-            }
+            });
+        });
+    }
 
-            function calculateTotal() {
-                total = Object.values(selectedComponents).reduce((sum, component) => sum + parseFloat(component.price), 0);
-                $('#total-price').text(`₹${total.toFixed(2)}`);
-            }
+    function showComponentModal(componentType) {
+        console.log("Showing modal for component type:", componentType);
+        const componentList = $('#componentList');
+        const brandFilter = $('#brandFilter');
+        const componentSearch = $('#componentSearch');
+        componentList.empty();
+        brandFilter.empty();
+        componentSearch.val('');
 
-            function showInitialComponents() {
-                for (const componentType in components) {
-                    showComponentModal(componentType);
+        let category = componentType;
+        if (componentType === 'hard drive1' || componentType === 'hard drive2') {
+            category = 'hard drive';
+        }
+
+        $.ajax({
+            url: '{% url "userapp:get_components" %}',
+            method: 'GET',
+            data: { category: category },
+            success: function(data) {
+                console.log("Received data:", data);
+                if (data.length > 0) {
+                    window.allComponents = data;
+
+                    // Populate brand filter
+                    const brands = [...new Set(data.map(item => item.brand))];
+                    brands.forEach(brand => {
+                        brandFilter.append(`<li data-brand="${brand}">${brand}</li>`);
+                    });
+
+                    // Populate component list
+                    populateComponentList(data, componentType);
+
+                    // Show quantity input for storage components
+                    if (componentType === 'hard drive1' || componentType === 'hard drive2') {
+                        $('#storageQuantityContainer').show();
+                    } else {
+                        $('#storageQuantityContainer').hide();
+                    }
+
+                    // Filter components by brand
+                    brandFilter.on('click', 'li', function() {
+                        const selectedBrand = $(this).data('brand');
+                        const filteredComponents = data.filter(item => item.brand === selectedBrand);
+                        populateComponentList(filteredComponents, componentType);
+                    });
+
+                    // Search components
+                    componentSearch.on('input', function() {
+                        const query = $(this).val().toLowerCase();
+                        const filteredComponents = data.filter(item => item.name.toLowerCase().includes(query));
+                        populateComponentList(filteredComponents, componentType);
+                    });
+                } else {
+                    componentList.append('<p>No components available for this category.</p>');
                 }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching components:", error);
+                componentList.append('<p>Error loading components. Please try again.</p>');
+            }
+        });
+
+        $('#componentModalLabel').text(`Select ${componentType.charAt(0).toUpperCase() + componentType.slice(1)}`);
+        $('#componentModal').modal('show');
+    }
+
+    function populateComponentList(components, componentType) {
+        const componentList = $('#componentList');
+        componentList.empty();
+        components.forEach(component => {
+            const storageSlot = componentType === 'hard drive1' ? 'storage1' : 
+                                componentType === 'hard drive2' ? 'storage2' : 
+                                null;
+            const componentHtml = `
+                <div class="component-item" data-brand="${component.brand}">
+                    <img src="${component.image}" alt="${component.name}" style="width: 80px; height: 80px;">
+                    <div class="component-details">
+                        <p>${component.brand}</p>
+                        <h6 style="    margin-left: 46px;
+    margin-top: -22px;">- ${component.name}</h6>
+                        <span class="component-price">₹${component.price}</span>
+                    </div>
+                    <button class="btn btn-sm btn-primary select-component" style="margin-left:90px" 
+                            data-id="${component.componentId}" 
+                            data-type="${componentType}"
+                            ${storageSlot ? `data-storage-slot="${storageSlot}"` : ''}>Select</button>
+                </div>
+            `;
+            componentList.append(componentHtml);
+        });
+    }
+
+    function updateSelectedComponent(type, component, initialQuantity = 1) {
+        console.log("Updating component:", type, component, initialQuantity);
+        let container;
+        
+        if (type.toLowerCase() === 'cpu' || type.toLowerCase() === 'cpu/processor') {
+            container = $(`.component-item[data-component="cpu"]`);
+        } else {
+            container = $(`.component-item[data-component="${type.toLowerCase()}"]`);
+        }
+        
+        console.log("Container:", container);
+        if (container.length === 0) {
+            console.error(`Container for ${type} not found`);
+            return;
+        }
+
+        // Ensure the component has a quantity property
+        if (!component.quantity) {
+            component.quantity = initialQuantity;
+        }
+
+        const singleQuantityComponents = ['motherboard', 'case', 'power supply unit', 'bluetooth card', 'wifi card'];
+        const showQuantity = !singleQuantityComponents.includes(type.toLowerCase());
+
+        const content = `
+            <div class="selected-component-container" style="position: relative; padding: 10px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 10px;">
+                <span class="remove-component" data-type="${type}" style="position: absolute; top: 5px; right: 5px; cursor: pointer; font-size: 18px; color: #dc3545;">&times;</span>
+                <div class="selected-component d-flex align-items-center w-100">
+                    <img src="${component.image}" alt="${component.name}" class="mx-3" style="width: 80px; height: 80px; object-fit: contain;">
+                    <div class="flex-grow-1">
+                        <strong>${component.name}</strong><br>
+                        <span class="text-muted">${component.brand}</span><br>
+                        <span class="text-primary">₹${component.price}</span>
+                        ${showQuantity ? `
+                        <div class="mt-2">
+                            <label for="quantity-${type.replace(/\s+/g, '-')}" class="mr-2">Quantity:</label>
+                            <input type="number" id="quantity-${type.replace(/\s+/g, '-')}" class="quantity-input form-control form-control-sm d-inline-block" 
+                                   value="${component.quantity}" min="1" style="width: 60px !important;">
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+            </div>
+        `;
+        container.find('.selected-component-container').remove(); // Remove existing content
+        container.append(content); // Append new content
+        console.log("Updated content:", content);
+
+        // Hide the original image and button
+        container.find('> .d-flex > img').hide();
+        container.find('> .d-flex > button').hide();
+
+        if (showQuantity) {
+            // Add event listener for quantity change
+            $(`#quantity-${type.replace(/\s+/g, '-')}`).on('change', function() {
+                const newQuantity = parseInt($(this).val()) || 1;
+                selectedComponents[type].quantity = newQuantity;
+                updateSelectedList();
+                calculateTotal();
+            });
+        }
+
+        // Add event listener for remove button
+        container.find('.remove-component').on('click', function() {
+            const componentType = $(this).data('type');
+            removeComponent(componentType);
+        });
+    }
+
+    function removeComponent(type) {
+        delete selectedComponents[type];
+        const container = $(`.component-item[data-component="${type.toLowerCase()}"]`);
+        
+        // Remove the selected component container
+        container.find('.selected-component-container').remove();
+        
+        // Show the original image and button
+        container.find('> .d-flex > img').show();
+        container.find('> .d-flex > button').show();
+        
+        updateSelectedList();
+        calculateTotal();
+    }
+
+    function updateSelectedList() {
+        $('#selected-components').empty();
+        for (const [type, component] of Object.entries(selectedComponents)) {
+            const singleQuantityComponents = ['motherboard', 'case', 'power supply unit', 'bluetooth card', 'wifi card'];
+            const showQuantity = !singleQuantityComponents.includes(type.toLowerCase());
+            const quantity = showQuantity ? (component.quantity || 1) : 1;
+            const totalPrice = component.price * quantity;
+            $('#selected-components').append(`
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>${component.name}${showQuantity ? ` (x${quantity})` : ''}</span>
+                    <span>₹${totalPrice.toFixed(2)}</span>
+                </li>
+            `);
+        }
+    }
+
+    function calculateTotal() {
+        total = Object.entries(selectedComponents).reduce((sum, [type, component]) => {
+            const singleQuantityComponents = ['motherboard', 'case', 'power supply unit', 'bluetooth card', 'wifi card'];
+            const quantity = singleQuantityComponents.includes(type.toLowerCase()) ? 1 : (component.quantity || 1);
+            return sum + (parseFloat(component.price) * quantity);
+        }, 0);
+        $('#total-price').text(`₹${total.toFixed(2)}`);
+    }
+
+    function updateComponentUI(type) {
+        const container = $(`.component-item[data-component="${type.toLowerCase()}"]`);
+        container.find('.selected-component-container').hide();
+        container.find('> .d-flex > img').show();
+        container.find('> .d-flex > button').show();
+    }
+
+    // Make sure this function is called when the page loads
+    $(document).ready(function() {
+        setupEventListeners();
+        populateComponents();
+    });
+});
+</script>
+<script>
+    $(document).ready(function() {
+        const components = {
+            motherboard: [],
+            cpu: [],
+            ram: [],
+            'hard drive': [],
+            case: [],
+            'power supply unit': [],
+            'graphics card': [],
+            'cpu cooler': [],
+            'bluetooth card': [],
+            'wifi card': []
+        }; 
+
+        let selectedComponents = {};
+        let total = 0;
+
+        function populateComponents() {
+            $.ajax({
+                url: '{% url "userapp:get_components" %}',
+                method: 'GET',
+                success: function(data) {
+                    data.forEach(component => {
+                        let category = component.category.toLowerCase().replace(/\s+/g, ' ');
+                        if (category === 'cpu/processor') {
+                            category = 'cpu';
+                        }
+                        if (!components[category]) {
+                            components[category] = [];
+                        }
+                        components[category].push(component);
+                    });
+                    console.log('Components loaded:', components);
+                    setupEventListeners();
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching components:", error);
+                }
+            });
+        }
+
+        function setupEventListeners() {
+            $('.component-selection button').click(function() {
+                const componentType = $(this).closest('.component-item').data('component');
+                showComponentModal(componentType);
+            });
+
+            $(document).on('click', '.select-component', function() {
+                const componentId = $(this).data('id');
+                const componentType = $(this).data('type');
+                const storageSlot = $(this).data('storage-slot');
+                console.log("Select button clicked for:", componentType, componentId, storageSlot);
+                const selected = window.allComponents.find(c => c.componentId == componentId);
+    
+                if (selected) {
+                    console.log("Found selected component:", selected);
+                    if (storageSlot) {
+                        const quantity = parseInt($('#storageQuantity').val()) || 1;
+                        selectedComponents[storageSlot] = {
+                            ...selected,
+                            quantity: quantity
+                        };
+                        updateSelectedComponent(storageSlot, selectedComponents[storageSlot], quantity);
+                    } else {
+                        selectedComponents[componentType] = {
+                            ...selected,
+                            quantity: 1
+                        };
+                        updateSelectedComponent(componentType, selectedComponents[componentType]);
+                    }
+                    updateSelectedList();
+                    calculateTotal();
+                    
+                    // Close the modal after selecting the component
+                    $('#componentModal').modal('hide');
+                } else {
+                    console.error("Selected component not found");
+                }
+            });
+
+            $(document).on('click', '.remove-component', function() {
+                const componentType = $(this).data('type');
+                removeComponent(componentType);
+            });
+
+            $('#add-to-cart').click(function() {
+                $('#cart-message').text('Added to cart! Total: ₹' + total.toFixed(2)).show();
+                setTimeout(function() {
+                    $('#cart-message').fadeOut();
+                }, 3000);
+            });
+
+            $('#remove-all').click(function() {
+                selectedComponents = {};
+                $('.selected-component-container').empty().hide();
+                $('.component-item').find('> .d-flex > img, > .d-flex > button').show();
+                updateSelectedList();
+                calculateTotal();
+            });
+        }
+
+        function showComponentModal(componentType) {
+            console.log("Showing modal for component type:", componentType);
+            const componentList = $('#componentList');
+            const brandFilter = $('#brandFilter');
+            const componentSearch = $('#componentSearch');
+            componentList.empty();
+            brandFilter.empty();
+            componentSearch.val('');
+            let category = componentType;
+            if (componentType === 'hard drive1' || componentType === 'hard drive2') {
+                category = 'hard drive';
             }
 
+            $.ajax({
+                url: '{% url "userapp:get_components" %}',
+                method: 'GET',
+                data: { category: category },
+                success: function(data) {
+                    console.log("Received data:", data);
+                    if (data.length > 0) {
+                        window.allComponents = data;
+
+                        // Populate brand filter
+                        const brands = [...new Set(data.map(item => item.brand))];
+                        brands.forEach(brand => {
+                            brandFilter.append(`<li data-brand="${brand}">${brand}</li>`);
+                        });
+
+                        // Populate component list
+                        populateComponentList(data, componentType);
+
+                        // Set up filter functionality
+                        $('#brandFilter li').click(function() {
+                            $(this).toggleClass('active');
+                            filterComponents();
+                        });
+
+                        // Set up search functionality with suggestions
+                        componentSearch.on('input', function() {
+                            const searchTerm = $(this).val().toLowerCase();
+                            if (searchTerm.length > 0) {
+                                const suggestions = window.allComponents.filter(component => 
+                                    component.name.toLowerCase().includes(searchTerm)
+                                ).slice(0, 5); // Limit to 5 suggestions
+                                displaySuggestions(suggestions);
+                            } else {
+                                $('#searchSuggestions').empty().hide();
+                            }
+                            filterComponents();
+                        });
+
+                        // Handle suggestion click
+                        $(document).on('click', '.suggestion-item', function() {
+                            const componentId = $(this).data('id');
+                            const component = window.allComponents.find(c => c.componentId == componentId);
+                            if (component) {
+                                $('#componentSearch').val(component.name);
+                                $('#searchSuggestions').empty().hide();
+                                filterComponents();
+                            }
+                        });
+
+                        // Show quantity input for storage components
+                        if (componentType === 'hard drive1' || componentType === 'hard drive2') {
+                            $('#storageQuantityContainer').show();
+                        } else {
+                            $('#storageQuantityContainer').hide();
+                        }
+                    } else {
+                        componentList.append('<p>No components available for this category.</p>');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching components:", error);
+                    componentList.append('<p>Error loading components. Please try again.</p>');
+                }
+            });
+
+            $('#componentModalLabel').text(`Select ${componentType.charAt(0).toUpperCase() + componentType.slice(1)}`);
+            $('#componentModal').modal('show');
+        }
+
+        function populateComponentList(components, componentType) {
+            const componentList = $('#componentList');
+            componentList.empty();
+            components.forEach(component => {
+                const storageSlot = componentType === 'hard drive1' ? 'storage1' : 
+                                    componentType === 'hard drive2' ? 'storage2' : 
+                                    null;
+                const componentHtml = `
+                    <div class="component-item" data-brand="${component.brand}">
+                        <img src="${component.image}" alt="${component.name}" style="width: 80px; height: 80px;">
+                        <div class="component-details">
+                            <h6>${component.name}</h6>
+                            <p>${component.description}</p>
+                            <span class="component-price">₹${component.price}</span>
+                        </div>
+                        <button class="btn btn-sm btn-primary select-component" 
+                                data-id="${component.componentId}" 
+                                data-type="${componentType}"
+                                ${storageSlot ? `data-storage-slot="${storageSlot}"` : ''}>Select</button>
+                    </div>
+                `;
+                componentList.append(componentHtml);
+            });
+        }
+
+        function filterComponents() {
+            const selectedBrands = $('#brandFilter li.active').map(function() {
+                return $(this).data('brand');
+            }).get();
+
+            const searchTerm = $('#componentSearch').val().toLowerCase();
+
+            const filteredComponents = window.allComponents.filter(component => 
+                (selectedBrands.length === 0 || selectedBrands.includes(component.brand)) &&
+                component.name.toLowerCase().includes(searchTerm)
+            );
+
+            populateComponentList(filteredComponents);
+        }
+
+        function displaySuggestions(suggestions) {
+            const suggestionsContainer = $('#searchSuggestions');
+            suggestionsContainer.empty();
+
+            if (suggestions.length > 0) {
+                suggestions.forEach(component => {
+                    const suggestionHtml = `
+                        <div class="suggestion-item" data-id="${component.componentId}">
+                            <img src="${component.image}" alt="${component.name}" style="width: 30px; height: 30px;">
+                            <span>${component.brand} - ${component.name}</span>
+                        </div>
+                    `;
+                    suggestionsContainer.append(suggestionHtml);
+                });
+                suggestionsContainer.show();
+            } else {
+                suggestionsContainer.hide();
+            }
+        }
+
+        function updateSelectedComponent(type, component, quantity = 1) {
+            console.log("Updating component:", type, component, quantity);
+            let container;
+            
+            // Handle CPU separately
+            if (type.toLowerCase() === 'cpu' || type.toLowerCase() === 'cpu/processor') {
+                container = $(`.component-item[data-component="cpu"]`);
+            } else {
+                container = $(`.component-item[data-component="${type.toLowerCase()}"]`);
+            }
+            
+            console.log("Container:", container);
+            if (container.length === 0) {
+                console.error(`Container for ${type} not found`);
+                return;
+            }
+            const content = `
+                <div class="selected-component d-flex align-items-center w-100">
+                <img src="${component.image}" alt="${component.name}" class="mx-3" style="width: 80px; height: 80px; object-fit: contain;">
+                <div class="flex-grow-1">
+                    <strong>${component.name}</strong><br>
+                    <span class="text-muted">${component.brand}</span><br>
+                    <span class="text-primary">₹${component.price}</span>
+                    <div class="mt-2">
+                        <label for="quantity-${type.replace(/\s+/g, '-')}" class="mr-2">Quantity:</label>
+                        <input type="number" id="quantity-${type.replace(/\s+/g, '-')}" class="quantity-input form-control form-control-sm d-inline-block" 
+                               value="${component.quantity}" min="1" style="width: 60px !important;">
+                    </div>
+                </div>
+                <button class="btn btn-danger btn-sm remove-component" id="conreb" data-type="${type}">Remove</button>
+            </div>
+            `;
+            const selectedContainer = container.find('.selected-component-container');
+            console.log("Selected container:", selectedContainer);
+            selectedContainer.html(content).show();
+            console.log("Updated content:", content);
+
+            // Hide the original image and button, show the selected component
+            container.find('> .d-flex > img').hide();
+            container.find('> .d-flex > button').hide();
+
+            // Add event listener for quantity change
+            $(`#quantity-${type.replace(/\s+/g, '-')}`).on('change', function() {
+                const newQuantity = parseInt($(this).val()) || 1;
+                selectedComponents[type].quantity = newQuantity;
+                updateSelectedList();
+                calculateTotal();
+            });
+        }
+
+        function removeComponent(type) {
+            delete selectedComponents[type];
+            const container = $(`.component-item[data-component="${type.toLowerCase()}"]`);
+            container.find('.selected-component-container').empty().hide();
+            // Show the original image and button
+            container.find('> .d-flex > img').show();
+            container.find('> .d-flex > button').show();
+            updateSelectedList();
+            calculateTotal();
+        }
+
+        function updateSelectedList() {
+            $('#selected-components').empty();
+            for (const [type, component] of Object.entries(selectedComponents)) {
+                const quantity = component.quantity || 1;
+                const totalPrice = component.price * quantity;
+                $('#selected-components').append(`
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>${component.name} (x${quantity})</span>
+                        <span>₹${totalPrice.toFixed(2)}</span>
+                    </li>
+                `);
+            }
+        }
+
+        function calculateTotal() {
+            total = Object.values(selectedComponents).reduce((sum, component) => {
+                const quantity = component.quantity || 1;
+                return sum + (parseFloat(component.price) * quantity);
+            }, 0);
+            $('#total-price').text(`₹${total.toFixed(2)}`);
+        }
+
+        // Make sure this function is called when the page loads
+        $(document).ready(function() {
+            setupEventListeners();
             populateComponents();
         });
-    </script>
-
-</body>
-</html>
+    });
+</script>

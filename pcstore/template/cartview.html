@@ -795,6 +795,23 @@ https://templatemo.com/tm-571-hexashop
                 flex-basis: calc(50% - 10px);
             }
         }
+
+        .product-link {
+            display: block;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .product-link:hover {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .cart-item .quantity,
+        .cart-item .remove-btn {
+            position: relative;
+            z-index: 10;
+        }
         .search-suggestions {
             position: absolute;
             top: 100%;
@@ -1314,6 +1331,33 @@ https://templatemo.com/tm-571-hexashop
         #cancelRemove:hover {
             background-color: #e0e0e0;
         }
+
+        .product-link {
+            display: block;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .product-link:hover {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .cart-item .quantity,
+        .cart-item .remove-btn {
+            position: relative;
+            z-index: 10;
+        }
+
+        .product-link {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .product-link:hover {
+            text-decoration: underline;
+            color: #007bff;
+        }
     </style>
     </head>
     
@@ -1404,7 +1448,7 @@ https://templatemo.com/tm-571-hexashop
                                             <img src="{{ item.product.main_image.url }}" alt="{{ item.product.name }}">
                                         </div>
                                         <div class="col-lg-6">
-                                            <h4>{{ item.product.name }}</h4>
+                                            <h4><a href="{% url 'userapp:single_product' item.product.category item.product.productId %}" class="product-link">{{ item.product.name }}</a></h4>
                                             <p>{{ item.product.description|truncatewords:20 }}</p>
                                             <div class="quantity">
                                                 <button class="minus-btn" data-product-id="{{ item.product.productId }}">-</button>
@@ -1413,7 +1457,8 @@ https://templatemo.com/tm-571-hexashop
                                             </div>
                                         </div>
                                         <div class="col-lg-3">
-                                            <p class="price">₹<span id="price-{{ item.product.id }}">{{ item.product.price }}</span></p>
+                                            <p class="price">Product Price: ₹<span id="price-{{ item.product.id }}" data-original-price="{{ item.product.price }}">{{ item.product.price }}</span></p>
+                                            <p class="total-price">Total: ₹<span id="total-price-{{ item.product.id }}">{{ item.totalPrice }}</span></p>
                                             <button class="remove-btn" data-product-id="{{ item.product.productId }}">Remove</button>
                                         </div>
                                     </div>
@@ -1442,7 +1487,7 @@ https://templatemo.com/tm-571-hexashop
                                     <span>₹<span id="total-amount">{{ total_amount }}</span></span>
                                 </div>
                                 <p class="savings">You will save ₹<span id="total-savings">{{ total_savings }}</span> on this order</p>
-                                <button class="place-order-btn">PLACE ORDER</button>
+                                <button id="place-order-btn" class="place-order-btn">PLACE ORDER</button>
                             </div>
                         </div>
                     </div>
@@ -1781,7 +1826,8 @@ https://templatemo.com/tm-571-hexashop
         
             function updateQuantity(productId, newQuantity, maxQuantity) {
                 if (newQuantity > maxQuantity) {
-                    alert(`Product out of stock. Maximum available quantity is ${maxQuantity}`, 'error');
+                    location.reload();
+                    showAlert(`Product out of stock. Maximum available quantity is ${maxQuantity}`, 'error', productId);
                     return;
                 }
 
@@ -1799,15 +1845,28 @@ https://templatemo.com/tm-571-hexashop
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
+                        location.reload();
                         updateCartSummary(data);
-                        showAlert('Cart updated successfully', 'success');
+                        updateProductDetails(productId, newQuantity);
+                        showAlert('Cart updated successfully', 'success', productId);
+
                     } else {
-                        showAlert(data.error, 'error');
+                        showAlert(data.error, 'error', productId);
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
+
                 });
+            }
+        
+            function updateProductDetails(productId, quantity) {
+                const priceElement = document.getElementById(`price-${productId}`);
+                const totalPriceElement = document.getElementById(`total-price-${productId}`);
+                const originalPrice = parseFloat(priceElement.dataset.originalPrice);
+                
+                const newTotalPrice = (originalPrice * quantity).toFixed(2);
+                totalPriceElement.textContent = newTotalPrice;
             }
         
             quantityInputs.forEach(input => {
@@ -1818,12 +1877,13 @@ https://templatemo.com/tm-571-hexashop
         
                     if (newQuantity > maxQuantity) {
                         this.value = maxQuantity;
-                        showAlert(`Product out of stock. Maximum available quantity is ${maxQuantity}`, 'error');
+                        showAlert(`Product out of stock. Maximum available quantity is ${maxQuantity}`, 'error', productId);
                     } else if (newQuantity < 1) {
                         this.value = 1;
-                        showAlert('Minimum quantity is 1', 'error');
+                        showAlert('Minimum quantity is 1', 'error', productId);
                     } else {
                         updateQuantity(productId, newQuantity, maxQuantity);
+                        updateProductDetails(productId, newQuantity);
                     }
                 });
             });
@@ -1837,6 +1897,9 @@ https://templatemo.com/tm-571-hexashop
                     if (newQuantity >= 1) {
                         input.value = newQuantity;
                         updateQuantity(productId, newQuantity, maxQuantity);
+                        updateProductDetails(productId, newQuantity);
+                    } else {
+                        showAlert('Minimum quantity is 1', 'error', productId);
                     }
                 });
             });
@@ -1848,31 +1911,39 @@ https://templatemo.com/tm-571-hexashop
                     let newQuantity = parseInt(input.value) + 1;
                     const maxQuantity = parseInt(input.max);
                     if (newQuantity <= maxQuantity) {
-                        input.value = newQuantity;
                         updateQuantity(productId, newQuantity, maxQuantity);
                     } else {
-                        showAlert(`Product out of stock. Maximum available quantity is ${maxQuantity}`, 'error');
+                        showAlert(`Product out of stock. Maximum available quantity is ${maxQuantity}`, 'error', productId);
                     }
                 });
             });
         });
-        function showAlert(message, type) {
+        function showAlert(message, type, productId) {
             const alertDiv = document.createElement('div');
-            alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show`;
-            alertDiv.role = 'alert';
+            alertDiv.className = `custom-alert ${type === 'success' ? 'alert-success' : 'alert-danger'}`;
             alertDiv.innerHTML = `
-                ${message}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close" >
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <div class="alert-content">
+                    <p>${message}</p>
+                    <button onclick="this.parentElement.parentElement.remove()">OK</button>
+                </div>
             `;
-            document.querySelector('.cart-items').insertAdjacentElement('beforebegin', alertDiv);
-        
-            // Automatically remove the alert after 3 seconds
+            document.body.appendChild(alertDiv);
+
+            // Automatically remove the alert after 5 seconds
             setTimeout(() => {
                 alertDiv.remove();
-            }, 3000);
+            }, 5000);
         }
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const placeOrderBtn = document.getElementById('place-order-btn');
+                if (placeOrderBtn) {
+                    placeOrderBtn.addEventListener('click', function() {
+                        window.location.href = "{% url 'userapp:checkout' %}?open_login=true";
+                    });
+                }
+            });
         </script>
   </body>
 </html>
