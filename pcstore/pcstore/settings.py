@@ -23,6 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-a5m1(!0hz51*fp-%vij!yc#l8yr4qxy7cpk%7gtd+vuzp08kfj'
 
+RAZORPAY_KEY_ID = 'rzp_test_7VYL0B3BzkSqNf'
+RAZORPAY_SECRET = 'Pi3a4OQSJmQPzDyvy3HmEG7q'
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -136,17 +139,25 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_collected')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 COMPONENT_IMAGES_DIR = os.path.join(MEDIA_ROOT, 'component_images')
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com' 
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'techcraft494@gmail.com'
-EMAIL_HOST_PASSWORD = 'yqen rcpt buti dalw'
+EMAIL_HOST_USER = 'techcraft494@gmail.com'  # Your Gmail address
+EMAIL_HOST_PASSWORD = 'yqen rcpt buti dalw'  # Your app password
+DEFAULT_FROM_EMAIL = 'TechCraft <techcraft494@gmail.com>'
 
 SITE_ID = 1
 
@@ -193,9 +204,13 @@ LOGGING = {
         'console': {
             'class': 'logging.StreamHandler',
         },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+        },
     },
     'root': {
-        'handlers': ['console'],
+        'handlers': ['console', 'file'],
         'level': 'INFO',
     },
 }

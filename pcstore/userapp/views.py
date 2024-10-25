@@ -7,7 +7,7 @@ import re
 from django.urls import reverse
 from django.contrib.auth.hashers import make_password, check_password
 from .forms import UserUpdateForm
-from .models import Address, Product, Component, ProductImage, Cart, Rating, CustomPC, CustomPCComponent
+from .models import Address, Product, Component, ProductImage, Cart, Rating, CustomPC, CustomPCComponent,OrderComponent, CustomPCMessage, Order, OrderItem, CustomPCOrder
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 import json
@@ -25,6 +25,14 @@ from django.utils import timezone
 from datetime import timedelta
 import logging
 import math
+from urllib.parse import unquote
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+from .models import CustomPCComponent, Component
+import json
+from django.shortcuts import render, redirect, get_object_or_404
+import razorpay
 
 logger = logging.getLogger(__name__)
 
@@ -42,11 +50,16 @@ def mainpage(request):
     latest_assembledcpu = Product.objects.filter(category='assembled_cpu').order_by('-productId')[:7]
     latest_mice = Product.objects.filter(category='mouse').order_by('-productId')[:7]
 
+    has_new_messages = False
+    if request.user.is_authenticated:
+        has_new_messages = CustomPCMessage.objects.filter(custom_pc__user=request.user, is_read=False).exists()
+
     context = {
         'latest_monitors': latest_monitors,
         'latest_keyboards': latest_keyboards,
         'latest_assembledcpu': latest_assembledcpu,
         'latest_mice': latest_mice,
+        'has_new_messages': has_new_messages,
     }
     return render(request, 'main.html', context)
 
@@ -75,7 +88,7 @@ def signupu(request):
                 print(password)
                 print(cpassword)
                 messages.success(request, 'You have successfully registered! Please log in.')
-                return redirect(reverse('userapp:loginuser'))
+                return redirect(reverse('loginu'))
     return render(request, 'signupuser.html')
 
 def loginu(request):
@@ -93,7 +106,7 @@ def loginu(request):
             redirect_url = reverse('userapp:mainpage')
             if u.role == 'admin':
                 redirect_url = reverse('userapp:admin_dashboard')
-            elif u.role == 'staff':
+            elif u.is_staff:
                 redirect_url = reverse('userapp:staff_dashboard')
             return JsonResponse({'success': True, 'redirect_url': redirect_url})
         else:
@@ -284,28 +297,47 @@ def admin_userview(request):
 
 
 
+@login_required
 @require_POST
 def delete_user(request, user_id):
-    User = get_user_model()
-    user = get_object_or_404(User, id=user_id)
-    user.delete()
-    return JsonResponse({'success': True})
+    if not request.user.is_superuser:
+        return JsonResponse({'success': False, 'error': 'Permission denied'}, status=403)
+    
+    try:
+        user = User.objects.get(id=user_id)
+        user.delete()
+        return JsonResponse({'success': True})
+    except User.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'User not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
+@login_required
 @require_POST
 def change_user_role(request, user_id):
-    User = get_user_model()
-    user = get_object_or_404(User, id=user_id)
-    data = json.loads(request.body)
-    new_role = data.get('role')
+    if not request.user.is_superuser:
+        return JsonResponse({'success': False, 'error': 'Permission denied'}, status=403)
     
-    if new_role in ['user', 'staff']:
-        user.role = new_role
-        user.is_staff = (new_role == 'staff')
-        user.is_superuser = False
+    try:
+        data = json.loads(request.body)
+        new_role = data.get('role')
+        
+        if new_role not in ['user', 'staff']:
+            return JsonResponse({'success': False, 'error': 'Invalid role'}, status=400)
+        
+        user = User.objects.get(id=user_id)
+        
+        if new_role == 'staff':
+            user.is_staff = True
+        else:
+            user.is_staff = False
+        
         user.save()
         return JsonResponse({'success': True})
-    else:
-        return JsonResponse({'success': False, 'error': 'Invalid role'})
+    except User.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'User not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
 @login_required(login_url='userapp:login')
 def admin_productadd(request):
@@ -366,6 +398,7 @@ def delete_product(request, product_id):
  
 @login_required(login_url='userapp:login')   
 def admin_editproduct(request, product_id):
+    print(f"Attempting to edit product with ID: {product_id}")  # Add this line
     product = get_object_or_404(Product, productId=product_id)
     additional_images = ProductImage.objects.filter(product=product)
     
@@ -397,12 +430,19 @@ def admin_editproduct(request, product_id):
     return render(request, 'admin_editproduct.html', context)
 
 @login_required(login_url='userapp:login')
+def admin_editcomponent(request, component_id):
+    component = get_object_or_404(Component, componentId=component_id)
+    # ... rest of the function ...
+    return render(request, 'admin_editcomponent.html', {'component': component})
+
+@login_required(login_url='userapp:login')
 def admin_viewcomponent(request):
     components = Component.objects.all()
     return render(request, 'admin_viewcomponent.html', {'components': components})
 
 @login_required(login_url='userapp:login')
 def admin_editcomponent(request, component_id):
+    print(f"Editing component with ID: {component_id}")  # Debug print
     component = get_object_or_404(Component, componentId=component_id)
     if request.method == 'POST':
         component.name = request.POST.get('name')
@@ -421,15 +461,26 @@ def admin_editcomponent(request, component_id):
     
     return render(request, 'admin_editcomponent.html', {'component': component})
 
+import traceback
+
+logger = logging.getLogger(__name__)
+
+@csrf_exempt
 @require_POST
 def delete_component(request, component_id):
+    logger.info(f"Attempting to delete component with ID: {component_id}")
     try:
         component = Component.objects.get(componentId=component_id)
+        component_name = component.name  # Store the name for logging
         component.delete()
-        return JsonResponse({'success': True})
+        logger.info(f"Successfully deleted Component '{component_name}' with ID: {component_id}")
+        return JsonResponse({'success': True, 'message': f'Component {component_name} deleted successfully'})
     except Component.DoesNotExist:
+        logger.error(f"Component with ID {component_id} not found")
         return JsonResponse({'success': False, 'error': 'Component not found'}, status=404)
     except Exception as e:
+        logger.error(f"Error deleting Component with ID {component_id}: {str(e)}")
+        logger.error(traceback.format_exc())  # Log the full traceback
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
 
 @login_required(login_url='userapp:login')
@@ -469,16 +520,29 @@ def search_results(request):
     return render(request, 'search_results.html', {'results': results, 'query': query})
 @login_required(login_url='userapp:login')
 def pc_custom(request):
-    return render(request, 'pc_custom.html')
+    has_new_messages = False
+    if request.user.is_authenticated:
+        has_new_messages = CustomPCMessage.objects.filter(custom_pc__user=request.user, is_read=False).exists()
+        
+    context = {
+        'has_new_messages': has_new_messages,
+    }
+    return render(request, 'pc_custom.html', context)
 
 
 @login_required(login_url='userapp:login')
 def keyboards_view(request):
     keyboards = Product.objects.filter(category='keyboard')
     available_brands = keyboards.values_list('brand', flat=True).distinct()
+    
+    has_new_messages = False
+    if request.user.is_authenticated:
+        has_new_messages = CustomPCMessage.objects.filter(custom_pc__user=request.user, is_read=False).exists()
+        
     context = {
         'keyboards': keyboards,
         'available_brands': available_brands,
+        'has_new_messages': has_new_messages,
     }
     return render(request, 'keyboards.html', context)
 
@@ -486,9 +550,13 @@ def keyboards_view(request):
 def mouses_view(request):
     mouses = Product.objects.filter(category='mouse')
     available_brands = mouses.values_list('brand', flat=True).distinct()
+    has_new_messages = False
+    if request.user.is_authenticated:
+        has_new_messages = CustomPCMessage.objects.filter(custom_pc__user=request.user, is_read=False).exists()
     context = {
         'mouses': mouses,
         'available_brands': available_brands,
+        'has_new_messages': has_new_messages,
     }
     return render(request, 'mouse.html', context)
 
@@ -496,9 +564,13 @@ def mouses_view(request):
 def monitors_view(request):
     monitors = Product.objects.filter(category='monitor')
     available_brands = monitors.values_list('brand', flat=True).distinct()
+    has_new_messages = False
+    if request.user.is_authenticated:
+        has_new_messages = CustomPCMessage.objects.filter(custom_pc__user=request.user, is_read=False).exists()
     context = {
         'monitors': monitors,
         'available_brands': available_brands,
+        'has_new_messages': has_new_messages,
     }
     return render(request, 'monitors.html', context)
 
@@ -506,9 +578,13 @@ def monitors_view(request):
 def assembledcpus_view(request):
     assembledcpus = Product.objects.filter(category='assembled_cpu')
     available_brands = assembledcpus.values_list('brand', flat=True).distinct()
+    has_new_messages = False
+    if request.user.is_authenticated:
+        has_new_messages = CustomPCMessage.objects.filter(custom_pc__user=request.user, is_read=False).exists()
     context = {
         'assembledcpus': assembledcpus,
         'available_brands': available_brands,
+        'has_new_messages': has_new_messages,
     }
     return render(request, 'assembled_cpu.html', context)
 
@@ -516,9 +592,13 @@ def assembledcpus_view(request):
 def accessories_view(request):
     accessories = Product.objects.filter(category='accessory')
     available_brands = accessories.values_list('brand', flat=True).distinct()
+    has_new_messages = False
+    if request.user.is_authenticated:
+        has_new_messages = CustomPCMessage.objects.filter(custom_pc__user=request.user, is_read=False).exists()
     context = {
         'accessories': accessories,
         'available_brands': available_brands,
+        'has_new_messages': has_new_messages,
     }
     return render(request, 'accessory.html', context)
 
@@ -562,7 +642,6 @@ def single_product(request, product_id, category):
         'ratings': ratings,
     }
     return render(request, 'singleproduct.html', context)
-
 def cart_view(request):
     cart_items = Cart.objects.filter(user=request.user)
     
@@ -575,6 +654,10 @@ def cart_view(request):
     total_amount = total_price - total_discount + delivery_charges
     total_savings = total_discount
 
+    has_new_messages = False
+    if request.user.is_authenticated:
+        has_new_messages = CustomPCMessage.objects.filter(custom_pc__user=request.user, is_read=False).exists()
+
     context = {
         'cart_items': cart_items,
         'total_price': total_price,
@@ -582,6 +665,7 @@ def cart_view(request):
         'delivery_charges': delivery_charges,
         'total_amount': total_amount,
         'total_savings': total_savings,
+        'has_new_messages': has_new_messages,
     }
     return render(request, 'cartview.html', context)
 
@@ -838,7 +922,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from userapp.models import User  # Import your User model
 
-@login_required
+login_required
 def checkout(request):
     user = request.user
     cart_items = Cart.objects.filter(user=user)
@@ -849,6 +933,9 @@ def checkout(request):
     total_amount = total_price - total_discount + delivery_charges
     total_savings = total_discount
     
+    # Get the Razorpay key ID from settings
+    razorpay_key_id = settings.RAZORPAY_KEY_ID
+
     context = {
         'user': user,
         'cart_items': cart_items,
@@ -858,6 +945,7 @@ def checkout(request):
         'delivery_charges': delivery_charges,
         'total_amount': total_amount,
         'total_savings': total_savings,
+        'razorpay_key_id': razorpay_key_id,  # Add Razorpay key ID to context
     }
     
     return render(request, 'checkout.html', context)
@@ -942,25 +1030,1223 @@ def check_compatibility(request):
             data = json.loads(request.body)
             components = data.get('components', [])
             total_price = data.get('totalPrice', 0)
+            
+            # Log received data
+            logger.info(f"Received data: {data}")
 
             # Create a new CustomPC instance
             custom_pc = CustomPC.objects.create(
                 user=request.user,
                 total_price=total_price,
-                status='Pending'  # You can set an initial status
+                status='Pending'
             )
 
-            # Add components to CustomPCComponent
-            for component_data in components:
-                component = Component.objects.get(componentId=component_data['componentId'])
+            # Create CustomPCComponent instances for each component
+            for component in components:
                 CustomPCComponent.objects.create(
                     custom_pc=custom_pc,
-                    component=component,
-                    quantity=component_data['quantity']
+                    component_id=component['componentId'],
+                    quantity=component['quantity']
                 )
 
             return JsonResponse({'success': True, 'message': 'Configuration submitted successfully'})
+        except json.JSONDecodeError as e:
+            logger.error(f"JSON Decode Error: {str(e)}")
+            return JsonResponse({'success': False, 'message': 'Invalid JSON data'}, status=400)
+        except KeyError as e:
+            logger.error(f"Key Error: {str(e)}")
+            return JsonResponse({'success': False, 'message': f'Missing required field: {str(e)}'}, status=400)
         except Exception as e:
-            return JsonResponse({'success': False, 'message': str(e)})
+            logger.error(f"Unexpected error in check_compatibility: {str(e)}")
+            return JsonResponse({'success': False, 'message': 'An unexpected error occurred'}, status=500)
+    return JsonResponse({'success': False, 'message': 'Invalid request method'}, status=405)
+
+
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
+import json
+import io
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, Image
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
+from django.conf import settings
+import os
+
+import logging
+
+logger = logging.getLogger(__name__)
+
+from reportlab.lib.colors import HexColor
+from reportlab.lib.enums import TA_CENTER
+from reportlab.graphics.shapes import Drawing, Rect
+from reportlab.graphics.charts.barcharts import VerticalBarChart
+
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.units import inch
+
+@login_required
+@csrf_exempt
+def generate_pdf(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            components = data.get('components', [])
+            total_price = data.get('totalPrice', 0)
+            full_name = data.get('fullName', '')
+
+            logger.info(f"Generating PDF for user: {full_name}")
+
+            buffer = io.BytesIO()
+            doc = SimpleDocTemplate(buffer, pagesize=letter, topMargin=0.5*inch, bottomMargin=0.5*inch)
+            elements = []
+
+            # Add logo
+            logo_path = os.path.join(settings.STATIC_ROOT, 'images', 'logo3.png')
+            if os.path.exists(logo_path):
+                logo = Image(logo_path, width=2*inch, height=1*inch)
+                elements.append(logo)
+            else:
+                logger.warning(f"Logo file not found at {logo_path}")
+
+            # Styles
+            styles = getSampleStyleSheet()
+            title_style = ParagraphStyle('Title', parent=styles['Title'], fontSize=24, spaceAfter=12, alignment=TA_CENTER)
+            normal_style = ParagraphStyle('Normal', parent=styles['Normal'], fontSize=12, spaceAfter=6)
+            highlight_style = ParagraphStyle('Highlight', parent=styles['Normal'], fontSize=14, textColor=colors.red, fontName='Helvetica-Bold')
+            footer_style = ParagraphStyle('Footer', parent=styles['Normal'], fontSize=8, textColor=colors.gray)
+
+            # Title and introduction
+            elements.append(Paragraph("Custom PC Build Specification", title_style))
+            elements.append(Spacer(1, 0.2*inch))
+            elements.append(Paragraph(f"Customer: {full_name}", normal_style))
+            elements.append(Paragraph("Total Price: ", normal_style))
+            elements.append(Paragraph(f"${total_price:.2f}", highlight_style))
+            elements.append(Spacer(1, 0.2*inch))
+
+            # Components table
+            data = [['Category', 'Component', 'Brand', 'Price', 'Quantity', 'Total']]
+            for component in components:
+                data.append([
+                    component['category'],
+                    component['name'],
+                    component['brand'],
+                    f"${float(component['price']):.2f}",
+                    component['quantity'],
+                    f"${float(component['price']) * component['quantity']:.2f}"
+                ])
+
+            # Set a fixed table width (adjust as needed)
+            table_width = 7.5 * inch  # 7.5 inches wide (letter page is 8.5 inches wide)
+            
+            # Calculate column widths as a percentage of the table width
+            col_widths = [
+                table_width * 0.15,  # Category
+                table_width * 0.25,  # Component
+                table_width * 0.15,  # Brand
+                table_width * 0.15,  # Price
+                table_width * 0.15,  # Quantity
+                table_width * 0.15   # Total
+            ]
+
+            table = Table(data, colWidths=col_widths)
+            style = TableStyle([
+                ('BACKGROUND', (0, 0), (-1, 0), HexColor('#4CAF50')),
+                ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, 0), 12),
+                ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                ('BACKGROUND', (0, 1), (-1, -1), HexColor('#E8F5E9')),
+                ('GRID', (0, 0), (-1, -1), 1, colors.black),
+                ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+                ('ROWBACKGROUNDS', (0, 1), (-1, -1), [HexColor('#FFFFFF'), HexColor('#F1F8E9')]),
+                ('LEFTPADDING', (0, 0), (-1, -1), 5),
+                ('RIGHTPADDING', (0, 0), (-1, -1), 5),
+            ])
+            table.setStyle(style)
+
+            # Center the table on the page
+            elements.append(Spacer(1, 0.2*inch))
+            elements.append(Table([[table]], colWidths=[letter[0]], style=[('ALIGN', (0, 0), (-1, -1), 'CENTER')]))
+
+            # Add some space before the footer
+            elements.append(Spacer(1, 1*inch))
+
+            # Footer with copyright and contact information
+            footer_text = f"""
+            © {timezone.now().year} Your Company Name. All rights reserved.
+            Contact us: email@example.com | Phone: +1 (123) 456-7890
+            Website: www.yourcompany.com
+            """
+            footer = Paragraph(footer_text, footer_style)
+            elements.append(footer)
+
+            doc.build(elements)
+            buffer.seek(0)
+            logger.info("PDF generated successfully")
+            
+            # Set the appropriate headers for PDF download
+            response = HttpResponse(buffer.getvalue(), content_type='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename="custom_pc_build.pdf"'
+            return response
+
+        except Exception as e:
+            logger.error(f"Error generating PDF: {str(e)}", exc_info=True)
+            return JsonResponse({'error': str(e)}, status=500)
     else:
-        return JsonResponse({'success': False, 'message': 'Invalid request method'})
+        return HttpResponse("Invalid request method", status=400)
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from .models import CustomPC, CustomPCComponent
+
+@login_required
+def yourbuild(request):
+    # Fetch all custom PCs for the logged-in user, excluding paid ones
+    builds = CustomPC.objects.filter(user=request.user).exclude(custompcorder__status='paid').order_by('-created_at')
+    
+    # Count new messages
+    
+    # Prepare data for the template
+    builds_data = []
+    for pc in builds:
+        components = CustomPCComponent.objects.filter(custom_pc=pc)
+        builds_data.append({
+            'id': pc.id,
+            'status': pc.status,
+            'created_at': pc.created_at,
+            'components': components
+        })
+    has_new_messages = False
+    if request.user.is_authenticated:
+        has_new_messages = CustomPCMessage.objects.filter(custom_pc__user=request.user, is_read=False).exists()
+    context = {
+        'builds': builds_data,
+        'has_new_messages': has_new_messages,
+    }
+    return render(request, 'yourbuild.html', context)
+
+@login_required
+def build_components(request, build_id):
+    try:
+        custom_pc = CustomPC.objects.get(id=build_id, user=request.user)
+        components = CustomPCComponent.objects.filter(custom_pc=custom_pc)
+        data = {
+            'components': [
+                {
+                    'category': component.component.category,
+                    'name': component.component.name,
+                    'quantity': component.quantity,  # Include quantity
+                    'price': float(component.component.price)  # Include price if available
+                } for component in components
+            ]
+        }
+        return JsonResponse(data)
+    except CustomPC.DoesNotExist:
+        return JsonResponse({'error': 'Build not found'}, status=404)
+
+from django.contrib.auth.decorators import login_required, user_passes_test
+
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required, user_passes_test
+from .models import CustomPC
+
+def is_staff(user):
+    return user.is_staff
+
+@login_required
+@user_passes_test(is_staff)
+def staff_build_requests(request):
+    build_requests = CustomPC.objects.select_related('user').all()
+    
+    # Sorting
+    sort = request.GET.get('sort', 'latest')
+    if sort == 'oldest':
+        build_requests = build_requests.order_by('created_at')
+    else:  # default to latest
+        build_requests = build_requests.order_by('-created_at')
+    
+    # Status filtering
+    status = request.GET.get('status')
+    if status:
+        build_requests = build_requests.filter(status=status)
+        print(f"Filtering by status: {status}, found {build_requests.count()} requests")
+    
+    context = {'build_requests': build_requests}
+    return render(request, 'staff_build_requests.html', context)
+
+@login_required
+@user_passes_test(is_staff)
+def build_request_details(request, build_id):
+    build = get_object_or_404(CustomPC, id=build_id)
+    components = CustomPCComponent.objects.filter(custom_pc=build).select_related('component')
+    
+    if request.method == 'POST':
+        new_status = request.POST.get('status')
+        message = request.POST.get('message')
+        if new_status:
+            build.status = new_status
+            build.save()
+        if message:
+            # Here you would typically save the message to a Message model
+            # For simplicity, we'll just pass it back in the context
+            pass
+    
+    context = {
+        'build': build,
+        'components': [
+            {
+                'id': comp.id,
+                'name': comp.component.name,
+                'category': comp.component.category,
+                'quantity': comp.quantity,
+                'recommendedcomponent': comp.recommendedcomponent,
+                'recommended_details': get_recommended_component_details(comp.recommendedcomponent) if comp.recommendedcomponent else None
+            } for comp in components
+        ],
+        'message': message if 'message' in locals() else None
+    }
+    return render(request, 'build_request_details.html', context)
+
+def get_recommended_component_details(component_name):
+    try:
+        component = Component.objects.get(name=component_name)
+        return {
+            'name': component.name,
+            'category': component.category,
+            'price': str(component.price),
+            'description': component.description,
+            'image_url': component.image.url if component.image else None,
+        }
+    except Component.DoesNotExist:
+        return None
+
+@csrf_exempt
+@require_POST
+def update_build_status(request, build_id):
+    try:
+        data = json.loads(request.body)
+        new_status = data.get('status')
+        
+        logger.info(f"Attempting to update build {build_id} to status {new_status}")
+        
+        if not new_status:
+            logger.error("No status provided")
+            return JsonResponse({'success': False, 'error': 'No status provided'}, status=400)
+
+        custom_pc = CustomPC.objects.get(id=build_id)
+        logger.info(f"Current status: {custom_pc.status}")
+        custom_pc.status = new_status
+        custom_pc.save()
+        logger.info(f"Status updated to: {custom_pc.status}")
+
+        # Refresh from database to ensure we're getting the updated value
+        custom_pc.refresh_from_db()
+        logger.info(f"Status after refresh: {custom_pc.status}")
+
+        # Get components using the correct relationship
+        components = custom_pc.components.all()  # Use the related name here
+
+        return JsonResponse({
+            'success': True, 
+            'message': 'Status updated successfully',
+            'new_status': custom_pc.status,
+            'components': [{'name': comp.name, 'quantity': comp.quantity} for comp in components]
+        })
+    except CustomPC.DoesNotExist:
+        logger.error(f"CustomPC with id {build_id} not found")
+        return JsonResponse({'success': False, 'error': f'Custom PC build with id {build_id} not found'}, status=404)
+    except Exception as e:
+        logger.error(f"Error updating status: {str(e)}")
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+@login_required
+@user_passes_test(is_staff)
+def staff_dashboard(request):
+    # Add any context data needed for the staff dashboard
+    context = {}
+    return render(request, 'staff_dashboard.html', context)
+
+from django.http import JsonResponse
+from .models import Component
+
+def component_details_by_name(request, component_name):
+    try:
+        component = Component.objects.get(name=component_name)
+        data = {
+            'name': component.name,
+            'category': component.category,
+            'description': component.description,
+            'price': component.price,
+        }
+        return JsonResponse(data)
+    except Component.DoesNotExist:
+        return JsonResponse({'error': 'Component not found'}, status=404)
+    
+logger = logging.getLogger(__name__)
+
+def get_component_category(request, component_name):
+    logger.info(f"Fetching category for component: {component_name}")
+    try:
+        component = Component.objects.filter(name=component_name).first()
+        if component:
+            logger.info(f"Category for {component_name}: {component.category}")
+            return JsonResponse({'category': component.category})
+        else:
+            logger.error(f"Component not found: {component_name}")
+            return JsonResponse({'error': 'Component not found'}, status=404)
+    except Exception as e:
+        logger.error(f"Error fetching category for {component_name}: {str(e)}")
+        return JsonResponse({'error': 'Internal server error'}, status=500)
+
+def get_recommended_components(request, category):
+    category = unquote(category)  # Decode URL-encoded category
+    logger.info(f"Fetching recommended components for category: {category}")
+    try:
+        components = Component.objects.filter(category=category)[:10]
+        data = [{
+            'id': c.componentId,
+            'name': c.name,
+            'price': str(c.price),
+            'description': c.description if hasattr(c, 'description') else '',
+            'image_url': f'/media/component_images/{os.path.basename(c.image.name)}' if c.image else None
+        } for c in components]
+        logger.info(f"Found {len(data)} recommended components for {category}")
+        return JsonResponse(data, safe=False)
+    except Exception as e:
+        logger.error(f"Error fetching recommended components for {category}: {str(e)}")
+        return JsonResponse({'error': 'Internal server error'}, status=500)
+from django.views.decorators.csrf import csrf_protect    
+@csrf_protect
+@require_POST
+def add_recommended_component(request):
+    try:
+        data = json.loads(request.body)
+        custom_pc_component_id = data.get('custom_pc_component_id')
+        recommended_component_name = data.get('recommended_component_name')
+
+        logger.info(f"Attempting to add recommended component. CustomPCComponent ID: {custom_pc_component_id}, Recommended Component Name: {recommended_component_name}")
+
+        custom_pc_component = CustomPCComponent.objects.get(id=custom_pc_component_id)
+        recommended_component = Component.objects.get(name=recommended_component_name)
+
+        # Update the recommendedcomponent field with the component name
+        custom_pc_component.recommendedcomponent = recommended_component_name
+        custom_pc_component.save()
+
+        logger.info(f"Successfully added recommended component {recommended_component_name} to CustomPCComponent {custom_pc_component}")
+
+        # Prepare the response data
+        response_data = {
+            'status': 'success',
+            'message': 'Recommended component added successfully',
+            'recommended_component': {
+                'name': recommended_component.name,
+                'category': recommended_component.category,
+                'price': str(recommended_component.price),
+                'description': recommended_component.description,
+                'image_url': recommended_component.image.url if recommended_component.image else None,
+            }
+        }
+
+        return JsonResponse(response_data)
+    except CustomPCComponent.DoesNotExist:
+        logger.error(f"CustomPCComponent with ID {custom_pc_component_id} not found")
+        return JsonResponse({'status': 'error', 'message': 'Custom PC Component not found'}, status=404)
+    except Component.DoesNotExist:
+        logger.error(f"Component with name {recommended_component_name} not found")
+        return JsonResponse({'status': 'error', 'message': 'Recommended Component not found'}, status=404)
+    except Exception as e:
+        logger.error(f"Error adding recommended component: {str(e)}", exc_info=True)
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    
+
+@require_POST
+@csrf_protect
+def send_message(request, build_id):
+    try:
+        data = json.loads(request.body)
+        message_text = data.get('message')
+        
+        build = CustomPC.objects.get(id=build_id)
+        
+        message = CustomPCMessage.objects.create(
+            custom_pc=build,
+            sender=request.user,
+            message=message_text
+        )
+        
+        return JsonResponse({
+            'success': True,
+            'message': {
+                'id': message.id,
+                'text': message.message,
+                'sender': message.sender.username,
+                'created_at': message.created_at.strftime('%Y-%m-%d %H:%M:%S')
+            }
+        })
+    except CustomPC.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Build not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+    
+def messageforbuild(request):
+    builds = CustomPC.objects.filter(user=request.user)
+    
+    build_data = []
+    for build in builds:
+        messages = CustomPCMessage.objects.filter(custom_pc=build).order_by('-created_at')
+        
+        # Mark all messages as read
+        messages.update(is_read=True)
+        
+        build_data.append({
+            'build': build,
+            'messages': messages
+        })
+    
+    # Check for new messages
+    has_new_messages = CustomPCMessage.objects.filter(custom_pc__user=request.user, is_read=False).exists()
+    
+    context = {
+        'build_data': build_data,
+        'has_new_messages': has_new_messages,
+    }
+    
+    return render(request, 'messageforbuild.html', context)
+def get_recommendations(request, build_id):
+    build = get_object_or_404(CustomPC, id=build_id, user=request.user)
+    components = CustomPCComponent.objects.filter(custom_pc=build)
+    
+    recommendations = []
+    for component in components:
+        if component.recommendedcomponent:
+            recommendations.append({
+                'component_type': component.component.category if component.component else 'Unknown',
+                'name': component.recommendedcomponent
+            })
+    
+    return JsonResponse({'recommendations': recommendations})
+    
+@require_POST
+def user_send_message_to_staff(request):
+    build_id = request.POST.get('build_id')
+    message_text = request.POST.get('message')
+
+    try:
+        build = CustomPC.objects.get(id=build_id, user=request.user)
+        message = CustomPCMessage.objects.create(
+            custom_pc=build,
+            sender=request.user,
+            message=message_text,
+            is_from_user=True  # Assuming you have this field to distinguish user messages
+        )
+        return JsonResponse({'status': 'success', 'message': 'Message sent successfully to staff'})
+    except CustomPC.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Build not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    
+from django.db import transaction
+@require_POST
+@transaction.atomic
+def accept_recommendations(request):
+    build_id = request.POST.get('build_id')
+
+    try:
+        build = CustomPC.objects.get(id=build_id, user=request.user)
+        components = CustomPCComponent.objects.filter(custom_pc=build)
+
+        changes_made = False
+        for component in components:
+            if component.recommendedcomponent:
+                recommended_parts = component.recommendedcomponent.split('|')
+                recommended_name = recommended_parts[0].strip()
+                recommended_quantity = recommended_parts[1].strip() if len(recommended_parts) > 1 else '1'
+                
+                try:
+                    recommended_component = Component.objects.get(name=recommended_name)
+                    component.component_id = recommended_component.componentId
+                    if recommended_quantity.isdigit():
+                        component.quantity = int(recommended_quantity)
+                    component.recommendedcomponent = None
+                    component.save()
+                    changes_made = True
+                except Component.DoesNotExist:
+                    print(f"Recommended component not found: {recommended_name}")
+
+        if changes_made:
+            CustomPCMessage.objects.create(
+                custom_pc=build,
+                sender=request.user,
+                message="The user has accepted the recommended changes.",
+                is_from_user=True
+            )
+            return JsonResponse({'status': 'success', 'message': 'Recommendations accepted successfully'})
+        else:
+            return JsonResponse({'status': 'info', 'message': 'No valid recommendations to apply'})
+
+    except CustomPC.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'Build not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+    
+def checkoutcustom(request, build_id):
+    build = get_object_or_404(CustomPC, id=build_id, user=request.user)
+    custom_components = CustomPCComponent.objects.filter(custom_pc=build)
+    
+    components_with_prices = []
+    total_price = 0
+    
+    for custom_component in custom_components:
+        component = custom_component.component
+        quantity = custom_component.quantity
+        price = component.price * quantity
+        total_price += price
+        
+        components_with_prices.append({
+            'name': component.name,
+            'quantity': quantity,
+            'price': price,
+            'unit_price': component.price
+        })
+    
+    # Update the total_price of the CustomPC object
+    build.total_price = total_price
+    build.save()
+    
+    # Fetch addresses for the current user
+    user_addresses = Address.objects.filter(user=request.user)
+    
+    context = {
+        'custom_pc': build,
+        'components': components_with_prices,
+        'total_price': total_price,
+        'user': request.user,
+        'user_addresses': user_addresses,
+        'razorpay_key': settings.RAZORPAY_KEY_ID,
+    }
+    
+    return render(request, 'checkoutcustombuild.html', context)
+
+import razorpay
+@csrf_exempt
+def create_order(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        amount = data.get('amount')
+        currency = data.get('currency', 'INR')
+
+        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_SECRET))
+        try:
+            order = client.order.create({'amount': amount, 'currency': currency, 'payment_capture': '1'})
+            return JsonResponse({'id': order['id'], 'amount': order['amount'], 'currency': order['currency']})
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+        
+def your_view_function(request):
+    # ... existing code ...
+
+    # Check for new messages
+    has_new_messages = CustomPCMessage.objects.filter(is_read=False, user=request.user).exists()
+
+    context = {
+        # ... other context variables ...
+        'has_new_messages': has_new_messages,
+    }
+
+    return render(request, 'main.html', context)
+
+
+@require_POST
+def mark_messages_read(request):
+    if request.user.is_authenticated:
+        CustomPCMessage.objects.filter(custom_pc__user=request.user, is_read=False).update(is_read=True)
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'}, status=403)
+
+@require_POST
+def remove_build(request, build_id):
+    try:
+        build = CustomPC.objects.get(id=build_id, user=request.user)
+        
+        # Remove associated components
+        CustomPCComponent.objects.filter(custom_pc=build).delete()
+        
+        # Remove the build itself
+        build.delete()
+        
+        return JsonResponse({'success': True})
+    except CustomPC.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Build not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+from .models import CustomPC
+import json
+import razorpay
+
+import logging
+import json
+import razorpay
+from django.conf import settings
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import CustomPC
+
+logger = logging.getLogger(__name__)
+
+@csrf_exempt
+def create_custom_order(request):
+    logger.info(f"Razorpay Key ID: {settings.RAZORPAY_KEY_ID[:5]}...")
+    logger.info(f"Razorpay Key Secret: {settings.RAZORPAY_SECRET[:5]}...")
+    
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            build_id = data.get('build_id')
+            logger.info(f"Received request to create order for build_id: {build_id}")
+
+            build = CustomPC.objects.get(id=build_id, user=request.user)
+            amount = int(build.total_price * 100)  # Convert to paise
+            logger.info(f"Build total price: {build.total_price}, Amount in paise: {amount}")
+
+            client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_SECRET))
+            
+            payment_data = {
+                'amount': amount,
+                'currency': 'INR',
+                'payment_capture': '1'
+            }
+            logger.info(f"Attempting to create Razorpay order with data: {payment_data}")
+            
+            order = client.order.create(data=payment_data)
+            logger.info(f"Razorpay order created successfully: {order}")
+            
+            return JsonResponse({
+                'order_id': order['id'],
+                'amount': amount,
+            })
+        except CustomPC.DoesNotExist:
+            logger.error(f"CustomPC with id {build_id} not found for user {request.user}")
+            return JsonResponse({'error': 'Custom PC build not found'}, status=404)
+        except Exception as e:
+            logger.error(f"Error creating Razorpay order: {str(e)}", exc_info=True)
+            return JsonResponse({'error': str(e)}, status=500)
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+@csrf_exempt
+@transaction.atomic
+def payment_success(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            payment_id = data.get('payment_id')
+            razorpay_order_id = data.get('order_id')
+            signature = data.get('signature')
+
+            # Verify the payment with Razorpay (implement this function)
+            # if not verify_razorpay_payment(payment_id, razorpay_order_id, signature):
+            #     return JsonResponse({'success': False, 'message': 'Invalid payment'})
+
+            user = request.user
+            cart_items = Cart.objects.filter(user=user)
+
+            if not cart_items.exists():
+                return JsonResponse({'success': False, 'message': 'Cart is empty'})
+
+            # Calculate total amount
+            total_amount = sum(item.totalPrice for item in cart_items)
+
+            # Create a new order
+            order = Order.objects.create(
+                user=user,
+                total_amount=total_amount,
+                payment_id=payment_id,
+                razorpay_order_id=razorpay_order_id,
+                status='Paid'
+            )
+
+            # Add cart items to the order and update product stock
+            for cart_item in cart_items:
+                OrderItem.objects.create(
+                    order=order,
+                    product=cart_item.product,
+                    quantity=cart_item.quantity,
+                    price=cart_item.product.price
+                )
+                
+                # Update product stock
+                product = cart_item.product
+                product.stockLevel = max(0, product.stockLevel - cart_item.quantity)
+                product.save()
+
+            # Clear the user's cart
+            cart_items.delete()
+
+            return JsonResponse({'success': True, 'order_id': order.id})
+        except Exception as e:
+            # If any error occurs, rollback the transaction
+            transaction.set_rollback(True)
+            return JsonResponse({'success': False, 'message': str(e)})
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+def order_confirmation(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    return render(request, 'order_confirmation.html', {'order': order})
+
+
+@csrf_exempt
+def create_razorpay_order(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            build_id = data.get('build_id')
+            address_id = data.get('address_id')
+            amount = data.get('amount')
+
+            # Initialize Razorpay client
+            client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_SECRET))
+
+            # Create Razorpay order
+            razorpay_order = client.order.create({
+                'amount': int(float(amount) * 100),  # Razorpay expects amount in paise
+                'currency': 'INR',
+                'payment_capture': '1'
+            })
+
+            return JsonResponse({
+                'order_id': razorpay_order['id'],
+                'amount': amount
+            })
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        except KeyError as e:
+            return JsonResponse({'error': f'Missing key: {str(e)}'}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': f'Unexpected error: {str(e)}'}, status=500)
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+import logging
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.db import transaction
+from .models import CustomPC, CustomPCOrder, Address, OrderComponent, CustomPCComponent
+
+logger = logging.getLogger(__name__)
+
+@csrf_exempt
+@transaction.atomic
+def payment_success_custom_pc(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            payment_id = data.get('payment_id')
+            order_id = data.get('order_id')
+            build_id = data.get('build_id')
+            address_id = data.get('address_id')
+
+            # TODO: Verify the payment signature here (implementation depends on your Razorpay setup)
+
+            # Retrieve the CustomPC instance
+            custom_pc = CustomPC.objects.get(id=build_id, user=request.user)
+            address = Address.objects.get(id=address_id, user=request.user)
+
+            # Create CustomPCOrder without the signature field
+            custom_pc_order = CustomPCOrder.objects.create(
+                user=request.user,
+                total_price=custom_pc.total_price,
+                payment_id=payment_id,
+                razorpay_order_id=order_id,
+                address=address,
+                status='paid'  # Set the status to 'paid'
+            )
+
+            # Add components to the order
+            for pc_component in CustomPCComponent.objects.filter(custom_pc=custom_pc):
+                OrderComponent.objects.create(
+                    order=custom_pc_order,
+                    component_name=pc_component.component.name,  # Assuming you have a way to get the component name
+                    brand=pc_component.component.brand,  # Assuming you have a way to get the component brand
+                    category=pc_component.component.category,  # Assuming you have a way to get the component category
+                    price=pc_component.component.price,  # Assuming you have a way to get the component price
+                    quantity=pc_component.quantity
+                )
+
+                # Update stock levels
+                pc_component.component.stockLevel -= pc_component.quantity
+                pc_component.component.save()
+
+            logger.info(f"Successfully created CustomPCOrder {custom_pc_order.id}")
+
+            # Remove the build from CustomPC
+            custom_pc.delete()
+
+            return JsonResponse({
+                'success': True,
+                'order_id': custom_pc_order.id
+            })
+        except CustomPC.DoesNotExist:
+            logger.error(f"CustomPC with id {build_id} not found")
+            return JsonResponse({
+                'success': False,
+                'error': 'Custom PC build not found',
+                'order_placed': False
+            })
+        except Address.DoesNotExist:
+            logger.error(f"Address with id {address_id} not found")
+            return JsonResponse({
+                'success': False,
+                'error': 'Address not found',
+                'order_placed': False
+            })
+        except Exception as e:
+            logger.error(f"Error in payment_success_custom_pc: {str(e)}")
+            return JsonResponse({
+                'success': False,
+                'error': str(e),
+                'order_placed': False
+            })
+    return JsonResponse({
+        'success': False,
+        'error': 'Invalid request method',
+        'order_placed': False
+    })
+
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.shortcuts import get_object_or_404
+from .models import CustomPCOrder, CustomPCComponent, Address, CustomPC, Component
+import json
+import razorpay
+from django.conf import settings
+
+razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_SECRET))
+
+@csrf_exempt
+@require_POST
+def check_stock_availability(request):
+    data = json.loads(request.body)
+    custom_pc_id = data.get('custom_pc_id')
+
+    if not custom_pc_id:
+        return JsonResponse({'success': False, 'message': 'No custom PC selected.'})
+
+    try:
+        custom_pc = get_object_or_404(CustomPC, id=custom_pc_id, user=request.user)
+    except ValueError:
+        return JsonResponse({'success': False, 'message': 'Invalid custom PC ID.'})
+
+    all_in_stock = True
+    out_of_stock_items = []
+
+    for custom_component in custom_pc.components.all():
+        component = custom_component.component
+        if custom_component.quantity > component.stockLevel:
+            all_in_stock = False
+            out_of_stock_items.append(component.name)
+
+    if all_in_stock:
+        return JsonResponse({'success': True})
+    else:
+        return JsonResponse({
+            'success': False,
+            'message': f"The following items are out of stock: {', '.join(out_of_stock_items)}"
+        })
+
+@csrf_exempt
+@require_POST
+def place_custom_order(request):
+    data = json.loads(request.body)
+    address_id = data.get('address_id')
+    payment_method = data.get('payment_method')
+    custom_pc_id = data.get('custom_pc_id')
+    user = request.user
+
+    address = get_object_or_404(Address, id=address_id, user=user)
+    custom_pc = get_object_or_404(CustomPC, id=custom_pc_id, user=user)
+    total_amount = custom_pc.total_price
+
+    if payment_method == 'razorpay':
+        # Create Razorpay order
+        razorpay_order = razorpay_client.order.create({
+            'amount': int(total_amount * 100),  # Amount in paise
+            'currency': 'INR',
+            'payment_capture': '1'
+        })
+
+        # Create CustomPCOrder
+        order = CustomPCOrder.objects.create(
+            build=custom_pc,
+            user=user,
+            address=address,
+            total_price=total_amount,
+            razorpay_order_id=razorpay_order['id'],
+            status='pending'
+        )
+
+        # Create OrderComponent entries
+        for component in custom_pc.components.all():
+            OrderComponent.objects.create(
+                order=order,
+                component_name=component.component.name,
+                brand=component.component.brand,
+                category=component.component.category,
+                price=component.component.price,
+                quantity=component.quantity
+            )
+
+        return JsonResponse({
+            'success': True,
+            'order_id': order.id,
+            'razorpay_order_id': razorpay_order['id'],
+            'razorpay_key_id': settings.RAZORPAY_KEY_ID,
+            'total_amount': total_amount
+        })
+    elif payment_method == 'cod':
+        # Create CustomPCOrder
+        order = CustomPCOrder.objects.create(
+            build=custom_pc,
+            user=user,
+            address=address,
+            total_price=total_amount,
+            status='pending'
+        )
+
+        # Create OrderComponent entries
+        for component in custom_pc.components.all():
+            OrderComponent.objects.create(
+                order=order,
+                component_name=component.component.name,
+                brand=component.component.brand,
+                category=component.component.category,
+                price=component.component.price,
+                quantity=component.quantity
+            )
+
+        return JsonResponse({'success': True, 'order_id': order.id})
+    else:
+        return JsonResponse({'success': False, 'message': 'Invalid payment method'})
+
+@csrf_exempt
+@require_POST
+def razorpay_callback(request):
+    data = json.loads(request.body)
+    razorpay_order_id = data.get('razorpay_order_id')
+    razorpay_payment_id = data.get('razorpay_payment_id')
+    razorpay_signature = data.get('razorpay_signature')
+
+    # Verify the payment signature
+    try:
+        razorpay_client.utility.verify_payment_signature({
+            'razorpay_order_id': razorpay_order_id,
+            'razorpay_payment_id': razorpay_payment_id,
+            'razorpay_signature': razorpay_signature
+        })
+    except:
+        return JsonResponse({'success': False, 'message': 'Invalid payment signature'})
+
+    # Update the order status
+    order = get_object_or_404(CustomPCOrder, razorpay_order_id=razorpay_order_id)
+    order.status = 'paid'
+    order.payment_id = razorpay_payment_id
+    order.save()
+
+    # Update stock levels
+    for order_component in order.components.all():
+        component = Component.objects.get(name=order_component.component_name)
+        component.stockLevel -= order_component.quantity
+        component.save()
+
+    return JsonResponse({'success': True, 'message': 'Payment successful'})
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from .models import Order
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Order, OrderItem
+from django.db.models import Prefetch
+
+@login_required
+def order_view(request):
+    user_id = request.session.get('user_id')
+    if user_id:
+        orders = Order.objects.filter(user_id=user_id).prefetch_related(
+            Prefetch('items', queryset=OrderItem.objects.select_related('product'))
+        ).order_by('-created_at')
+        context = {
+            'orders': orders,
+        }
+        return render(request, 'order.html', context)
+    else:
+        return redirect('userapp:login')
+    
+@login_required
+def build_order_view(request):
+    user_id = request.session.get('user_id')
+    if user_id:
+        build_orders = CustomPCOrder.objects.filter(user_id=user_id).exclude(
+            status__in=['pending', 'rejected']
+        ).prefetch_related('components').select_related('build', 'address').order_by('-created_at')
+        
+        context = {
+            'build_orders': build_orders,
+        }
+        return render(request, 'build_order.html', context)
+    else:
+        return redirect('userapp:login')
+    
+    
+from django.shortcuts import render
+from .models import CustomPCOrder, OrderComponent
+
+def ordered_build(request):
+    orders = CustomPCOrder.objects.exclude(status__in=['pending', 'arrived']).order_by('-created_at')
+    orders = orders.prefetch_related('components')
+    
+    context = {
+        'orders': orders,
+    }
+    return render(request, 'ordered_build.html', context)
+
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+import json
+from .models import CustomPCOrder
+
+# ... existing views ...
+
+import logging
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+import json
+from .models import CustomPCOrder
+
+logger = logging.getLogger(__name__)
+
+@require_POST
+@csrf_exempt
+def update_order_status(request, order_id):
+    try:
+        data = json.loads(request.body)
+        new_status = data.get('status')
+        
+        logger.info(f"Attempting to update order {order_id} to status {new_status}")
+        
+        order = CustomPCOrder.objects.get(id=order_id)
+        old_status = order.status
+        order.status = new_status
+        order.save()
+        
+        logger.info(f"Order {order_id} updated: {old_status} -> {new_status}")
+        
+        return JsonResponse({
+            'success': True,
+            'status': order.get_status_display()
+        })
+    except CustomPCOrder.DoesNotExist:
+        logger.error(f"Order {order_id} not found")
+        return JsonResponse({
+            'success': False,
+            'error': 'Order not found'
+        }, status=404)
+    except Exception as e:
+        logger.error(f"Error updating order {order_id}: {str(e)}")
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=400)
+        
+import logging
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.core.mail import EmailMessage
+from django.conf import settings
+from .models import CustomPCOrder
+
+logger = logging.getLogger(__name__)
+
+def send_cancellation_email(user, order):
+    subject = 'Order Cancellation Confirmation'
+    current_time = timezone.now().strftime('%Y-%m-%d %H:%M:%S')
+    message = f"""
+    Dear {user.username},
+
+    Your order (ID: {order.id}) has been successfully cancelled. 
+    The refund of ${order.total_price:.2f} will be processed within 3 working days.
+
+    Order Details:
+    - Order ID: {order.id}
+    - Total Amount: ${order.total_price:.2f}
+    - Cancelled Date: {current_time}
+
+    If you have any questions about your refund, please contact our customer support.
+
+    Thank you for your understanding.
+
+    Best regards,
+    TechCraft Team
+    """
+    
+    email = EmailMessage(
+        subject,
+        message,
+        settings.DEFAULT_FROM_EMAIL,
+        [user.email],
+    )
+    
+    try:
+        email.send(fail_silently=False)
+        logger.info(f"Cancellation email sent successfully to {user.email}")
+        return True
+    except Exception as e:
+        logger.error(f"Failed to send cancellation email to {user.email}. Error: {str(e)}")
+        return False
+
+@require_POST
+def cancel_custom_order(request, order_id):
+    logger.info(f"Attempting to cancel order {order_id} for user {request.user.username}")
+    try:
+        order = CustomPCOrder.objects.get(id=order_id, user=request.user)
+        logger.info(f"Order {order_id} found. Current status: {order.status}")
+        if order.status in ['paid', 'building', 'shipped', 'enroute']:
+            order.status = 'pending'
+            order.save()
+            logger.info(f"Order {order_id} status updated to pending")
+
+            email_sent = send_cancellation_email(request.user, order)
+            logger.info(f"Email sent status for order {order_id}: {email_sent}")
+
+            message = 'Order cancelled successfully. The refund will be processed within 3 working days.'
+            if email_sent:
+                message += ' An email confirmation has been sent.'
+            else:
+                message += ' However, there was an issue sending the confirmation email.'
+
+            return JsonResponse({
+                'success': True, 
+                'message': message
+            })
+        else:
+            logger.warning(f"Order {order_id} cannot be cancelled. Current status: {order.status}")
+            return JsonResponse({'success': False, 'error': 'Order cannot be cancelled at this stage.'})
+    except CustomPCOrder.DoesNotExist:
+        logger.error(f"Order {order_id} not found for user {request.user.username}")
+        return JsonResponse({'success': False, 'error': 'Order not found.'})
+    except Exception as e:
+        logger.exception(f"Error cancelling order {order_id}: {str(e)}")
+        return JsonResponse({'success': False, 'error': 'An unexpected error occurred.'})

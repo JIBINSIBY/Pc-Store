@@ -1410,7 +1410,7 @@ https://templatemo.com/tm-571-hexashop
                     {% for product in out_of_stock_products %}
                         <li>
                             <span>{{ product.name }}</span>
-                            <a href="{% url 'userapp:admin_editproduct' product.productId %}" class="btn btn-sm btn-primary">Add Stock</a>
+                            <a href="/admin_editproduct/{{ product.productId }}/" class="btn btn-sm btn-primary">Add Stock</a>
                         </li>
                     {% endfor %}
                 </ul>

@@ -1940,6 +1940,14 @@ https://templatemo.com/tm-571-hexashop
         .img-fluid {
             width: 391px !important;
         }
+        .notification-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: red;
+            border-radius: 50%;
+            margin-left: 5px;
+        }
     </style>
     </head>
     
@@ -1978,7 +1986,26 @@ https://templatemo.com/tm-571-hexashop
                             <ul class="nav">
                                 <li class="scroll-to-section"><a href="{% url 'userapp:mainpage' %}" class="active">Home</a></li>
                                 <li class="scroll-to-section"><a href="{% url 'userapp:cart_view' %}">Cart</a></li>
-                                <li class="scroll-to-section"><a href="{% url 'userapp:pc_custom' %}">Custom PC</a></li>
+                                <li class="submenu">
+                                    <a href="javascript:;">
+                                        <i class="fa fa-box"></i> Custom PC
+                                        {% if has_new_messages %}
+                                            <span class="notification-dot"></span>
+                                        {% endif %}
+                                    </a>
+                                    <ul class="dropdown">
+                                        <li><a href="{% url 'userapp:pc_custom' %}"><i class=""></i>Build</a></li>
+                                        <li><a href="{% url 'userapp:yourbuild' %}"><i class=""></i>Your Build</a></li>
+                                        <li><a href="{% url 'userapp:build_orders' %}"><i class=""></i>Ordered Build</a></li>
+                                        <li><a href="{% url 'userapp:messageforbuild' %}">
+                                            <i class=""></i>Messages
+                                            {% if has_new_messages %}
+                                                <span class="notification-dot"></span>
+                                            {% endif %}
+                                        </a></li>
+                                    </ul>
+                                </li>
+
                                 <li class="submenu">
                                     <a href="javascript:;">
                                         <i class="fa fa-box"></i> Products
@@ -2072,8 +2099,8 @@ https://templatemo.com/tm-571-hexashop
                 <!-- Product Grid -->
                 <div class="col-lg-9">
                     <div class="section-heading">
-                        <h2>Our Assembled CPUs Collection</h2>
-                        <span>Check out all of our Assembled CPUs.</span>
+                        <h2>Our Accessories Collection</h2>
+                        <span>Check out all of our Accessories .</span>
                     </div>
                     <div class="row">
                         {% for accessory in accessories %}
@@ -2546,6 +2573,42 @@ https://templatemo.com/tm-571-hexashop
     // Also check when the page is focused
     window.addEventListener('focus', checkSession);
 </script>
-    
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const messageLink = document.querySelector('a[href="{% url 'userapp:messageforbuild' %}"]');
+        if (messageLink) {
+            messageLink.addEventListener('click', function() {
+                // Remove notification dots
+                const notificationDots = document.querySelectorAll('.notification-dot');
+                notificationDots.forEach(dot => dot.style.display = 'none');
+
+                // You might want to make an AJAX call here to mark messages as read on the server
+                fetch('{% url "userapp:mark_messages_read" %}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'Content-Type': 'application/json',
+                    },
+                });
+            });
+        }
+
+        // Function to get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    });
+    </script>   
   </body>
 </html>

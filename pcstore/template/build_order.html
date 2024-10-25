@@ -1,0 +1,997 @@
+{% load custom_filters %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+
+    <title>Hexashop Ecommerce HTML CSS Template</title>
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/templatemo-hexashop.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/owl-carousel.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/lightbox.css' %}">
+<!--
+
+TemplateMo 571 Hexashop
+
+https://templatemo.com/tm-571-hexashop
+
+-->
+    <style>
+        .main-banner {
+            padding-top: 46px;
+            padding-bottom: 0px !important;
+        }
+        #keyboards .thumb {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #keyboards .hover-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.7);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        #keyboards .thumb:hover .hover-content {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .header-area .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin: 0 20px;
+            max-width: 50%; /* Adjust this value to control the maximum width */
+        }
+
+        .search-container form {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .search-container input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+            flex-grow: 1;
+            min-width: 0;
+            width: 100%;
+        }
+
+        .search-container button {
+            padding: 10px 15px;
+            background-color: #7e96dc;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background-color: #d32f2f;
+        }
+
+        .header-area .main-nav .nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        .header-area .main-nav .nav li {
+            padding: 0 15px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-area .main-nav .nav li a {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            height: 100%;
+            border: transparent;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 991px) {
+            .header-area .main-nav {
+                flex-wrap: wrap;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0;
+            }
+            .search-container form {
+                width: 100%;
+            }
+            .search-container input[type="text"] {
+                flex-grow: 1;
+            }
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 4px 4px;
+        }
+
+        .suggestion-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .suggestion-item:not(:last-child) {
+            border-bottom: 1px solid #eee;
+        }
+
+        .fixed-top {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1030;
+        }
+
+        body {
+            padding-top: 80px; /* Adjust this value based on your header height */
+        }
+
+        .submenu {
+            position: relative;
+        }
+
+        .submenu .dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            padding: 10px 0;
+            min-width: 200px;
+            z-index: 1000;
+        }
+
+        .submenu:hover .dropdown {
+            display: block;
+        }
+
+        .submenu .dropdown li {
+            display: block;
+            padding: 5px 15px;
+        }
+
+        .submenu .dropdown li a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .submenu .dropdown li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .submenu .dropdown li a:hover {
+            background-color: #f5f5f5;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            flex-shrink: 0;
+        }
+
+        .search-container {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+
+        .search-container form {
+            display: flex;
+        }
+
+        .search-container input[type="text"] {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .nav {
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 991px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+        footer {
+            padding-top: 43px;
+            margin-top: 60px;
+            padding: 60px 0px 30px 0px;
+            background-color: #2a2a2a;
+            margin-top: 0px !important;
+        }
+        .header-area .main-nav .logo {
+            width: 230px !important;
+        }
+        .notification-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: red;
+            border-radius: 50%;
+            margin-left: 5px;
+        }
+        .card {
+            transition: transform 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .table-responsive {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .hover-effect {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .hover-effect:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .custom-container {
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .custom-width-container {
+            margin-left: -134px;
+
+        }
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 30px;
+            max-width: 100%;
+            width: 100%;
+        }
+
+        .progress-container::before {
+            content: '';
+            background-color: #f0f0f0;
+            position: absolute;
+            top: 33%;
+            left: 0;
+            transform: translateY(-50%);
+            height: 4px;
+            width: 96%;
+            margin-left: 23px;
+            z-index: 1;
+        }
+
+        .progress-bar {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            height: 4px;
+            width: 0%;
+            background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+            z-index: 2;
+            transition: width 0.5s ease;
+        }
+
+        .progress-step {
+            text-align: center;
+            z-index: 3;
+            position: relative;
+        }
+
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            color: #b0b0b0;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-step.active .step-icon {
+            background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+            color: #fff;
+            box-shadow: 0 2px 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: #b0b0b0;
+            margin-top: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .progress-step.active .step-label {
+            color: #4facfe;
+            font-weight: 600;
+        }
+
+        .progress-container .progress-step:nth-child(2).active ~ .progress-bar {
+            width: 33%;
+        }
+
+        .progress-container .progress-step:nth-child(3).active ~ .progress-bar {
+            width: 66%;
+        }
+
+        .progress-container .progress-step:nth-child(4).active ~ .progress-bar {
+            width: 100%;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(79, 172, 254, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(79, 172, 254, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(79, 172, 254, 0);
+            }
+        }
+
+        .progress-step.active .step-icon {
+            animation: pulse 2s infinite;
+        }
+    </style>
+    </head>
+    
+    <body>
+    
+    <!-- ***** Preloader Start ***** -->
+    <!-- <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>   -->
+    <!-- ***** Preloader End ***** -->
+    
+    
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky fixed-top">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <div class="header-content">
+                            <a href="{% url 'userapp:mainpage' %}" class="logo">
+                                <img src="{% static 'images/file.png' %}">
+                            </a>
+
+                            <div class="search-container">
+                                <form action="{% url 'userapp:search_results' %}" method="get">
+                                    <input type="text" id="search-input" placeholder="Search products..." name="q" autocomplete="off">
+                                    <button type="submit"><i class="fa fa-search"></i></button>
+                                </form>
+                                <div id="search-suggestions" class="search-suggestions"></div>
+                            </div>
+
+                            <ul class="nav">
+                                <li class="scroll-to-section"><a href="{% url 'userapp:mainpage' %}" class="active">Home</a></li>
+                                <li class="scroll-to-section"><a href="{% url 'userapp:cart_view' %}">Cart</a></li>
+                                <li class="submenu">
+                                    <a href="javascript:;">
+                                        <i class=""></i> Custom PC
+                                        {% if has_new_messages %}
+                                        <span class="notification-dot"></span>
+                                        {% endif %}
+                                    </a>
+                                    <ul class="dropdown">
+                                        <li><a href="{% url 'userapp:pc_custom' %}"><i class=""></i>Build</a></li>
+                                        <li><a href="{% url 'userapp:yourbuild' %}"><i class=""></i>Your Build</a></li>
+                                        <li><a href="{% url 'userapp:messageforbuild' %}">
+                                            <i class=""></i>Messages
+                                            {% if has_new_messages %}
+                                                <span class="notification-dot"></span>
+                                            {% endif %}
+                                        </a></li>
+                                    </ul>
+                                </li>
+                                <li class="submenu">
+                                    <a href="javascript:;">
+                                        <i class=""></i> Products
+                                    </a>
+                                    <ul class="dropdown">
+                                        <li><a href="{% url 'userapp:monitors' %}"><i class="fa fa-desktop"></i> Monitors</a></li>
+                                        <li><a href="{% url 'userapp:keyboards' %}"><i class="fa fa-keyboard"></i> Keyboards</a></li>
+                                        <li><a href="{% url 'userapp:mouses' %}"><i class="fa fa-mouse"></i> Mouses</a></li>
+                                        <li><a href="#"><i class="fa fa-microchip"></i> Assembled CPU</a></li>
+                                        <li><a href="{% url 'userapp:accessories' %}"><i class="fa fa-headphones"></i> Accessories</a></li>
+                                    </ul>
+                                </li>
+                                {% if request.session.user_id %}
+                                    <li class="submenu">
+                                        <a href="javascript:;">{{ request.session.username }}</a>
+                                        <ul class="dropdown">
+                                            <li><a href="{% url 'userapp:profile' %}"><i class="fa fa-user"></i> Profile</a></li>
+                                            <li><a href="loginuser"><i class="fa fa-shopping-bag"></i> Orders</a></li>
+                                            <li><a href="loginuser"><i class="fa fa-heart"></i> Wishlist</a></li>
+                                            <li><a href="loginuser"><i class="fa fa-bell"></i> Notifications</a></li>
+                                            <li><a href="{% url 'userapp:logout'%}" id="logout-link"><i class="fa fa-sign-out"></i> Logout</a></li>
+                                        </ul>
+                                    </li>
+                                {% else %}
+                                    <li><a href="{% url 'userapp:login' %}">Login</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="custom-container">
+        <h2 class="text-center mb-4" style="
+    margin-top: 30px;"">Your Paid Custom PC Build Orders</h2>
+        {% if build_orders %}
+            <div class="row">
+                {% for order in build_orders %}
+                    {% if order.status not in 'pending,rejected' %}
+                        <div class="col-12 mb-4 custom-width-container">
+                            <div class="card shadow-sm hover-effect" style="width: 1469px;">
+                                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Order {{ order.id }}</h5>
+                                    <span class="badge bg-light text-dark">{{ order.created_at|date:"F d, Y H:i" }}</span>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <h5 class="card-title">Total: <span class="text-primary">${{ order.total_price|floatformat:2 }}</span></h5>
+                                        </div>
+                                        <div class="col-md-6 text-md-end">
+                                            <p class="mb-0"><strong>Status:</strong> <span class="badge bg-primary">Paid</span></p>
+                                        </div>
+                                    </div>
+                                    <div class="order-details">
+                                        <p><strong><i class="fas fa-credit-card me-2"></i>Payment ID:</strong> <span class="text-muted">{{ order.payment_id }}</span></p>
+                                        <p><strong><i class="fas fa-shopping-cart me-2"></i>Razorpay Order ID:</strong> <span class="text-muted">{{ order.razorpay_order_id }}</span></p>
+                                        <p><strong><i class="fas fa-shipping-fast me-2"></i>Shipping Address:</strong> <span class="text-muted">{{ order.address }}</span></p>
+                                    </div>
+                                    <h6 class="mt-4 mb-3">Components:</h6>
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>Component</th>
+                                                    <th>Brand</th>
+                                                    <th>Category</th>
+                                                    <th>Price</th>
+                                                    <th>Quantity</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for component in order.components.all %}
+                                                    <tr>
+                                                        <td>{{ component.component_name }}</td>
+                                                        <td>{{ component.brand }}</td>
+                                                        <td>{{ component.category }}</td>
+                                                        <td>${{ component.price|floatformat:2 }}</td>
+                                                        <td>{{ component.quantity }}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="order-progress mt-4">
+                                        <h6 class="mb-3">Order Status:</h6>
+                                        <div class="progress-container">
+                                            <div class="progress-bar"></div>
+                                            <div class="progress-step {% if order.status != 'pending' %}active{% endif %}">
+                                                <div class="step-icon"><i class="fas fa-credit-card"></i></div>
+                                                <div class="step-label">Paid</div>
+                                            </div>
+                                            <div class="progress-step {% if order.status in 'building,shipped,enroute,arrived' %}active{% endif %}">
+                                                <div class="step-icon"><i class="fas fa-tools"></i></div>
+                                                <div class="step-label">Building</div>
+                                            </div>
+                                            <div class="progress-step {% if order.status in 'shipped,enroute,arrived' %}active{% endif %}">
+                                                <div class="step-icon"><i class="fas fa-box"></i></div>
+                                                <div class="step-label">Shipped</div>
+                                            </div>
+                                            <div class="progress-step {% if order.status in 'enroute,arrived' %}active{% endif %}">
+                                                <div class="step-icon"><i class="fas fa-truck"></i></div>
+                                                <div class="step-label">En Route</div>
+                                            </div>
+                                            <div class="progress-step {% if order.status == 'arrived' %}active{% endif %}">
+                                                <div class="step-icon"><i class="fas fa-home"></i></div>
+                                                <div class="step-label">Arrived</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Display order details here -->
+                                    <div class="order-details mt-4">
+                                        <h6>Order Details:</h6>
+                                        <p><strong>Order ID:</strong> {{ order.id }}</p>
+                                        <p><strong>Total Price:</strong> ${{ order.total_price }}</p>
+                                        <p><strong>Current Status:</strong> {{ order.get_status_display }}</p>
+                                        <!-- Add the cancel button -->
+                                        <button class="btn btn-danger mt-3" onclick="cancelOrder(this)" data-order-id="{{ order.id }}">Cancel Order</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center" role="alert">
+                <i class="fa fa-info-circle me-2"></i> You have no paid custom PC build orders yet. Start building your dream PC today!
+            </div>
+        {% endif %}
+    </div>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="first-item">
+                        <div class="logo">
+                            <img src="{% static 'images/white-logo.png' %}" alt="hexashop ecommerce templatemo">
+                        </div>
+                        <ul>
+                            <li><a href="#">16501 Collins Ave, Sunny Isles Beach, FL 33160, United States</a></li>
+                            <li><a href="#">techcraft@gmail.com</a></li>
+                            <li><a href="#">010-020-0340</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <h4>Shopping &amp; Categories</h4>
+                    <ul>
+                        <li><a href="#">Keyboards</a></li>
+                        <li><a href="#">Mouse</a></li>
+                        <li><a href="#">Monitors</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h4>Useful Links</h4>
+                    <ul>
+                        <li><a href="#">Homepage</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Help</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h4>Help &amp; Information</h4>
+                    <ul>
+                        <li><a href="#">Help</a></li>
+                        <li><a href="#">FAQ's</a></li>
+                        <li><a href="#">Shipping</a></li>
+                        <li><a href="#">Tracking ID</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-12">
+                    <div class="under-footer">
+                        <p>Copyright © 2024 TechCraft Co., Ltd. All Rights Reserved.</p>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+
+    <!-- jQuery -->
+    <script src="{% static 'js/jquery-2.1.0.min.js' %}"></script>
+
+    <!-- Bootstrap -->
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    <!-- Plugins -->
+    <script src="{% static 'js/owl-carousel.js' %}"></script>
+    <script src="{% static 'js/accordions.js' %}"></script>
+    <script src="{% static 'js/datepicker.js' %}"></script>
+    <script src="{% static 'js/scrollreveal.min.js' %}"></script>
+    <script src="{% static 'js/waypoints.min.js' %}"></script>
+    <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'js/imgfix.min.js' %}"></script> 
+    <script src="{% static 'js/slick.js' %}"></script> 
+    <script src="{% static 'js/lightbox.js' %}"></script> 
+    <script src="{% static 'js/isotope.js' %}"></script> 
+    
+    <!-- Global Init -->
+    <script src="{% static 'js/custom.js' %}"></script>
+
+    <script>
+
+        $(function() {
+            var selectedClass = "";
+            $("p").click(function(){
+            selectedClass = $(this).attr("data-rel");
+            $("#portfolio").fadeTo(50, 0.1);
+                $("#portfolio div").not("."+selectedClass).fadeOut();
+            setTimeout(function() {
+              $("."+selectedClass).fadeIn();
+              $("#portfolio").fadeTo(50, 1);
+            }, 500);
+                
+            });
+        });
+
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const bannerContainer = document.querySelector('.banner-container');
+            const slides = document.querySelectorAll('.banner-slide');
+            let currentSlide = 0;
+
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                bannerContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+            }
+
+            setInterval(nextSlide, 3000); // Change slide every 3 seconds
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const bannerContainer = document.querySelector('.banner-container');
+            const slides = document.querySelectorAll('.banner-slide');
+            const prevButton = document.querySelector('.banner-prev');
+            const nextButton = document.querySelector('.banner-next');
+            let currentSlide = 0;
+    
+            function showSlide(index) {
+                bannerContainer.style.transform = `translateX(-${index * 100}%)`;
+            }
+    
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }
+    
+            function prevSlide() {
+                currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+                showSlide(currentSlide);
+            }
+    
+            prevButton.addEventListener('click', prevSlide);
+            nextButton.addEventListener('click', nextSlide);
+    
+            setInterval(nextSlide, 3000); // Change slide every 3 seconds
+        });
+    </script>
+
+    <!-- Bottom Banner Slider -->
+    <script>
+        const bottomBannerContainer = document.querySelector('.bottom-banner .banner-container');
+        const bottomBannerSlides = document.querySelectorAll('.bottom-banner .banner-slide');
+        const bottomBannerPrevBtn = document.querySelector('.bottom-banner .banner-prev');
+        const bottomBannerNextBtn = document.querySelector('.bottom-banner .banner-next');
+        let bottomBannerCurrentSlide = 0;
+
+        function bottomBannerShowSlide(index) {
+            bottomBannerContainer.style.transform = `translateX(-${index * 100}%)`;
+        }
+
+        function bottomBannerNextSlide() {
+            bottomBannerCurrentSlide = (bottomBannerCurrentSlide + 1) % bottomBannerSlides.length;
+            bottomBannerShowSlide(bottomBannerCurrentSlide);
+        }
+
+        function bottomBannerPrevSlide() {
+            bottomBannerCurrentSlide = (bottomBannerCurrentSlide - 1 + bottomBannerSlides.length) % bottomBannerSlides.length;
+            bottomBannerShowSlide(bottomBannerCurrentSlide);
+        }
+
+        bottomBannerPrevBtn.addEventListener('click', bottomBannerPrevSlide);
+        bottomBannerNextBtn.addEventListener('click', bottomBannerNextSlide);
+
+        setInterval(bottomBannerNextSlide, 3000); // Change slide every 3 seconds
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-input');
+            const suggestionsContainer = document.getElementById('search-suggestions');
+    
+            searchInput.addEventListener('input', function() {
+                const query = this.value;
+                if (query.length > 1) {
+                    fetch(`/search-suggestions/?q=${query}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            suggestionsContainer.innerHTML = '';
+                            data.forEach(suggestion => {
+                                const div = document.createElement('div');
+                                div.classList.add('suggestion-item');
+                                div.textContent = suggestion.name;
+                                div.addEventListener('click', function() {
+                                    window.location.href = `/${suggestion.category}/${suggestion.productId}/`;
+                                });
+                                suggestionsContainer.appendChild(div);
+                            });
+                            suggestionsContainer.style.display = data.length ? 'block' : 'none';
+                        });
+                } else {
+                    suggestionsContainer.style.display = 'none';
+                }
+            });
+    
+            document.addEventListener('click', function(e) {
+                if (e.target !== searchInput && e.target !== suggestionsContainer) {
+                    suggestionsContainer.style.display = 'none';
+                }
+            });
+    
+            const logoutLink = document.getElementById('logout-link');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    fetch('{% url "userapp:logout" %}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                });
+            }
+        });
+        </script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        const searchInput = $('#search-input');
+        const suggestionsContainer = $('#search-suggestions');
+    
+        searchInput.on('input', function() {
+            const query = $(this).val().toLowerCase();
+            if (query.length > 0) {
+                const suggestions = ['keyboards', 'monitors', 'mouses', 'assembled cpu', 'accessories'].filter(item => item.includes(query));
+                displaySuggestions(suggestions);
+            } else {
+                suggestionsContainer.hide();
+            }
+        });
+    
+        function displaySuggestions(suggestions) {
+            suggestionsContainer.empty();
+            if (suggestions.length > 0) {
+                suggestions.forEach(suggestion => {
+                    const item = $('<div class="suggestion-item"></div>').text(suggestion);
+                    item.on('click', function() {
+                        searchInput.val(suggestion);
+                        suggestionsContainer.hide();
+                        redirectToPage(suggestion);
+                    });
+                    suggestionsContainer.append(item);
+                });
+                suggestionsContainer.show();
+            } else {
+                suggestionsContainer.hide();
+            }
+        }
+    
+        function redirectToPage(suggestion) {
+            const pages = {
+                'keyboards': '{% url "userapp:keyboards" %}',
+                'monitors': '{% url "userapp:monitors" %}',
+                'mouses': '{% url "userapp:mouses" %}',
+                'assembled cpu': '{% url "userapp:assembledcpus" %}',
+                'accessories': '{% url "userapp:accessories" %}'
+            };
+            if (pages[suggestion]) {
+                window.location.href = pages[suggestion];
+            }
+        }
+    
+        $(document).on('click', function(event) {
+            if (!$(event.target).closest('.search-container').length) {
+                suggestionsContainer.hide();
+            }
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const messageLink = document.querySelector('a[href="{% url 'userapp:messageforbuild' %}"]');
+        if (messageLink) {
+            messageLink.addEventListener('click', function() {
+                // Remove notification dots
+                const notificationDots = document.querySelectorAll('.notification-dot');
+                notificationDots.forEach(dot => dot.style.display = 'none');
+
+                // You might want to make an AJAX call here to mark messages as read on the server
+                fetch('{% url "userapp:mark_messages_read" %}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'Content-Type': 'application/json',
+                    },
+                });
+            });
+        }
+
+        // Function to get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    });
+    </script>
+    <!-- Add this script at the end of your file, before the closing </body> tag -->
+    <script>
+    function cancelOrder(button) {
+        const orderId = button.getAttribute('data-order-id');
+        if (confirm("Are you sure you want to cancel this order? The refund will be processed within 3 working days.")) {
+            console.log(`Attempting to cancel order ${orderId}`);
+            fetch(`/cancel-custom-order/${orderId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Response data:', data);
+                if (data.success) {
+                    alert(data.message);
+                    button.closest('.card').remove();  // Remove the entire order card
+                } else {
+                    alert("Failed to cancel the order: " + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert("An error occurred while cancelling the order. Please check the console for more details.");
+            });
+        }
+    }
+
+    function updateOrderStatus(orderId, newStatus) {
+        const orderCard = document.getElementById(`order-card-${orderId}`);
+        if (orderCard) {
+            // Update the status badge
+            const statusBadge = orderCard.querySelector('.badge');
+            if (statusBadge) {
+                statusBadge.textContent = 'Pending';
+                statusBadge.classList.remove('bg-primary', 'bg-success', 'bg-info', 'bg-warning');
+                statusBadge.classList.add('bg-secondary');
+            }
+
+            // Update the status text
+            const statusText = orderCard.querySelector('#status-' + orderId);
+            if (statusText) {
+                statusText.textContent = 'Pending';
+            }
+
+            // Update the current status in the order details
+            const currentStatusElement = orderCard.querySelector('.order-details p:contains("Current Status:")');
+            if (currentStatusElement) {
+                currentStatusElement.innerHTML = '<strong>Current Status:</strong> Pending';
+            }
+
+            // Remove the cancel button
+            const cancelButton = orderCard.querySelector('.btn-danger');
+            if (cancelButton) {
+                cancelButton.remove();
+            }
+
+            // Update the order progress
+            const progressSteps = orderCard.querySelectorAll('.progress-step');
+            progressSteps.forEach(step => step.classList.remove('active'));
+        } else {
+            console.error(`Order card with id 'order-card-${orderId}' not found`);
+        }
+    }
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    </script>
+  </body>
+</html>

@@ -1038,6 +1038,14 @@ https://templatemo.com/tm-571-hexashop
             border-radius: 20px;
             padding-left: 15px;
         }
+        .notification-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background-color: red;
+            border-radius: 50%;
+            margin-left: 5px;
+        }
     </style>
     
     </head>
@@ -1074,19 +1082,29 @@ https://templatemo.com/tm-571-hexashop
                                 <div id="search-suggestions" class="search-suggestions"></div>
                             </div> -->
 
-                            <ul class="nav" style="    margin-left: 892px;">
+                            <ul class="nav" style="    margin-left: 847px;">
                                 <li class="scroll-to-section"><a href="{% url 'userapp:mainpage' %}" class="active">Home</a></li>
                                 <li class="scroll-to-section"><a href="{% url 'userapp:cart_view' %}">Cart</a></li>
                                 <li class="submenu">
                                     <a href="javascript:;">
                                         <i class="fa fa-box"></i> Custom PC
+                                        {% if has_new_messages %}
+                                            <span class="notification-dot"></span>
+                                        {% endif %}
                                     </a>
                                     <ul class="dropdown">
-                                        <li><a href="{% url 'userapp:pc_custom' %}"><i class=""></i>Buid</a></li>
-                                        <li><a href="#"><i class=""></i>Your Build</a></li>
-                                        <li><a href="#"><i class=""></i>Messages</a></li>
+                                        <li><a href="{% url 'userapp:pc_custom' %}"><i class=""></i>Build</a></li>
+                                        <li><a href="{% url 'userapp:yourbuild' %}"><i class=""></i>Your Build</a></li>
+                                        <li><a href="{% url 'userapp:build_orders' %}"><i class=""></i>Ordered Build</a></li>
+                                        <li><a href="{% url 'userapp:messageforbuild' %}">
+                                            <i class=""></i>Messages
+                                            {% if has_new_messages %}
+                                                <span class="notification-dot"></span>
+                                            {% endif %}
+                                        </a></li>
                                     </ul>
                                 </li>
+
                                 <li class="submenu">
                                     <a href="javascript:;">
                                         <i class="fa fa-box"></i> Products
@@ -1229,7 +1247,7 @@ https://templatemo.com/tm-571-hexashop
                         <button class="btn btn-outline-secondary"><i class="fa fa-share"></i></button>
                         <button class="btn btn-outline-secondary"><i class="fa fa-envelope"></i></button>
                         <button class="btn btn-outline-secondary"><i class="fa fa-print"></i></button>
-                        <button class="btn btn-outline-secondary"><i class="fa fa-file-pdf-o"></i></button>
+                        <button id="download-pdf" class="btn btn-outline-secondary"><i class="fa fa-file-pdf-o"></i></button>
                     </div>
                 </div>
             </div>
@@ -1562,7 +1580,8 @@ $(document).ready(function() {
                 },
                 success: function(response) {
                     if (response.success) {
-                        alert('Your configuration has been submitted for compatibility check.');
+                        // Redirect to your builds page after successful compatibility check
+                        window.location.href = "{% url 'userapp:yourbuild' %}";
                     } else {
                         alert('Failed to submit configuration. Please try again.');
                     }
@@ -1570,6 +1589,55 @@ $(document).ready(function() {
                 error: function(xhr, status, error) {
                     console.error("Error submitting configuration:", error);
                     alert('An error occurred while submitting your configuration. Please try again.');
+                }
+            });
+        });
+
+        $('#download-pdf').click(function() {
+            const components = Object.values(selectedComponents);
+            
+            if (components.length === 0) {
+                alert("Please select components before generating the PDF.");
+                return;
+            }
+
+            const componentData = components.map(component => ({
+                componentId: component.componentId,
+                category: component.category,
+                name: component.name,
+                brand: component.brand,
+                price: component.price,
+                quantity: component.quantity || 1
+            }));
+
+            $.ajax({
+                url: '{% url "userapp:generate_pdf" %}',
+                method: 'POST',
+                data: JSON.stringify({
+                    components: componentData,
+                    totalPrice: total,
+                    fullName: '{{ request.user.get_full_name }}'
+                }),
+                contentType: 'application/json',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success: function(blob) {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = 'custom_pc_build.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error generating PDF:", error);
+                    alert('An error occurred while generating the PDF. Please try again.');
                 }
             });
         });
@@ -2124,3 +2192,40 @@ $(document).ready(function() {
         });
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const messageLink = document.querySelector('a[href="{% url 'userapp:messageforbuild' %}"]');
+        if (messageLink) {
+            messageLink.addEventListener('click', function() {
+                // Remove notification dots
+                const notificationDots = document.querySelectorAll('.notification-dot');
+                notificationDots.forEach(dot => dot.style.display = 'none');
+
+                // You might want to make an AJAX call here to mark messages as read on the server
+                fetch('{% url "userapp:mark_messages_read" %}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'Content-Type': 'application/json',
+                    },
+                });
+            });
+        }
+
+        // Function to get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    });
+    </script>

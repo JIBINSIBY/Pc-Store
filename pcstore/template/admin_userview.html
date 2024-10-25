@@ -1422,8 +1422,8 @@ https://templatemo.com/tm-571-hexashop
                             <td>{{ user.email }}</td>
                             <td>
                                 <select id="role-{{ user.id }}" class="form-control">
-                                    <option value="user" {% if user.role == 'user' %}selected{% endif %}>User</option>
-                                    <option value="staff" {% if user.role == 'staff' %}selected{% endif %}>Staff</option>
+                                    <option value="user" {% if not user.is_staff %}selected{% endif %}>User</option>
+                                    <option value="staff" {% if user.is_staff %}selected{% endif %}>Staff</option>
                                 </select>
                             </td>
                             <td>
@@ -1590,11 +1590,12 @@ https://templatemo.com/tm-571-hexashop
                 if (data.success) {
                     location.reload();
                 } else {
-                    alert('Failed to delete user');
+                    alert('Failed to delete user: ' + (data.error || 'Unknown error'));
                 }
             })
             .catch((error) => {
                 console.error('Error:', error);
+                alert('An error occurred while deleting the user');
             });
             closeDeleteModal();
         }
@@ -1686,11 +1687,12 @@ https://templatemo.com/tm-571-hexashop
                     if (data.success) {
                         location.reload();
                     } else {
-                        alert('Failed to delete user');
+                        alert('Failed to delete user: ' + (data.error || 'Unknown error'));
                     }
                 })
                 .catch((error) => {
                     console.error('Error:', error);
+                    alert('An error occurred while deleting the user');
                 });
                 closeDeleteModal();
             }

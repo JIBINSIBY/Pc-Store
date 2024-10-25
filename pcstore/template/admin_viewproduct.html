@@ -1481,7 +1481,7 @@ https://templatemo.com/tm-571-hexashop
                                             {% endif %}
                                         </td>
                                         <td>
-                                            <a href="{% url 'userapp:admin_editproduct' product.productId %}" class="btn btn-sm btn-primary">Edit</a>
+                                            <a href="/admin_editproduct/{{ product.productId }}/" class="btn btn-sm btn-primary">Edit</a>
                                             <button onclick="showDeleteModal('{{ product.productId }}')" class="btn btn-danger btn-sm">Delete</button>
                                         </td>
                                     </tr>

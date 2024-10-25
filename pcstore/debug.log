@@ -1,0 +1,43 @@
+Watching for file changes with StatReloader
+Error cancelling order: name 'send_cancellation_email' is not defined
+Traceback (most recent call last):
+  File "C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py", line 2190, in cancel_custom_order
+    email_sent = send_cancellation_email(request.user, order)
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+NameError: name 'send_cancellation_email' is not defined
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+Error cancelling order: 'CustomPCOrder' object has no attribute 'updated_at'
+Traceback (most recent call last):
+  File "C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py", line 2227, in cancel_custom_order
+    email_sent = send_cancellation_email(request.user, order)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py", line 2194, in send_cancellation_email
+    - Cancelled Date: {order.updated_at.strftime('%Y-%m-%d %H:%M:%S')}
+                       ^^^^^^^^^^^^^^^^
+AttributeError: 'CustomPCOrder' object has no attribute 'updated_at'
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+Attempting to cancel order 11 for user Darth
+Order 11 found. Current status: paid
+Order 11 status updated to pending
+Cancellation email sent successfully to jibinsiby12345@gmail.com
+Email sent status for order 11: True
+Attempting to cancel order 8 for user Darth
+Order 8 found. Current status: enroute
+Order 8 status updated to pending
+Cancellation email sent successfully to jibinsiby12345@gmail.com
+Email sent status for order 8: True
+Attempting to cancel order 12 for user Darth
+Order 12 found. Current status: paid
+Order 12 status updated to pending
+Cancellation email sent successfully to jibinsiby12345@gmail.com
+Email sent status for order 12: True
+Not Found: /build-orders/loginuser
+Not Found: /build-orders/loginuser

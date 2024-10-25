@@ -1,0 +1,1238 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+
+    <title>Hexashop Ecommerce HTML CSS Template</title>
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/templatemo-hexashop.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/owl-carousel.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/lightbox.css' %}">
+<!--
+
+TemplateMo 571 Hexashop
+
+https://templatemo.com/tm-571-hexashop
+
+-->
+    <style>
+        .main-banner {
+            padding-top: 46px;
+            padding-bottom: 0px !important;
+        }
+        #keyboards .thumb {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #keyboards .hover-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.7);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        #keyboards .thumb:hover .hover-content {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .header-area .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin: 0 20px;
+            max-width: 50%; /* Adjust this value to control the maximum width */
+            margin-left: 0px;
+        }
+
+        .search-container form {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .search-container input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+            flex-grow: 1;
+            min-width: 0;
+            width: 100%;
+        }
+
+        .search-container button {
+            padding: 10px 15px;
+            background-color: #7e96dc;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background-color: #d32f2f;
+        }
+
+        .header-area .main-nav .nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        .header-area .main-nav .nav li {
+            padding: 0 15px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-area .main-nav .nav li a {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            height: 100%;
+            border: transparent;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 991px) {
+            .header-area .main-nav {
+                flex-wrap: wrap;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0;
+            }
+            .search-container form {
+                width: 100%;
+            }
+            .search-container input[type="text"] {
+                flex-grow: 1;
+            }
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 0 0 4px 4px;
+        }
+
+        .suggestion-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .suggestion-item:not(:last-child) {
+            border-bottom: 1px solid #eee;
+        }
+
+        .fixed-top {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1030;
+        }
+
+        body {
+            padding-top: 80px; /* Adjust this value based on your header height */
+        }
+
+        .submenu {
+            position: relative;
+        }
+
+        .submenu .dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            padding: 10px 0;
+            min-width: 200px;
+            z-index: 1000;
+        }
+
+        .submenu:hover .dropdown {
+            display: block;
+        }
+
+        .submenu .dropdown li {
+            display: block;
+            padding: 5px 15px;
+        }
+
+        .submenu .dropdown li a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .submenu .dropdown li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .submenu .dropdown li a:hover {
+            background-color: #f5f5f5;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            flex-shrink: 0;
+        }
+
+        .search-container {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+
+        .search-container form {
+            display: flex;
+        }
+
+        .search-container input[type="text"] {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .nav {
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 991px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+
+        .scrolling-banner {
+            overflow: hidden;
+            position: relative;
+            height: 300px;
+            margin-bottom: 50px;
+            padding-top: 0px !important;
+        }
+
+        .banner-container {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .banner-slide {
+            flex: 0 0 100%;
+            position: relative;
+        }
+
+        .banner-slide img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .banner-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+        }
+
+        .banner-content h2 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .banner-content p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .btn-shop-now {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-shop-now:hover {
+            background-color: #0056b3;
+        }
+
+        .scrolling-banner {
+            position: relative;
+        }
+
+        .banner-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            font-size: 24px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .banner-arrow:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .banner-prev {
+            left: 10px;
+        }
+
+        .banner-next {
+            right: 10px;
+        }
+
+        .section {
+            padding: 0px 0;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1485px !important;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .owl-carousel {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+        }
+
+        .owl-carousel .item {
+            flex: 0 0 auto;
+            width: 280px;
+            margin-right: 20px;
+            scroll-snap-align: start;
+        }
+
+        .owl-carousel .item:last-child {
+            margin-right: 0;
+        }
+
+        @media (max-width: 768px) {
+            .owl-carousel .item {
+                width: 220px;
+            }
+        }
+
+        .down-content .category {
+            display: block;
+            font-size: 14px;
+            color: #7a7a7a;
+            margin-top: 5px;
+        }
+        #latest-products{
+            background: #f8f9fa;
+            height: 490px;
+        }
+        #latest-products .item {
+            margin-bottom: 30px;
+        }
+
+        #latest-products .item .thumb {
+            position: relative;
+            overflow: hidden;
+        }
+
+        #latest-products .item .thumb img {
+            width: 100%;
+            height: auto;
+        }
+
+        #latest-products .item .down-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        #latest-products .item .down-content h4 {
+            font-size: 17px;
+            color: #1a6692;
+            margin-bottom: 10px;
+        }
+
+        #latest-products .item .down-content span {
+            color: #000000;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        #latest-products .row {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 0 10px;
+        }
+
+        #latest-products .row::-webkit-scrollbar {
+            display: none;
+        }
+
+        #latest-products .col-lg-2 {
+            flex: 0 0 auto;
+            width: calc(16.666% - 20px);
+            min-width: 200px;
+            scroll-snap-align: start;
+            margin-right: 20px;
+        }
+
+        #latest-products .item {
+            border: 1px solid #e6e6e6;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #latest-products .thumb img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        #latest-products .down-content {
+            padding: 15px;
+            text-align: center;
+        }
+
+        #latest-products h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #latest-products span {
+            font-size: 14px;
+            color: #000000;
+            font-weight: 500;
+        }
+
+        #latest-products .section-heading {
+            text-align: left;
+            margin-bottom: 30px;
+            padding: 0 10px;
+        }
+
+        #latest-products .section-heading h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        #latest-products .section-heading span {
+            color: #7a7a7a;
+        }
+
+        #latest-products .product-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 20px 0;
+        }
+
+        #latest-products .product-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        #latest-products .product-item {
+            flex: 0 0 auto;
+            width: calc(100% / 7);
+            padding: 0 10px;
+            scroll-snap-align: start;
+        }
+
+        #latest-products .item {
+            border: 1px solid #e6e6e6;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #latest-products .thumb img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        #latest-products .down-content {
+            padding: 15px;
+            text-align: center;
+        }
+
+        #latest-products h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        #latest-products span {
+            font-size: 14px;
+            color: #000000;
+            font-weight: 500;
+        }
+
+        @media (max-width: 1200px) {
+            #latest-products .product-item {
+                width: calc(100% / 5);
+            }
+        }
+
+        @media (max-width: 992px) {
+            #latest-products .product-item {
+                width: calc(100% / 4);
+            }
+        }
+
+        @media (max-width: 768px) {
+            #latest-products .product-item {
+                width: calc(100% / 3);
+            }
+        }
+
+        @media (max-width: 576px) {
+            #latest-products .product-item {
+                width: calc(100% / 2);
+            }
+        }
+
+        #latest-products .product-item {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #latest-products .product-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #latest-products .item {
+            transition: background-color 0.3s ease;
+        }
+
+        #latest-products .product-item:hover .item {
+            background-color: #f8f8f8;
+        }
+
+        #latest-products .down-content {
+            transition: color 0.3s ease;
+        }
+
+        #latest-products .product-item:hover .down-content h4,
+        #latest-products .product-item:hover .down-content span {
+            color: #7d7d7d;
+        }
+
+        .bottom-banner {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .bottom-banner .banner-container {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .bottom-banner .banner-slide {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+
+        .bottom-banner .banner-slide img {
+            width: 100%;
+            height: auto;
+        }
+
+        .bottom-banner .banner-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .bottom-banner .banner-prev {
+            left: 10px;
+        }
+
+        .bottom-banner .banner-next {
+            right: 10px;
+        }
+        #explore{
+            padding-top: 30px !important;
+            padding-bottom: 30px !important ;
+        }
+        #explore .container-fluid {
+            max-width: 100%;
+            padding: 0;
+        }
+
+        #explore .row {
+            display: flex;
+            align-items: center;
+        }
+
+        #explore .left-content {
+            background-color: #f8f9fa;
+            padding: 60px 0;
+        }
+
+        #explore .content-wrapper {
+            max-width: 540px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 30px;
+        }
+
+        #explore .right-content {
+            padding: 0;
+        }
+
+        #explore .big-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @media (max-width: 991px) {
+            #explore .row {
+                flex-direction: column;
+            }
+            #explore .content-wrapper {
+                max-width: 100%;
+                padding: 0 15px;
+                margin: 0 auto;
+            }
+            #explore .big-image img {
+                margin-top: 30px;
+            }
+        }
+
+        .hover13 figure {
+            background: #fff;
+            overflow: hidden;
+        }
+        
+        .hover13 figure:hover img {
+            opacity: 1;
+            -webkit-animation: flash 1.5s;
+            animation: flash 1.5s;
+        }
+        
+        @-webkit-keyframes flash {
+            0% {
+                opacity: .4;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        
+        @keyframes flash {
+            0% {
+                opacity: .4;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        #social {
+            margin-top: 35px;
+            padding-bottom: 10px !important;
+            border-bottom: 3px dotted #eee;
+            margin-left: -130px;
+        }
+
+        #social .social-images {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        #social .social-item {
+            position: relative;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        #social .social-item img {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+
+        #social .social-item:hover img {
+            transform: scale(1.1);
+        }
+
+        #social .social-item .icon {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #social .social-item:hover .icon {
+            opacity: 1;
+        }
+
+        #social .social-item .icon a {
+            text-align: center;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        #social .social-item .icon h6 {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        #social .social-item .icon i {
+            font-size: 24px;
+        }
+
+        @media (max-width: 991px) {
+            #social .social-item {
+                flex-basis: calc(33.333% - 10px);
+            }
+        }
+
+        @media (max-width: 767px) {
+            #social .social-item {
+                flex-basis: calc(50% - 10px);
+            }
+        }
+
+        .product-link {
+            display: block;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .product-link:hover {
+            text-decoration: none;
+            color: inherit;
+        }
+
+
+
+        
+        .notification-dot {
+            position: absolute;
+            top: 0;
+            right: -5px;
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            border-radius: 50%;
+            display: inline-block;
+        }
+    
+        .submenu > a {
+            position: relative;
+        }
+    
+        .dropdown li a {
+            position: relative;
+        }
+
+        .card {
+            position: relative;
+        }
+        .remove-build-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+        .remove-build-btn:hover {
+            background-color: rgba(255, 0, 0, 0.1);
+        }
+        .remove-build-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: #ff4d4d;
+            transition: transform 0.3s ease;
+        }
+        .remove-build-btn:hover svg {
+            transform: scale(1.1);
+        }
+
+    </style>
+    
+    </head>
+    
+    <body>
+    
+    <!-- ***** Preloader Start ***** -->
+    <!-- <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>   -->
+    <!-- ***** Preloader End ***** -->
+    
+    
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky fixed-top">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <div class="header-content">
+                            <a href="{% url 'userapp:mainpage' %}" class="logo">
+                                <img src="{% static 'images/file.png' %}">
+                            </a>
+
+                            <!-- <div class="search-container">
+                                <form action="{% url 'userapp:search_results' %}" method="get">
+                                    <input type="text" id="search-input" placeholder="Search products..." name="q" autocomplete="off">
+                                    <button type="submit"><i class="fa fa-search"></i></button>
+                                </form>
+                                <div id="search-suggestions" class="search-suggestions"></div>
+                            </div> -->
+
+                            <ul class="nav" style="    margin-left: 892px;">
+                                <li class="scroll-to-section"><a href="{% url 'userapp:mainpage' %}" class="active">Home</a></li>
+                                <li class="scroll-to-section"><a href="{% url 'userapp:cart_view' %}">Cart</a></li>
+                                <li class="submenu">
+                                    <a href="javascript:;">
+                                        <i class="fa fa-box"></i> Custom PC
+                                        {% if new_messages_count > 0 %}
+                                            <span class="notification-dot"></span>
+                                        {% endif %}
+                                    </a>
+                                    <ul class="dropdown">
+                                        <li><a href="{% url 'userapp:pc_custom' %}"><i class=""></i>Buid</a></li>
+                                        <li><a href="{% url 'userapp:yourbuild' %}">Your Build</a></li>
+                                        <li><a href="{% url 'userapp:build_orders' %}"><i class=""></i>Ordered Build</a></li>
+                                        <li>
+                                            <a href="{% url 'userapp:messageforbuild' %}">
+                                                <i class=""></i>Messages
+                                                {% if new_messages_count > 0 %}
+                                                    <span class="notification-dot"></span>
+                                                {% endif %}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="submenu">
+                                    <a href="javascript:;">
+                                        <i class="fa fa-box"></i> Products
+                                    </a>
+                                    <ul class="dropdown">
+                                        <li><a href="{% url 'userapp:monitors' %}"><i class="fa fa-desktop"></i> Monitors</a></li>
+                                        <li><a href="{% url 'userapp:keyboards' %}"><i class="fa fa-keyboard"></i> Keyboards</a></li>
+                                        <li><a href="{% url 'userapp:mouses' %}"><i class="fa fa-mouse"></i> Mouses</a></li>
+                                        <li><a href="#"><i class="fa fa-microchip"></i> Assembled CPU</a></li>
+                                        <li><a href="{% url 'userapp:accessories' %}"><i class="fa fa-headphones"></i> Accessories</a></li>
+                                    </ul>
+                                </li>
+                                <li class="submenu">
+                                    <a href="javascript:;">{{ request.session.username }}</a>
+                                    <ul class="dropdown">
+                                        <li><a href="{% url 'userapp:profile' %}"><i class="fa fa-user"></i> Profile</a></li>
+                                        <li><a href="loginuser"><i class="fa fa-shopping-bag"></i> Orders</a></li>
+                                        <li><a href="loginuser"><i class="fa fa-heart"></i> Wishlist</a></li>
+                                        <li><a href="loginuser"><i class="fa fa-bell"></i> Notifications</a></li>
+                                        <li><a href="{% url 'userapp:logout'%}" id="logout-link"><i class="fa fa-sign-out"></i> Logout</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+    <div class="container mt-5">
+        <h2 style="margin-bottom: 14px;">Your Custom PC Builds</h2>
+        {% if builds %}
+            <div class="row">
+                {% for build in builds %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <button class="remove-build-btn" data-build-id="{{ build.id }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                                <h5 class="card-title">Build #{{ build.id }}</h5>
+                                <p class="card-text">Status: {{ build.status }}</p>
+                                <p class="card-text">Created: {{ build.created_at|date:"F d, Y" }}</p>
+                                <button class="btn btn-primary view-components" data-build-id="{{ build.id }}">View Components</button>
+                                
+                                {% if build.status == "Approved" %}
+                                    <a href="{% url 'userapp:checkoutcustom' build.id %}" class="btn btn-success">Checkout Your Build</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <!-- Modal for displaying components -->
+            <div class="modal fade" id="componentsModal" tabindex="-1" role="dialog" aria-labelledby="componentsModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="componentsModalLabel">Build Components</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body" id="componentsModalBody">
+                            <!-- Components will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p>You haven't created any custom PC builds yet.</p>
+        {% endif %}
+    </div>
+    <!-- ***** Footer Start ***** -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="first-item">
+                        <div class="logo">
+                            <img src="{% static 'images/white-logo.png' %}" alt="hexashop ecommerce templatemo">
+                        </div>
+                        <ul>
+                            <li><a href="#">16501 Collins Ave, Sunny Isles Beach, FL 33160, United States</a></li>
+                            <li><a href="#">techcraft@gmail.com</a></li>
+                            <li><a href="#">010-020-0340</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <h4>Shopping &amp; Categories</h4>
+                    <ul>
+                        <li><a href="#">Keyboards</a></li>
+                        <li><a href="#">Mouse</a></li>
+                        <li><a href="#">Monitors</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h4>Useful Links</h4>
+                    <ul>
+                        <li><a href="#">Homepage</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Help</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h4>Help &amp; Information</h4>
+                    <ul>
+                        <li><a href="#">Help</a></li>
+                        <li><a href="#">FAQ's</a></li>
+                        <li><a href="#">Shipping</a></li>
+                        <li><a href="#">Tracking ID</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-12">
+                    <div class="under-footer">
+                        <p>Copyright © 2024 TechCraft Co., Ltd. All Rights Reserved.</p>
+                        <ul>
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+
+    <!-- jQuery -->
+    <script src="{% static 'js/jquery-2.1.0.min.js' %}"></script>
+
+    <!-- Bootstrap -->
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    <!-- Plugins -->
+    <script src="{% static 'js/owl-carousel.js' %}"></script>
+    <script src="{% static 'js/accordions.js' %}"></script>
+    <script src="{% static 'js/datepicker.js' %}"></script>
+    <script src="{% static 'js/scrollreveal.min.js' %}"></script>
+    <script src="{% static 'js/waypoints.min.js' %}"></script>
+    <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'js/imgfix.min.js' %}"></script> 
+    <script src="{% static 'js/slick.js' %}"></script> 
+    <script src="{% static 'js/lightbox.js' %}"></script> 
+    <script src="{% static 'js/isotope.js' %}"></script> 
+    
+    <!-- Global Init -->
+    <script src="{% static 'js/custom.js' %}"></script>
+
+    <script>
+
+        $(function() {
+            var selectedClass = "";
+            $("p").click(function(){
+            selectedClass = $(this).attr("data-rel");
+            $("#portfolio").fadeTo(50, 0.1);
+                $("#portfolio div").not("."+selectedClass).fadeOut();
+            setTimeout(function() {
+              $("."+selectedClass).fadeIn();
+              $("#portfolio").fadeTo(50, 1);
+            }, 500);
+                
+            });
+        });
+
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const bannerContainer = document.querySelector('.banner-container');
+            const slides = document.querySelectorAll('.banner-slide');
+            let currentSlide = 0;
+
+            function nextSlide() {
+                currentSlide = (currentSlide + 1) % slides.length;
+                bannerContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+            }
+
+            setInterval(nextSlide, 3000); // Change slide every 3 seconds
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-input');
+            const suggestionsContainer = document.getElementById('search-suggestions');
+    
+            searchInput.addEventListener('input', function() {
+                const query = this.value;
+                if (query.length > 1) {
+                    fetch(`/search-suggestions/?q=${query}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            suggestionsContainer.innerHTML = '';
+                            data.forEach(suggestion => {
+                                const div = document.createElement('div');
+                                div.classList.add('suggestion-item');
+                                div.textContent = suggestion.name;
+                                div.addEventListener('click', function() {
+                                    window.location.href = `/${suggestion.category}/${suggestion.productId}/`;
+                                });
+                                suggestionsContainer.appendChild(div);
+                            });
+                            suggestionsContainer.style.display = data.length ? 'block' : 'none';
+                        });
+                } else {
+                    suggestionsContainer.style.display = 'none';
+                }
+            });
+    
+            document.addEventListener('click', function(e) {
+                if (e.target !== searchInput && e.target !== suggestionsContainer) {
+                    suggestionsContainer.style.display = 'none';
+                }
+            });
+    
+            const logoutLink = document.getElementById('logout-link');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    fetch('{% url "userapp:logout" %}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                });
+            }
+        });
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const viewButtons = document.querySelectorAll('.view-components');
+                const modalBody = document.getElementById('componentsModalBody');
+            
+                viewButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const buildId = this.getAttribute('data-build-id');
+                        fetch(`/api/build-components/${buildId}/`)
+                            .then(response => response.json())
+                            .then(data => {
+                                let componentsHtml = '<ul class="list-group">';
+                                data.components.forEach(component => {
+                                    componentsHtml += `
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            ${component.category}: ${component.name}
+                                            <span class="badge bg-primary rounded-pill">Qty: ${component.quantity}</span>
+                                        </li>`;
+                                });
+                                componentsHtml += '</ul>';
+                                modalBody.innerHTML = componentsHtml;
+                                $('#componentsModal').modal('show');
+                            })
+                            .catch(error => console.error('Error:', error));
+                    });
+                });
+            });
+            </script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const removeButtons = document.querySelectorAll('.remove-build-btn');
+            
+            removeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const buildId = this.getAttribute('data-build-id');
+                    if (confirm('Are you sure you want to remove this build?')) {
+                        fetch(`/remove-build/${buildId}/`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': getCookie('csrftoken'),
+                                'Content-Type': 'application/json',
+                            },
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Remove the card from the DOM
+                                this.closest('.col-md-4').remove();
+                                alert('Build removed successfully');
+                            } else {
+                                alert('Failed to remove build: ' + data.error);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred while removing the build');
+                        });
+                    }
+                });
+            });
+
+            // Function to get CSRF token
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+        });
+        </script>

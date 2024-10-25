@@ -2164,6 +2164,7 @@ https://templatemo.com/tm-571-hexashop
         });
         </script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const sectionHeaders = document.querySelectorAll('.section-header');
@@ -2295,30 +2296,96 @@ https://templatemo.com/tm-571-hexashop
                         }
                     }
 
-                    let redirectUrl;
-                    switch (selectedPayment.value) {
-                        case 'upi':
-                            redirectUrl = "{% url 'userapp:upi_payment' %}";
-                            break;
-                        case 'card':
-                            redirectUrl = "{% url 'userapp:card_payment' %}";
-                            break;
-                        case 'cod':
-                            redirectUrl = "{% url 'userapp:cod_confirmation' %}";
-                            break;
-                        default:
-                            alert('Invalid payment method');
-                            return;
-                    }
-
-                    // If all checks pass, redirect to the payment page
-                    window.location.href = redirectUrl;
+                    // Initialize Razorpay
+                    initializeRazorpay(selectedPayment.value);
                 }
             });
         }
 
-        // Initial check for address and payment selection
-        enableContinueBtn(addressRadios, addressContinueBtn);
-        enableContinueBtn(paymentRadios, checkoutBtn);
+        function initializeRazorpay(paymentMethod) {
+            // Get the amount displayed on the page
+            const totalAmountElement = document.querySelector('.summary-item.total span:last-child');
+            const amount = totalAmountElement ? parseFloat(totalAmountElement.textContent.replace(/₹|,/g, '').trim()) * 100 : 0; // Convert to paise
+        
+            const currency = 'INR'; // or any other currency
+        
+            // Make an AJAX call to your backend to create an order
+            fetch('/create-order/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ amount, currency }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.id) {
+                    const options = {
+                        key: "rzp_test_7VYL0B3BzkSqNf", // Use the Razorpay key ID from your context
+                        amount: data.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise or ₹500.
+                        currency: data.currency,
+                        name: 'Your Company Name',
+                        description: 'Test Transaction',
+                        order_id: data.id, // This is the order_id created in your backend
+                        handler: function (response) {
+                            onPaymentSuccess(response);
+                        },
+                        prefill: {
+                            name: 'Customer Name',
+                            email: 'customer@example.com',
+                            contact: '9999999999',
+                        },
+                        notes: {
+                            address: 'Customer Address',
+                        },
+                        theme: {
+                            color: '#F37254',
+                        }
+                    };
+                    const rzp = new Razorpay(options);
+                    rzp.open();
+                } else {
+                    alert('Error creating order. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        }
     });
+
+    // After successful Razorpay payment
+    function onPaymentSuccess(response) {
+        fetch('{% url "userapp:payment_success" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({
+                payment_id: response.razorpay_payment_id,
+                order_id: response.razorpay_order_id,
+                signature: response.razorpay_signature
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Payment successful! Your order has been placed.');
+                window.location.href = "{% url 'userapp:cart_view' %}";
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while processing your payment.');
+        });
+    }
 </script>
