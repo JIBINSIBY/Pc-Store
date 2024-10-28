@@ -16,7 +16,6 @@ HTMLParser==0.0.2
 ipdb==0.13.13
 ipython==8.12.3
 ipywidgets==8.1.5
-jnius==1.1.0
 keyring==25.5.0
 lockfile==0.12.2
 MySQL-python==1.2.5
