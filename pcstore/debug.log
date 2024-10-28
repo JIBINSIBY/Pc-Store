@@ -41,3 +41,317 @@ Cancellation email sent successfully to jibinsiby12345@gmail.com
 Email sent status for order 12: True
 Not Found: /build-orders/loginuser
 Not Found: /build-orders/loginuser
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\urls.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+Internal Server Error: /predict_component/
+Traceback (most recent call last):
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\views\decorators\csrf.py", line 56, in wrapper_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py", line 2318, in predict_component
+    model = DetrForObjectDetection.from_pretrained("facebook/detr-resnet-50")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\transformers\modeling_utils.py", line 4096, in from_pretrained
+    model = cls(config, *model_args, **model_kwargs)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\transformers\models\detr\modeling_detr.py", line 1366, in __init__
+    self.model = DetrModel(config)
+                 ^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\transformers\models\detr\modeling_detr.py", line 1176, in __init__
+    backbone = DetrConvEncoder(config)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\transformers\models\detr\modeling_detr.py", line 336, in __init__
+    requires_backends(self, ["timm"])
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\transformers\utils\import_utils.py", line 1639, in requires_backends
+    raise ImportError("".join(failed))
+ImportError: 
+DetrConvEncoder requires the timm library but it was not found in your environment. You can install it with pip:
+`pip install timm`. Please note that you may need to restart your runtime after installation.
+
+Watching for file changes with StatReloader
+Loading pretrained weights from Hugging Face hub (timm/resnet50.a1_in1k)
+[timm/resnet50.a1_in1k] Safe alternative available for 'pytorch_model.bin' (as 'model.safetensors'). Loading weights using safetensors.
+Missing keys (fc.weight, fc.bias) discovered while loading pretrained weights. This is expected if model is being adapted.
+Loading pretrained weights from Hugging Face hub (timm/resnet50.a1_in1k)
+[timm/resnet50.a1_in1k] Safe alternative available for 'pytorch_model.bin' (as 'model.safetensors'). Loading weights using safetensors.
+Missing keys (fc.weight, fc.bias) discovered while loading pretrained weights. This is expected if model is being adapted.
+Loading pretrained weights from Hugging Face hub (timm/resnet50.a1_in1k)
+[timm/resnet50.a1_in1k] Safe alternative available for 'pytorch_model.bin' (as 'model.safetensors'). Loading weights using safetensors.
+Missing keys (fc.weight, fc.bias) discovered while loading pretrained weights. This is expected if model is being adapted.
+Loading pretrained weights from Hugging Face hub (timm/resnet50.a1_in1k)
+[timm/resnet50.a1_in1k] Safe alternative available for 'pytorch_model.bin' (as 'model.safetensors'). Loading weights using safetensors.
+Missing keys (fc.weight, fc.bias) discovered while loading pretrained weights. This is expected if model is being adapted.
+Loading pretrained weights from Hugging Face hub (timm/resnet50.a1_in1k)
+[timm/resnet50.a1_in1k] Safe alternative available for 'pytorch_model.bin' (as 'model.safetensors'). Loading weights using safetensors.
+Missing keys (fc.weight, fc.bias) discovered while loading pretrained weights. This is expected if model is being adapted.
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+Fetching components for category: 
+Mapped category: 
+Found 19 components
+Returning 19 components
+Internal Server Error: /mainpage
+Traceback (most recent call last):
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py", line 67, in mainpage
+    return render(request, 'main.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\defaulttags.py", line 471, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'ml' not found. 'ml' is not a valid view function or pattern name.
+Internal Server Error: /mainpage
+Traceback (most recent call last):
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py", line 67, in mainpage
+    return render(request, 'main.html', context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\shortcuts.py", line 24, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\loader.py", line 62, in render_to_string
+    return template.render(context, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\backends\django.py", line 61, in render
+    return self.template.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\base.py", line 175, in render
+    return self._render(context)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\base.py", line 167, in _render
+    return self.nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\defaulttags.py", line 321, in render
+    return nodelist.render(context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\base.py", line 1005, in render
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\base.py", line 1005, in <listcomp>
+    return SafeString("".join([node.render_annotated(context) for node in self]))
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\base.py", line 966, in render_annotated
+    return self.render(context)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\template\defaulttags.py", line 471, in render
+    url = reverse(view_name, args=args, kwargs=kwargs, current_app=current_app)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\urls\base.py", line 88, in reverse
+    return resolver._reverse_with_prefix(view, prefix, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\JIBIN\AppData\Local\Programs\Python\Python311\Lib\site-packages\django\urls\resolvers.py", line 828, in _reverse_with_prefix
+    raise NoReverseMatch(msg)
+django.urls.exceptions.NoReverseMatch: Reverse for 'ml' not found. 'ml' is not a valid view function or pattern name.
+Fetching components for category: 
+Mapped category: 
+Found 19 components
+Returning 19 components
+Fetching components for category: 
+Mapped category: 
+Found 19 components
+Returning 19 components
+Not Found: /monitors/loginuser
+Not Found: /monitors/loginuser
+Fetching components for category: 
+Mapped category: 
+Found 19 components
+Returning 19 components
+Fetching components for category: 
+Mapped category: 
+Found 19 components
+Returning 19 components
+Method Not Allowed (GET): /logout/
+Attempting to delete component with ID: 8
+Successfully deleted Component 'ram1' with ID: 8
+Attempting to delete component with ID: 9
+Successfully deleted Component 'h1' with ID: 9
+Attempting to delete component with ID: 10
+Successfully deleted Component 'case1' with ID: 10
+Attempting to delete component with ID: 11
+Successfully deleted Component 'psu1' with ID: 11
+Attempting to delete component with ID: 12
+Successfully deleted Component 'graphics1' with ID: 12
+Attempting to delete component with ID: 13
+Successfully deleted Component 'cooler1' with ID: 13
+Attempting to delete component with ID: 14
+Successfully deleted Component 'btc1' with ID: 14
+Attempting to delete component with ID: 15
+Successfully deleted Component 'wifi1' with ID: 15
+Attempting to delete component with ID: 16
+Successfully deleted Component 'btc og' with ID: 16
+Attempting to delete component with ID: 18
+Successfully deleted Component 'Demo' with ID: 18
+Attempting to delete component with ID: 19
+Successfully deleted Component 'm1' with ID: 19
+Attempting to delete component with ID: 20
+Successfully deleted Component 'c1' with ID: 20
+Attempting to delete component with ID: 21
+Successfully deleted Component 'r1' with ID: 21
+Attempting to delete component with ID: 23
+Successfully deleted Component 'ca1' with ID: 23
+Attempting to delete component with ID: 24
+Successfully deleted Component 'p1' with ID: 24
+Attempting to delete component with ID: 25
+Successfully deleted Component 'g1' with ID: 25
+Attempting to delete component with ID: 26
+Successfully deleted Component 'cp1' with ID: 26
+Attempting to delete component with ID: 27
+Successfully deleted Component 'b1' with ID: 27
+Attempting to delete component with ID: 30
+Successfully deleted Component 'cpudemo' with ID: 30
+Fetching components for category: 
+Mapped category: 
+Found 53 components
+Returning 53 components
+Fetching components for category: motherboard
+Mapped category: Motherboard
+Found 7 components
+Returning 7 components
+Fetching components for category: cpu
+Mapped category: CPU/processor
+Found 7 components
+Returning 7 components
+Fetching components for category: ram
+Mapped category: RAM
+Found 6 components
+Returning 6 components
+Fetching components for category: hard drive
+Mapped category: Hard drive
+Found 7 components
+Returning 7 components
+Fetching components for category: case
+Mapped category: Case
+Found 7 components
+Returning 7 components
+Fetching components for category: power supply unit
+Mapped category: Power supply unit
+Found 5 components
+Returning 5 components
+Fetching components for category: graphics card
+Mapped category: Graphics card
+Found 5 components
+Returning 5 components
+Fetching components for category: cpu cooler
+Mapped category: CPU Cooler
+Found 5 components
+Returning 5 components
+Fetching components for category: bluetooth card
+Mapped category: Bluetooth card
+Found 2 components
+Returning 2 components
+Fetching components for category: wifi card
+Mapped category: Wifi card
+Found 2 components
+Returning 2 components
+Received data: {'components': [{'componentId': 38, 'quantity': 1}, {'componentId': 32, 'quantity': 1}, {'componentId': 46, 'quantity': 1}, {'componentId': 51, 'quantity': 2}, {'componentId': 60, 'quantity': 1}, {'componentId': 68, 'quantity': 1}, {'componentId': 70, 'quantity': 1}, {'componentId': 76, 'quantity': 2}, {'componentId': 81, 'quantity': 1}, {'componentId': 82, 'quantity': 1}], 'totalPrice': 122528}
+Fetching category for component: MSI B650 GAMING PLUS WIFI ATX AM5 Motherboard
+Category for MSI B650 GAMING PLUS WIFI ATX AM5 Motherboard: Motherboard
+Fetching recommended components for category: Motherboard
+Found 7 recommended components for Motherboard
+Attempting to add recommended component. CustomPCComponent ID: 102, Recommended Component Name: Asus ROG STRIX B650-A GAMING WIFI ATX AM5 Motherboard
+Successfully added recommended component Asus ROG STRIX B650-A GAMING WIFI ATX AM5 Motherboard to CustomPCComponent Component MSI - MSI B650 GAMING PLUS WIFI ATX AM5 Motherboard for Custom PC 13
+Not Found: /favicon.ico
+Attempting to update build 13 to status Approved
+Current status: Pending
+Status updated to: Approved
+Status after refresh: Approved
+Error updating status: 'CustomPCComponent' object has no attribute 'name'
+Internal Server Error: /update-build-status/13/
+Attempting to update order 14 to status building
+Order 14 updated: paid -> building

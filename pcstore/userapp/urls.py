@@ -27,7 +27,7 @@ urlpatterns = [
     path('check-stock-availability/', views.check_stock_availability, name='check_stock_availability'),
     path('payment-success-custom-pc/', views.payment_success_custom_pc, name='payment_success_custom_pc'),
     # ... other URL patterns ...
-     path('create-razorpay-order/', views.create_razorpay_order, name='create_razorpay_order'),
+    path('create-razorpay-order/', views.create_razorpay_order, name='create_razorpay_order'),
     path('payment-success/', views.payment_success, name='payment_success'),
     # ... other url patterns ...
     path('order-confirmation/<int:order_id>/', views.order_confirmation, name='order_confirmation'),
@@ -184,6 +184,8 @@ urlpatterns = [
     path('build-order/<int:order_id>/', views.build_order_view, name='build_order'),
    # ... other URL patterns ...
     path('cancel-custom-order/<int:order_id>/', views.cancel_custom_order, name='cancel_custom_order'),
+    path('ml/', views.ml_implement, name='ml_implement'),
+    path('predict_component/', views.predict_component, name='predict_component'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

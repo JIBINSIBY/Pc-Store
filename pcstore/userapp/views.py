@@ -33,6 +33,9 @@ from .models import CustomPCComponent, Component
 import json
 from django.shortcuts import render, redirect, get_object_or_404
 import razorpay
+from transformers import ViTImageProcessor, ViTForImageClassification
+from PIL import Image
+import torch
 
 logger = logging.getLogger(__name__)
 
@@ -2250,3 +2253,76 @@ def cancel_custom_order(request, order_id):
     except Exception as e:
         logger.exception(f"Error cancelling order {order_id}: {str(e)}")
         return JsonResponse({'success': False, 'error': 'An unexpected error occurred.'})
+    
+from transformers import AutoFeatureExtractor, AutoModelForImageClassification
+from PIL import Image
+import torch
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import io
+
+@csrf_exempt
+def predict_component(request):
+    if request.method == 'POST' and request.FILES.get('image'):
+        # Load a more suitable pre-trained model
+        model_name = "google/vit-base-patch16-224"
+        feature_extractor = AutoFeatureExtractor.from_pretrained(model_name)
+        model = AutoModelForImageClassification.from_pretrained(model_name)
+
+        # Process the uploaded image
+        image_file = request.FILES['image']
+        image = Image.open(io.BytesIO(image_file.read())).convert('RGB')
+        inputs = feature_extractor(images=image, return_tensors="pt")
+
+        # Make a prediction
+        with torch.no_grad():
+            outputs = model(**inputs)
+
+        # Get the predicted class and confidence
+        logits = outputs.logits
+        probs = torch.nn.functional.softmax(logits, dim=-1)
+        
+        # Get top 5 predictions
+        top5_prob, top5_catid = torch.topk(probs, 5)
+        
+        # Mapping of general objects to computer components
+        component_mapping = {
+            "mouse": "Computer Mouse",
+            "computer keyboard": "Keyboard",
+            "monitor": "Monitor",
+            "desktop computer": "CPU",
+            "laptop": "Laptop",
+            "hard disc": "Hard Drive",
+            "printer": "Printer",
+            "joystick": "Joystick",
+            "microphone": "Microphone",
+            "web site": "Graphics Card",
+            "hand-held computer": "Tablet",
+            "ipod": "Portable Device",
+            "modem": "Network Device",
+            "electric fan": "Cooling Fan",
+            "digital clock": "Digital Component"
+        }
+
+        top5_predictions = []
+        for i in range(5):
+            pred_class = model.config.id2label[top5_catid[0][i].item()]
+            confidence = top5_prob[0][i].item() * 100
+            mapped_component = component_mapping.get(pred_class.lower(), "Unknown Component")
+            top5_predictions.append({
+                "class": pred_class,  # Use the original class as the main prediction
+                "mapped_class": mapped_component,
+                "confidence": confidence
+            })
+
+        return JsonResponse({
+            'predicted_class': top5_predictions[0]['class'],
+            'mapped_class': top5_predictions[0]['mapped_class'],
+            'confidence': top5_predictions[0]['confidence'],
+            'top_5_predictions': top5_predictions
+        })
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+def ml_implement(request):
+    return render(request, 'ml.html')
