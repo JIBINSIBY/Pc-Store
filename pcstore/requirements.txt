@@ -19,9 +19,7 @@ keyring==25.5.0
 lockfile==0.12.2
 numpy
 olefile==0.47
-onelogin==3.1.6
 oracledb==2.4.1
-psycopg==3.2.3
 psycopg2==2.9.10
 pylibmc==1.6.3
 pymemcache==4.0.0
