@@ -29,7 +29,7 @@ RAZORPAY_SECRET = 'Pi3a4OQSJmQPzDyvy3HmEG7q'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
