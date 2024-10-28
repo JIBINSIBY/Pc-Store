@@ -6,7 +6,6 @@ bpython==0.24
 brotli==1.1.0
 brotlicffi==1.1.0.0
 cffi==1.15.1
-ConfigParser
 cx_Oracle==8.3.0
 defusedxml==0.7.1
 dl==0.1.0
@@ -18,7 +17,6 @@ ipython==8.12.3
 ipywidgets==8.1.5
 keyring==25.5.0
 lockfile==0.12.2
-MySQL-python==1.2.5
 numpy
 olefile==0.47
 onelogin==3.1.6
