@@ -25,7 +25,6 @@ psycopg==3.2.3
 psycopg2==2.9.10
 pylibmc==1.6.3
 pymemcache==4.0.0
-pyodide==0.0.2
 pyOpenSSL==24.2.1
 PyQt6==6.7.1
 PySide6==6.8.0.2
