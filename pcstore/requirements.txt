@@ -7,7 +7,6 @@ brotlicffi==1.1.0.0
 cffi==1.15.1
 ConfigParser==7.1.0
 cx_Oracle==8.3.0
-Cython==3.0.11
 defusedxml==0.7.1
 dl==0.1.0
 docutils==0.21.2
