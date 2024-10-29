@@ -52,4 +52,4 @@ urllib3_secure_extra==0.1.0
 webdriver_manager==4.0.2
 zstandard==0.23.0
 gunicorn
-
+whitenoise

@@ -52,6 +52,7 @@ INSTALLED_APPS = [
    
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -61,6 +62,7 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
     'userapp.middleware.AuthMiddleware',
     'userapp.middleware.NoCacheMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'pcstore.urls'
@@ -131,20 +133,21 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, 'staticfiles'),
-]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_collected')
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-COMPONENT_IMAGES_DIR = os.path.join(MEDIA_ROOT, 'component_images')
-
-STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+# WhiteNoise configuration
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+WHITENOISE_COMPRESSION_ENABLED = True
+WHITENOISE_ENABLE_GZIP_COMPRESSION = True
+
+# Media files configuration
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+COMPONENT_IMAGES_DIR = os.path.join(MEDIA_ROOT, 'component_images')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -214,3 +217,8 @@ LOGGING = {
         'level': 'INFO',
     },
 }
+
+# If you're using Django in production, you might want to add:
+if not DEBUG:
+    WHITENOISE_AUTOREFRESH = False
+    WHITENOISE_USE_FINDERS = False

@@ -355,3 +355,66 @@ Error updating status: 'CustomPCComponent' object has no attribute 'name'
 Internal Server Error: /update-build-status/13/
 Attempting to update order 14 to status building
 Order 14 updated: paid -> building
+Watching for file changes with StatReloader
+Fetching components for category: 
+Mapped category: 
+Found 53 components
+Returning 53 components
+Fetching components for category: motherboard
+Mapped category: Motherboard
+Found 7 components
+Returning 7 components
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+Not Found: /loginuser/password_reset
+Not Found: /loginuser/password_reset
+Not Found: /loginuser/password_reset
+Not Found: /loginuser/password_reset
+Fetching components for category: 
+Mapped category: 
+Found 53 components
+Returning 53 components
+Fetching components for category: motherboard
+Mapped category: Motherboard
+Found 7 components
+Returning 7 components
+Fetching components for category: cpu
+Mapped category: CPU/processor
+Found 7 components
+Returning 7 components
+Fetching components for category: 
+Mapped category: 
+Found 53 components
+Returning 53 components
+Fetching components for category: 
+Mapped category: 
+Found 53 components
+Returning 53 components
+Fetching components for category: 
+Mapped category: 
+Found 53 components
+Returning 53 components
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\pcstore\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\pcstore\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\pcstore\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\pcstore\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\pcstore\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\pcstore\settings.py changed, reloading.
+Watching for file changes with StatReloader
+Fetching components for category: 
+Mapped category: 
+Found 53 components
+Returning 53 components
+Not Found: /favicon.ico
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\pcstore\settings.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /favicon.ico
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\pcstore\settings.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\pcstore\settings.py changed, reloading.
+Watching for file changes with StatReloader
