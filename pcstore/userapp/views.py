@@ -36,6 +36,20 @@ import razorpay
 from transformers import ViTImageProcessor, ViTForImageClassification
 from PIL import Image
 import torch
+from django.contrib.auth.decorators import login_required
+from .models import Order  # Import your Order model
+from .models import DeliveryBoy
+from .models import Delivery
+from django.core.mail import send_mail
+import random
+import string
+from django.http import JsonResponse
+import json
+from .models import Product
+from openai import OpenAI
+from django.http import JsonResponse
+import json
+from .models import Product # Import your models
 
 logger = logging.getLogger(__name__)
 
@@ -111,6 +125,8 @@ def loginu(request):
                 redirect_url = reverse('userapp:admin_dashboard')
             elif u.is_staff:
                 redirect_url = reverse('userapp:staff_dashboard')
+            elif u.role == 'delivery_boy':
+                redirect_url = reverse('userapp:delivery_dashboard')
             return JsonResponse({'success': True, 'redirect_url': redirect_url})
         else:
             return JsonResponse({'success': False, 'error': 'Invalid email or password'})
@@ -325,16 +341,23 @@ def change_user_role(request, user_id):
         data = json.loads(request.body)
         new_role = data.get('role')
         
-        if new_role not in ['user', 'staff']:
+        if new_role not in ['user', 'staff', 'delivery_boy']:
             return JsonResponse({'success': False, 'error': 'Invalid role'}, status=400)
         
         user = User.objects.get(id=user_id)
         
+        # Reset all role flags
+        user.is_staff = False
+        user.is_deliveryboy = False
+        
+        # Set appropriate flags based on role
         if new_role == 'staff':
             user.is_staff = True
-        else:
-            user.is_staff = False
+        elif new_role == 'delivery_boy':
+            user.is_deliveryboy = True
         
+        # Update the role field
+        user.role = new_role
         user.save()
         return JsonResponse({'success': True})
     except User.DoesNotExist:
@@ -2114,16 +2137,26 @@ def build_order_view(request):
     
 from django.shortcuts import render
 from .models import CustomPCOrder, OrderComponent
-
 def ordered_build(request):
-    orders = CustomPCOrder.objects.exclude(status__in=['pending', 'arrived']).order_by('-created_at')
-    orders = orders.prefetch_related('components')
+    # Get orders with their related deliveries and delivery boys
+    orders = CustomPCOrder.objects.all().prefetch_related(
+        'deliveries',
+        'components'
+    ).select_related('user')
+    
+    # Get all delivery boys except the currently assigned one
+    delivery_boys = DeliveryBoy.objects.select_related('user').exclude(
+        id__in=Delivery.objects.filter(
+            status='assigned',
+            orderId__in=orders.values_list('id', flat=True)
+        ).values('deliveryBoyId')
+    )
     
     context = {
         'orders': orders,
+        'delivery_boys': delivery_boys
     }
     return render(request, 'ordered_build.html', context)
-
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
@@ -2326,3 +2359,368 @@ def predict_component(request):
 
 def ml_implement(request):
     return render(request, 'ml.html')
+
+@login_required
+def delivery_dashboard(request):
+    if request.user.role != 'delivery_boy':
+        return redirect('userapp:mainpage')
+    return render(request, 'delivery_dashboard.html')
+
+@login_required
+def delivery_profile(request):
+    # Get or create delivery profile
+    delivery_profile, created = DeliveryBoy.objects.get_or_create(
+        user=request.user,
+        defaults={
+            'joined_date': timezone.now()  # Use joined_date instead of date_joined
+        }
+    )
+    
+    context = {
+        'user': request.user,
+        'delivery_profile': delivery_profile
+    }
+    return render(request, 'delivery_profile.html', context)
+
+@login_required
+def update_delivery_profile(request):
+    if request.method == 'POST':
+        user = request.user
+        
+        # Update user information
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
+        user.email = request.POST.get('email')
+        user.mobile = request.POST.get('mobile')
+        user.save()
+
+        # Check if delivery profile exists
+        try:
+            delivery_profile = DeliveryBoy.objects.get(user=user)
+            # Update fields for existing profile
+            delivery_profile.vehicle_number = request.POST.get('vehicle_number', '')
+            delivery_profile.address = request.POST.get('address', '')
+            delivery_profile.district = request.POST.get('district', '')
+            delivery_profile.pincode = request.POST.get('pincode', '')
+            delivery_profile.save(update_fields=['vehicle_number', 'address', 'district', 'pincode'])
+        except DeliveryBoy.DoesNotExist:
+            # Create new profile with current timestamp
+            delivery_profile = DeliveryBoy.objects.create(
+                user=user,
+                vehicle_number=request.POST.get('vehicle_number', ''),
+                address=request.POST.get('address', ''),
+                district=request.POST.get('district', ''),
+                pincode=request.POST.get('pincode', ''),
+                joined_date=timezone.now()
+            )
+
+        messages.success(request, 'Profile updated successfully!')
+        return redirect('userapp:delivery_profile')
+
+    delivery_profile = getattr(request.user, 'delivery_profile', None)
+    return render(request, 'update_delivery_profile.html', {
+        'user': request.user,
+        'delivery_profile': delivery_profile
+    })
+@login_required
+def delivery_assigned(request):
+    # Get the logged-in delivery boy
+    delivery_boy = DeliveryBoy.objects.get(user=request.user)
+    
+    # Get all deliveries for this delivery boy with status 'assigned' or 'acceptedassigned' or 'onway'
+    assigned_deliveries = Delivery.objects.filter(
+        deliveryBoyId=delivery_boy,
+        status__in=['assigned', 'acceptedassigned', 'onway']
+    ).order_by('-assignedDate')
+    
+    print("Found deliveries:", assigned_deliveries)  # Debug print
+    for delivery in assigned_deliveries:
+        print(f"Delivery {delivery.deliveryId}: Status = {delivery.status}")  # Debug print
+    
+    context = {
+        'assigned_deliveries': assigned_deliveries,
+        'delivery_boy': delivery_boy
+    }
+    
+    return render(request, 'delivery_assigned.html', context)
+
+@login_required
+def delivery_completed(request):    
+    return render(request, 'delivery_completed.html')
+
+@login_required
+def delivery_cancelled(request):
+    return render(request, 'delivery_cancelled.html')   
+
+from django.http import JsonResponse
+from django.utils import timezone
+import json
+from .models import Delivery, CustomPCOrder, DeliveryBoy
+import traceback  # Add this import
+
+def assign_delivery_boy(request, order_id):
+    if request.method == 'POST':
+        try:
+            # Print request data for debugging
+            print("Request received for order_id:", order_id)
+            print("Request body:", request.body)
+            
+            data = json.loads(request.body)
+            delivery_boy_id = data.get('delivery_boy_id')
+            print("Delivery boy ID:", delivery_boy_id)
+            
+            # Get the order and delivery boy objects
+            order = CustomPCOrder.objects.get(id=order_id)
+            print("Order found:", order.id)
+            
+            delivery_boy = DeliveryBoy.objects.get(id=delivery_boy_id)
+            print("Delivery boy found:", delivery_boy.id)
+
+            # Check if delivery already exists
+            existing_delivery = Delivery.objects.filter(orderId=order).first()
+            if existing_delivery:
+                print("Existing delivery found, updating...")
+                existing_delivery.delete()
+
+            # Create new Delivery record
+            delivery = Delivery.objects.create(
+                orderId=order,
+                deliveryBoyId=delivery_boy,
+                status='assigned',
+                assignedDate=timezone.now()
+            )
+            print("New delivery created:", delivery.deliveryId)
+            
+            # Update delivery boy status
+            delivery_boy.status = 'assigned'
+            delivery_boy.save()
+            print("Delivery boy status updated")
+
+            return JsonResponse({
+                'success': True,
+                'message': 'Delivery boy assigned successfully',
+                'delivery_id': delivery.deliveryId
+            })
+
+        except CustomPCOrder.DoesNotExist:
+            error_msg = f"Order not found: {order_id}"
+            print(error_msg)
+            return JsonResponse({'success': False, 'error': error_msg})
+            
+        except DeliveryBoy.DoesNotExist:
+            error_msg = f"Delivery boy not found: {delivery_boy_id}"
+            print(error_msg)
+            return JsonResponse({'success': False, 'error': error_msg})
+            
+        except Exception as e:
+            error_msg = f"Error in assign_delivery_boy: {str(e)}"
+            print(error_msg)
+            print("Full traceback:")
+            print(traceback.format_exc())
+            return JsonResponse({'success': False, 'error': error_msg})
+    
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from .models import Delivery, CustomPCOrder  # Make sure to import the models
+import json
+from django.views.decorators.csrf import ensure_csrf_cookie
+import logging
+
+logger = logging.getLogger(__name__)
+
+@login_required
+@require_POST
+@ensure_csrf_cookie
+def update_delivery_status(request, delivery_id):
+    try:
+        print(f"Received request for delivery_id: {delivery_id}")
+        
+        if not request.body:
+            return JsonResponse({
+                'success': False,
+                'error': 'Empty request body'
+            }, status=400)
+            
+        data = json.loads(request.body)
+        status = data.get('status')
+        
+        if not status:
+            return JsonResponse({
+                'success': False,
+                'error': 'Status is required'
+            }, status=400)
+            
+        print(f"Processing status update: {status}")
+        
+        try:
+            delivery = Delivery.objects.get(deliveryId=delivery_id)
+            print(f"Found delivery: {delivery.deliveryId}")
+            
+        except Delivery.DoesNotExist:
+            return JsonResponse({
+                'success': False,
+                'error': f'Delivery with id {delivery_id} not found'
+            }, status=404)
+        
+        if status == 'acceptedassigned':
+            print("Processing accept request")
+            # Update delivery status
+            delivery.status = 'acceptedassigned'
+            delivery.save()
+            print(f"Updated delivery status to: {delivery.status}")
+            
+            # Update order status to enroute
+            order = delivery.orderId
+            order.status = 'enroute'  # Change order status to enroute
+            order.save()
+            print(f"Updated order status to: {order.status}")
+            
+            # Update delivery boy status
+            delivery_boy = delivery.deliveryBoyId
+            delivery_boy.status = 'assigned'  # Update delivery boy status
+            delivery_boy.save()
+            print(f"Updated delivery boy status to: {delivery_boy.status}")
+            
+            return JsonResponse({
+                'success': True,
+                'message': 'Delivery assignment accepted successfully'
+            })
+            
+        elif status == 'declined':
+            delivery.status = 'declined'
+            delivery.save()
+            
+            # Update order status
+            order = delivery.orderId
+            order.status = 'shipped'
+            order.save()
+            
+            # Update delivery boy status
+            delivery_boy = delivery.deliveryBoyId
+            delivery_boy.status = 'available'
+            delivery_boy.save()
+            
+            return JsonResponse({
+                'success': True,
+                'message': 'Delivery assignment declined successfully'
+            })
+            
+        elif status == 'onway':
+            delivery.status = 'onway'
+            delivery.save()
+            return JsonResponse({
+                'success': True,
+                'message': 'Delivery status updated to On The Way'
+            })
+            
+        elif status == 'delivered':
+            delivery.status = 'delivered'
+            delivery.deliveryDate = timezone.now()
+            delivery.save()
+            
+            # Update delivery boy status
+            delivery_boy = delivery.deliveryBoyId
+            delivery_boy.status = 'available'
+            delivery_boy.save()
+            
+            return JsonResponse({
+                'success': True,
+                'message': 'Delivery completed successfully'
+            })
+            
+        else:
+            return JsonResponse({
+                'success': False,
+                'error': f'Invalid status: {status}'
+            }, status=400)
+            
+    except Exception as e:
+        print(f"Unexpected error: {str(e)}")
+        return JsonResponse({
+            'success': False,
+            'error': str(e)
+        }, status=500)
+
+@login_required
+def update_delivery_status(request, delivery_id):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            new_status = data.get('status')
+            update_order = data.get('update_order', False)
+            
+            delivery = Delivery.objects.get(deliveryId=delivery_id)
+            delivery.status = new_status
+            delivery.save()
+
+            # If delivery is marked as delivered, update the order status
+            if update_order and new_status == 'delivered':
+                order = delivery.orderId
+                order.status = 'arrived'  # Update this to match your order status field
+                order.save()
+
+            return JsonResponse({
+                'success': True,
+                'message': 'Status updated successfully'
+            })
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': str(e)
+            }, status=400)
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+def generate_otp():
+    return ''.join(random.choices(string.digits, k=6))
+
+@login_required
+def send_delivery_otp(request, delivery_id):
+    if request.method == 'POST':
+        try:
+            delivery = Delivery.objects.get(deliveryId=delivery_id)
+            order = delivery.orderId
+            user_email = order.user.email
+            
+            # Generate OTP
+            otp = generate_otp()
+            
+            # Store OTP in session
+            request.session[f'delivery_otp_{delivery_id}'] = otp
+            
+            # Send email
+            subject = 'Delivery Verification OTP'
+            message = f'Your delivery verification OTP is: {otp}\nPlease provide this OTP to the delivery person to confirm your delivery.'
+            from_email = 'your-email@example.com'  # Update with your email
+            recipient_list = [user_email]
+            
+            send_mail(subject, message, from_email, recipient_list)
+            
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+@login_required
+def verify_delivery_otp(request, delivery_id):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            submitted_otp = data.get('otp')
+            stored_otp = request.session.get(f'delivery_otp_{delivery_id}')
+            
+            if submitted_otp == stored_otp:
+                # Clear OTP from session after successful verification
+                del request.session[f'delivery_otp_{delivery_id}']
+                return JsonResponse({'success': True})
+            else:
+                return JsonResponse({'success': False, 'error': 'Invalid OTP'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+def chatbot_view(request):
+    return render(request, 'chatbot.html')

@@ -1424,6 +1424,7 @@ https://templatemo.com/tm-571-hexashop
                                 <select id="role-{{ user.id }}" class="form-control">
                                     <option value="user" {% if not user.is_staff %}selected{% endif %}>User</option>
                                     <option value="staff" {% if user.is_staff %}selected{% endif %}>Staff</option>
+                                    <option value="delivery_boy" {% if user.is_deliveryboy %}selected{% endif %}>Delivery Boy</option>
                                 </select>
                             </td>
                             <td>

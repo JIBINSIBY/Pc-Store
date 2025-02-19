@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import User, Address, Product, Component, CustomPC, CustomPCComponent, ProductImage, OrderComponent, Cart, Rating,Order, OrderItem, CustomPCOrder, CustomPCMessage
+from .models import User, Address, Product, Component, CustomPC, CustomPCComponent, ProductImage, OrderComponent, Cart, Rating,Order, OrderItem, CustomPCOrder, CustomPCMessage, DeliveryBoy, Delivery
 
 admin.site.register(User)
 admin.site.register(Address)
@@ -17,3 +17,5 @@ admin.site.register(Order)
 admin.site.register(OrderItem)
 admin.site.register(CustomPCOrder)
 admin.site.register(OrderComponent)
+admin.site.register(DeliveryBoy)
+admin.site.register(Delivery)

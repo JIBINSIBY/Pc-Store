@@ -3,32 +3,32 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
 from decimal import Decimal
+from django.utils import timezone
 
 def validate_rating(value):
     if value < 1 or value > 5:
         raise ValidationError('Rating must be between 1 and 5.')
-
 class User(AbstractUser):
     ROLE_CHOICES = (
         ('user', 'User'),
         ('staff', 'Staff'),
         ('admin', 'Admin'),
+        ('delivery_boy', 'Delivery Boy'),  # Added new role
     )
     
     fullname = models.CharField(max_length=255)
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now=True)
     is_staff = models.BooleanField(default=False)
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='user')
-    mobile = models.CharField(max_length=20,unique=False,default="nil")
-    # Use email as the unique identifier instead of username
+    is_deliveryboy = models.BooleanField(default=False)
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='user')
+    mobile = models.CharField(max_length=20, unique=False, default="nil")
     email = models.EmailField(unique=True)
 
-    # If you want to use email for login instead of username
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username','password']
+    REQUIRED_FIELDS = ['username', 'password']
 
-    def _str_(self):
+    def __str__(self):
         return self.email
 
 class Address(models.Model):
@@ -200,3 +200,78 @@ class OrderComponent(models.Model):
 
     def __str__(self):
         return f"{self.component_name} for Order {self.order.id}"
+
+from django.db import models
+from django.utils import timezone
+
+class DeliveryBoy(models.Model):
+    DISTRICT_CHOICES = [
+        ('alappuzha', 'Alappuzha'),
+        ('ernakulam', 'Ernakulam'),
+        ('idukki', 'Idukki'),
+        ('kannur', 'Kannur'),
+        ('kasaragod', 'Kasaragod'),
+        ('kollam', 'Kollam'),
+        ('kottayam', 'Kottayam'),
+        ('kozhikode', 'Kozhikode'),
+        ('malappuram', 'Malappuram'),
+        ('palakkad', 'Palakkad'),
+        ('pathanamthitta', 'Pathanamthitta'),
+        ('thiruvananthapuram', 'Thiruvananthapuram'),
+        ('thrissur', 'Thrissur'),
+        ('wayanad', 'Wayanad'),
+    ]
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='delivery_profile')
+    vehicle_number = models.CharField(max_length=20, blank=True, null=True)
+    address = models.TextField(max_length=500, blank=True, null=True)
+    district = models.CharField(max_length=50, choices=DISTRICT_CHOICES, blank=True, null=True)
+    pincode = models.CharField(max_length=6, blank=True, null=True)
+    joined_date = models.DateTimeField(default=timezone.now)
+    status = models.CharField(max_length=20, default='available', choices=[
+        ('available', 'Available'),
+        ('busy', 'Busy'),
+        ('offline', 'Offline')
+    ])
+
+    def __str__(self):
+        return f"{self.user.username}'s delivery profile"
+
+class Delivery(models.Model):
+    STATUS_CHOICES = (
+        ('assigned', 'Assigned'),
+        ('declined', 'Declined Assignment'),
+        ('acceptedassigned', 'Accepted Assignment'),
+        ('onway', 'On The Way'),
+        ('delivered', 'Delivered')
+    )
+
+    deliveryId = models.AutoField(primary_key=True)
+    orderId = models.ForeignKey('CustomPCOrder', on_delete=models.CASCADE, related_name='deliveries')
+    deliveryBoyId = models.ForeignKey('DeliveryBoy', on_delete=models.CASCADE, related_name='deliveries')
+    status = models.CharField(max_length=100, choices=STATUS_CHOICES, default='assigned')
+    assignedDate = models.DateTimeField(default=timezone.now)
+    deliveryDate = models.DateTimeField(null=True, blank=True)
+    feedback = models.TextField(null=True, blank=True)
+    locationTracking = models.CharField(max_length=255, null=True, blank=True)
+
+    class Meta:
+        db_table = 'Delivery'
+        ordering = ['-assignedDate']
+
+    def __str__(self):
+        return f"Delivery #{self.deliveryId} - Order #{self.orderId.id}"
+
+    def update_status(self, new_status):
+        self.status = new_status
+        if new_status == 'delivered':
+            self.deliveryDate = timezone.now()
+        self.save()
+
+    def update_location(self, location_url):
+        self.locationTracking = location_url
+        self.save()
+
+    def add_feedback(self, feedback_text):
+        self.feedback = feedback_text
+        self.save()

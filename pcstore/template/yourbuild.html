@@ -955,26 +955,28 @@ https://templatemo.com/tm-571-hexashop
         {% if builds %}
             <div class="row">
                 {% for build in builds %}
-                    <div class="col-md-4 mb-4">
-                        <div class="card">
-                            <div class="card-body">
-                                <button class="remove-build-btn" data-build-id="{{ build.id }}">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                                    </svg>
-                                </button>
-                                <h5 class="card-title">Build #{{ build.id }}</h5>
-                                <p class="card-text">Status: {{ build.status }}</p>
-                                <p class="card-text">Created: {{ build.created_at|date:"F d, Y" }}</p>
-                                <button class="btn btn-primary view-components" data-build-id="{{ build.id }}">View Components</button>
-                                
-                                {% if build.status == "Approved" %}
-                                    <a href="{% url 'userapp:checkoutcustom' build.id %}" class="btn btn-success">Checkout Your Build</a>
-                                {% endif %}
+                    {% if build.status != 'paid' %}  <!-- Only show if status is not paid -->
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <button class="remove-build-btn" data-build-id="{{ build.id }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                                        </svg>
+                                    </button>
+                                    <h5 class="card-title">Build #{{ build.id }}</h5>
+                                    <p class="card-text">Status: {{ build.status }}</p>
+                                    <p class="card-text">Created: {{ build.created_at|date:"F d, Y" }}</p>
+                                    <button class="btn btn-primary view-components" data-build-id="{{ build.id }}">View Components</button>
+                                    
+                                    {% if build.status == "Approved" %}
+                                        <a href="{% url 'userapp:checkoutcustom' build.id %}" class="btn btn-success">Checkout Your Build</a>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    {% endif %}
                 {% endfor %}
             </div>
             

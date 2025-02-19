@@ -588,8 +588,10 @@ https://templatemo.com/tm-571-hexashop
                                         <p><strong>Order ID:</strong> {{ order.id }}</p>
                                         <p><strong>Total Price:</strong> ${{ order.total_price }}</p>
                                         <p><strong>Current Status:</strong> {{ order.get_status_display }}</p>
-                                        <!-- Add the cancel button -->
-                                        <button class="btn btn-danger mt-3" onclick="cancelOrder(this)" data-order-id="{{ order.id }}">Cancel Order</button>
+                                        <!-- Only show cancel button if order is not arrived -->
+                                        {% if order.status != 'arrived' %}
+                                            <button class="btn btn-danger mt-3" onclick="cancelOrder(this)" data-order-id="{{ order.id }}">Cancel Order</button>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>

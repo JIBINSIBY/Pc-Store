@@ -2229,3 +2229,31 @@ $(document).ready(function() {
         }
     });
     </script>
+
+    <script>
+        function handleKeywordNavigation(keyword) {
+            const pages = {
+                'build': '{% url "userapp:pc_custom" %}',
+                'keyboard': '{% url "userapp:keyboards" %}',
+                'monitor': '{% url "userapp:monitors" %}',
+                'mouse': '{% url "userapp:mouses" %}',
+                'cart': '{% url "userapp:cart_view" %}'
+            };
+            
+            keyword = keyword.toLowerCase().trim();
+            
+            // Check for exact matches first
+            if (pages[keyword]) {
+                window.location.href = pages[keyword];
+                return;
+            }
+            
+            // Check for partial matches
+            for (let key in pages) {
+                if (keyword.includes(key)) {
+                    window.location.href = pages[key];
+                    return;
+                }
+            }
+        }
+    </script>

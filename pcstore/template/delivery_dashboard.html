@@ -1,4 +1,3 @@
-{% load custom_filters %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -797,6 +796,340 @@
             color: #7a7a7a;
             margin-top: 5px;
         }
+        .header-area .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin: 0 20px;
+            max-width: 50%; /* Adjust this value to control the maximum width */
+        }
+
+        .search-container form {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .search-container input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+            flex-grow: 1;
+            min-width: 0;
+            width: 100%;
+        }
+
+        .search-container button {
+            padding: 10px 15px;
+            background-color: #7e96dc;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+
+        .search-container button:hover {
+            background-color: #d32f2f;
+        }
+
+        .header-area .main-nav .nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        .header-area .main-nav .nav li {
+            padding: 0 15px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-area .main-nav .nav li a {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            height: 100%;
+            border: transparent;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 991px) {
+            .header-area .main-nav {
+                flex-wrap: wrap;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0;
+            }
+            .search-container form {
+                width: 100%;
+            }
+            .search-container input[type="text"] {
+                flex-grow: 1;
+            }
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+        }
+
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .fixed-top {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1030;
+        }
+
+        body {
+            padding-top: 80px; /* Adjust this value based on your header height */
+        }
+
+        .submenu {
+            position: relative;
+        }
+
+        .submenu .dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            padding: 10px 0;
+            min-width: 200px;
+            z-index: 1000;
+        }
+
+        .submenu:hover .dropdown {
+            display: block;
+        }
+
+        .submenu .dropdown li {
+            display: block;
+            padding: 5px 15px;
+        }
+
+        .submenu .dropdown li a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .submenu .dropdown li a i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .submenu .dropdown li a:hover {
+            background-color: #f5f5f5;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            flex-shrink: 0;
+        }
+
+        .search-container {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+
+        .search-container form {
+            display: flex;
+        }
+
+        .search-container input[type="text"] {
+            flex-grow: 1;
+            min-width: 0;
+        }
+
+        .nav {
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 991px) {
+            .header-content {
+                flex-wrap: wrap;
+            }
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+
+        .scrolling-banner {
+            overflow: hidden;
+            position: relative;
+            height: 300px;
+            margin-bottom: 50px;
+            padding-top: 0px !important;
+        }
+
+        .banner-container {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .banner-slide {
+            flex: 0 0 100%;
+            position: relative;
+        }
+
+        .banner-slide img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .banner-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+        }
+
+        .banner-content h2 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .banner-content p {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .btn-shop-now {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-shop-now:hover {
+            background-color: #0056b3;
+        }
+
+        .scrolling-banner {
+            position: relative;
+        }
+
+        .banner-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            font-size: 24px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .banner-arrow:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .banner-prev {
+            left: 10px;
+        }
+
+        .banner-next {
+            right: 10px;
+        }
+
+        .section {
+            padding: 0px 0;
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1518px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .owl-carousel {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+        }
+
+        .owl-carousel .item {
+            flex: 0 0 auto;
+            width: 280px;
+            margin-right: 20px;
+            scroll-snap-align: start;
+        }
+
+        .owl-carousel .item:last-child {
+            margin-right: 0;
+        }
+
+        @media (max-width: 768px) {
+            .owl-carousel .item {
+                width: 220px;
+            }
+        }
+
+        .down-content .category {
+            display: block;
+            font-size: 14px;
+            color: #7a7a7a;
+            margin-top: 5px;
+        }
         .header-area .main-nav .logo {
             width: 230px !important;
         }
@@ -864,182 +1197,6 @@
         
         .out-of-stock-list li:last-child {
             border-bottom: none;
-        }
-        footer {
-            margin-top: 700px !important;
-        }
-
-        .main-content {
-            margin-left: 310px;
-            padding: 20px;
-            margin-top: 80px; /* Adjust this value based on your header height */
-        }
-
-        @media (max-width: 768px) {
-            .main-content {
-                margin-left: 0;
-            }
-        }
-
-        .card {
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        .card-header {
-            font-weight: bold;
-        }
-
-        .list-group-item {
-            border: none;
-            padding: 0.5rem 0;
-        }
-
-        .custom-modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-        }
-
-        .custom-modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 600px;
-            border-radius: 5px;
-        }
-
-        .custom-close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .custom-close:hover,
-        .custom-close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .component-list {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .component-list li {
-            padding: 5px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .component-list li:last-child {
-            border-bottom: none;
-        }
-
-        .custom-modal-content {
-            max-width: 800px; /* Increased max-width for better table display */
-        }
-
-        .table {
-            width: 100%;
-            margin-bottom: 1rem;
-            color: #212529;
-        }
-
-        .table th,
-        .table td {
-            padding: 0.75rem;
-            vertical-align: top;
-            border-top: 1px solid #dee2e6;
-        }
-
-        .table thead th {
-            vertical-align: bottom;
-            border-bottom: 2px solid #dee2e6;
-        }
-
-        .table tbody + tbody {
-            border-top: 2px solid #dee2e6;
-        }
-
-        .table-striped tbody tr:nth-of-type(odd) {
-            background-color: rgba(0, 0, 0, 0.05);
-        }
-
-        .button-group {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .delivery-boy-list {
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 8px;
-            margin: 8px 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .form-group label {
-            font-weight: bold;
-            margin-bottom: 5px;
-            display: block;
-        }
-
-        .custom-modal-content {
-            width: 80%;
-            max-width: 600px;
-        }
-
-        .selected-delivery-boy-details {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
-            margin-top: 15px;
-        }
-
-        .details-card {
-            background-color: white;
-            padding: 15px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .details-card p {
-            margin-bottom: 8px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background-color: white;
-        }
-
-        .form-control option {
-            padding: 10px;
-            line-height: 1.5;
-        }
-
-        .delivery-boy-list {
-            max-height: 400px;
-            overflow-y: auto;
         }
     </style>
 
@@ -1142,30 +1299,42 @@ https://templatemo.com/tm-571-hexashop
                     <i class="fa fa-chevron-down"></i>
                 </div>
                 <div class="nav-content">
-                    <a href="#"><i class="fas fa-user"></i> Profile Information</a>
+                    <a href="{% url 'userapp:delivery_profile' %}"><i class="fas fa-user"></i> Profile Information</a>
                 </div>
             </div>
             <div class="nav-item">
                 <div class="nav-heading">
-                    <i class="fa fa-wrench"></i>
-                    <span>Build Requests</span>
+                    <i class="fas fa-truck"></i>
+                    <span>My Deliveries</span>
                     <i class="fa fa-chevron-down"></i>
                 </div>
                 <div class="nav-content">
-                    <a href="{% url 'userapp:staff_build_requests' %}">View Build Requests</a>
+                    <a href="{% url 'userapp:delivery_assigned' %}"><i class="fas fa-book"></i>Assigned</a>
+                    <a href="{% url 'userapp:delivery_completed' %}"><i class="fas fa-check"></i>Completed</a>
+                    <a href="{% url 'userapp:delivery_cancelled' %}"><i class="fas fa-times"></i>Cancelled</a>
                 </div>
             </div>
             <div class="nav-item">
                 <div class="nav-heading">
-                    <i class="fa fa-wrench"></i>
-                    <span>Ordered Build</span>
+                    <i class="fas fa-usd"></i>
+                    <span>My Earnings</span>
                     <i class="fa fa-chevron-down"></i>
                 </div>
                 <div class="nav-content">
-                    <a href="{% url 'userapp:ordered_build' %}">View Ordered Build</a>
+                    <a href="{% url 'userapp:admin_viewproduct' %}"><i class="fas fa-list"></i> View Products</a>
                 </div>
             </div>
-        
+            <div class="nav-item">
+                <div class="nav-heading">
+                    <i class="fas fa-microchip"></i>
+                    <span>yuyuy</span>
+                    <i class="fa fa-chevron-down"></i>
+                </div>
+                <div class="nav-content">
+                    <a href=""><i class="fas fa-plus"></i> ergd</a>
+                    <a href=""><i class="fas fa-list"></i> erg</a>
+                </div>
+            </div>
             {% if user.is_authenticated %}
                 <div class="nav-item">
                     <div class="nav-heading">
@@ -1180,181 +1349,77 @@ https://templatemo.com/tm-571-hexashop
         </div>
     </div>
 <!-- ***** side nav end ***** -->
+    
+    <!-- ***** side nav end ***** -->
+    <div class="main-content">
+        <div class="dashboard-summary">
+            <h2 style="margin-bottom: 13px">Dashboard</h2>
+            <div class="sales-summary">
+                <div class="summary-card">
+                    <i class="fas fa-truck"></i>
+                    <h3>
+                        <!-- ${{ today_sales.total_sales|default:"0" }} -->0
 
-<!-- Add this section for displaying paid orders -->
-<div class="main-content">
-    <div class="container">
-        <h2 class="text-center mb-4">Active Custom PC Build Orders</h2>
-        {% if orders %}
-            <div class="row">
-                {% for order in orders %}
-                    <div class="col-md-6 mb-4">
-                        <div class="card" id="order-card-{{ order.id }}">
-                            <div class="card-header bg-primary text-white">
-                                Order #{{ order.id }} - {{ order.created_at|date:"F d, Y H:i" }}
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">Customer: {{ order.user.username }}</h5>
-                                <p class="card-text"><strong>Total Price:</strong> ${{ order.total_price }}</p>
-                                <p class="card-text"><strong>Status:</strong> <span id="status-{{ order.id }}">{{ order.get_status_display }}</span></p>
-                                
-                                <div class="button-group mt-3">
-                                    <button class="btn btn-primary" onclick="showComponentsModal({{ order.id }})">View Components</button>
-                                    
-                                    {% if order.status == 'shipped' %}
-                                        {% if order.deliveries.exists %}
-                                            <button class="btn btn-info" onclick="showDeliveryBoyModal({{ order.id }})">
-                                                Manage Delivery
-                                            </button>
-                                        {% else %}
-                                            <button class="btn btn-success" onclick="showDeliveryBoyModal({{ order.id }})">
-                                                Assign Delivery Boy
-                                            </button>
-                                        {% endif %}
-                                    {% endif %}
-                                </div>
+                    </h3>
+                    <p>Completed Delivery</p>
+                    <span class="change {% if sales_change >= 0 %}positive{% else %}negative{% endif %}">
+                        <!-- {{ sales_change|floatformat:1 }}%  -->
+                        9
+                    </span>
+                </div>
+                <div class="summary-card">
+                    <i class="fas fa-clock-o "></i>
+                    <h3>
+                        <!-- {{ today_sales.total_orders|default:"0" }} -->0
 
-                                <div id="action-buttons-{{ order.id }}">
-                                    {% if order.status == 'paid' %}
-                                        <button class="btn btn-success mt-3" onclick="updateOrderStatus({{ order.id }}, 'building')">Mark as Completed Build</button>
-                                    {% elif order.status == 'building' %}
-                                        <button class="btn btn-info mt-3" onclick="updateOrderStatus({{ order.id }}, 'shipped')">Mark as Shipped</button>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Custom Modal for components -->
-                    <div id="componentModal{{ order.id }}" class="custom-modal">
-                        <div class="custom-modal-content">
-                            <span class="custom-close" onclick="closeComponentsModal({{ order.id }})">&times;</span>
-                            <h3>Components for Order #{{ order.id }}</h3>
-                            <p><strong>Order Status:</strong> {{ order.get_status_display }}</p>
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Category</th>
-                                        <th>Component</th>
-                                        <th>Brand</th>
-                                        <th>Quantity</th>
-                                        <th>Price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for component in order.components.all %}
-                                        <tr>
-                                            <td>{{ component.category }}</td>
-                                            <td>{{ component.component_name }}</td>
-                                            <td>{{ component.brand }}</td>
-                                            <td>{{ component.quantity }}</td>
-                                            <td>${{ component.price }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Update the Delivery Boy Assignment Modal section -->
-                    <div id="deliveryBoyModal{{ order.id }}" class="custom-modal">
-                        <div class="custom-modal-content">
-                            <span class="custom-close" onclick="closeDeliveryBoyModal({{ order.id }})">&times;</span>
-                            <h3>
-                                {% if order.deliveries.exists %}
-                                    Manage Delivery for Order #{{ order.id }}
-                                {% else %}
-                                    Assign Delivery Boy for Order #{{ order.id }}
-                                {% endif %}
-                            </h3>
-                            <div class="delivery-boy-list mt-4">
-                                <div class="form-group">
-                                    <label for="deliveryBoy{{ order.id }}">Select Delivery Boy:</label>
-                                    
-                                    <!-- Count matching delivery boys -->
-                                    {% with available_boys=0 %}
-                                        {% for delivery_boy in delivery_boys %}
-                                            {% if delivery_boy.status == 'available' %}
-                                                {% with current_delivery=order.deliveries.last %}
-                                                    {% if not current_delivery or current_delivery.deliveryBoyId.id != delivery_boy.id %}
-                                                        {% with available_boys=available_boys|add:1 %}
-                                                            {% if forloop.last %}
-                                                                <div class="alert {% if available_boys > 0 %}alert-success{% else %}alert-info{% endif %} mb-3">
-                                                                    {{ available_boys }} delivery boy(s) available for assignment
-                                                                </div>
-                                                            {% endif %}
-                                                        {% endwith %}
-                                                    {% endif %}
-                                                {% endwith %}
-                                            {% endif %}
-                                        {% endfor %}
-                                    {% endwith %}
-
-                                    <select class="form-control" id="deliveryBoy{{ order.id }}" onchange="updateDeliveryBoyDetails({{ order.id }})">
-                                        <option value="">Choose a delivery boy...</option>
-                                        {% with current_delivery=order.deliveries.last %}
-                                            {% for delivery_boy in delivery_boys %}
-                                                {% if delivery_boy.id != current_delivery.deliveryBoyId.id %}
-                                                    <option value="{{ delivery_boy.id }}">
-                                                        {{ delivery_boy.user.get_full_name|default:delivery_boy.user.username }} 
-                                                        | Mobile: {{ delivery_boy.user.mobile }}
-                                                        | Vehicle: {{ delivery_boy.vehicle_number }}
-                                                        | District: {{ delivery_boy.get_district_display }}
-                                                    </option>
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% endwith %}
-                                    </select>
-                                    
-                                    <div class="mt-2">
-                                        <small class="text-muted">Customer's Address: {{ order.address }}</small>
-                                    </div>
-
-                                    <!-- Add current delivery boy info -->
-                                    {% with current_delivery=order.deliveries.last %}
-                                        {% if current_delivery %}
-                                            <div class="alert alert-info mt-3">
-                                                <h6>Currently Assigned:</h6>
-                                                <p>
-                                                    {{ current_delivery.deliveryBoyId.user.get_full_name|default:current_delivery.deliveryBoyId.user.username }}
-                                                    | Mobile: {{ current_delivery.deliveryBoyId.user.mobile }}
-                                                    | Vehicle: {{ current_delivery.deliveryBoyId.vehicle_number }}
-                                                </p>
-                                            </div>
-                                        {% endif %}
-                                    {% endwith %}
-                                </div>
-
-                                <div id="selectedDeliveryBoyDetails{{ order.id }}" class="selected-delivery-boy-details mt-3" style="display: none;">
-                                    <h5>Selected Delivery Boy Details:</h5>
-                                    <div class="details-card">
-                                        <p><strong>Name:</strong> <span id="dbName{{ order.id }}"></span></p>
-                                        <p><strong>Mobile:</strong> <span id="dbMobile{{ order.id }}"></span></p>
-                                        <p><strong>Vehicle Number:</strong> <span id="dbVehicle{{ order.id }}"></span></p>
-                                        <p><strong>District:</strong> <span id="dbDistrict{{ order.id }}"></span></p>
-                                    </div>
-                                </div>
-                                
-                                <button class="btn btn-primary mt-3" onclick="assignDeliveryBoy({{ order.id }})">
-                                    {% if order.deliveries.exists %}
-                                        Reassign Delivery Boy
-                                    {% else %}
-                                        Confirm Assignment
-                                    {% endif %}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
+                    </h3>
+                    <p>Pending Deliveries</p>
+                    <span class="change {% if orders_change >= 0 %}positive{% else %}negative{% endif %}">
+                        <!-- {{ orders_change|floatformat:1 }}% -->
+                        0
+                    </span>
+                </div>
+                <div class="summary-card">
+                    <i class="fas fa-usd"></i>
+                    <h3>
+                        <!-- {{ today_sales.products_sold|default:"0" }} -->0
+                    </h3>
+                    <p>Earnings</p>
+                    <span class="change {% if products_change >= 0 %}positive{% else %}negative{% endif %}">
+                        <!-- {{ products_change|floatformat:1 }}%  -->
+                    0 
+                    </span>
+                </div>
+                <div class="summary-card">
+                    <i class="fas fa-truck"></i>
+                    <h3>
+                        <!-- {{ today_sales.new_customers|default:"0" }} -->0
+                    </h3>
+                    <p>Total Collected</p>
+                    <span class="change {% if customers_change >= 0 %}positive{% else %}negative{% endif %}">
+                        <!-- {{ customers_change|floatformat:1 }}%  -->
+                        0 
+                    </span>
+                </div>
             </div>
-        {% else %}
-            <div class="alert alert-info text-center role="alert">
-                No active custom PC build orders found.
-            </div>
-        {% endif %}
+        </div>
+    
+        <div class="stock-summary">
+            <h2>Cancelled deliveries</h2>
+            <!-- {% if out_of_stock_products %}
+                <ul class="out-of-stock-list">
+                    {% for product in out_of_stock_products %}
+                        <li>
+                            <span>{{ product.name }}</span>
+                            <a href="/admin_editproduct/{{ product.productId }}/" class="btn btn-sm btn-primary">Add Stock</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>All products are currently in stock.</p>
+            {% endif %} -->
+        </div>
     </div>
-</div>
-
     
     <!-- ***** Footer Start ***** -->
     <footer>
@@ -1570,206 +1635,6 @@ https://templatemo.com/tm-571-hexashop
 
         // Also check when the page is focused
         window.addEventListener('focus', checkSession);
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            $('.btn-primary').click(function() {
-                var target = $(this).data('target');
-                $(target).modal('show');
-            });
-        });
-    </script>
-
-    <script>
-        function showComponentsModal(orderId) {
-            var modal = document.getElementById('componentModal' + orderId);
-            modal.style.display = "block";
-        }
-
-        function closeComponentsModal(orderId) {
-            var modal = document.getElementById('componentModal' + orderId);
-            modal.style.display = "none";
-        }
-
-        // Close the modal when clicking outside of it
-        window.onclick = function(event) {
-            if (event.target.classList.contains('custom-modal')) {
-                event.target.style.display = "none";
-            }
-        }
-    </script>
-
-    <!-- Add this script at the end of your HTML body -->
-    <script>
-    function updateOrderStatus(orderId, newStatus) {
-        fetch(`/update-order-status/${orderId}/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: JSON.stringify({ status: newStatus })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert(`Order #${orderId} has been marked as ${data.status}`);
-                document.getElementById(`status-${orderId}`).textContent = data.status;
-                updateActionButtons(orderId, newStatus);
-            } else {
-                alert('Failed to update order status: ' + data.error);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('An error occurred while updating the order status');
-        });
-    }
-
-    function updateActionButtons(orderId, newStatus) {
-        const actionButtonsDiv = document.getElementById(`action-buttons-${orderId}`);
-        
-        if (newStatus === 'building') {
-            actionButtonsDiv.innerHTML = `
-                <button class="btn btn-info mt-3" onclick="updateOrderStatus(${orderId}, 'shipped')">Mark as Shipped</button>
-            `;
-        } else if (newStatus === 'shipped') {
-            actionButtonsDiv.innerHTML = ''; // Remove all buttons
-        }
-    }
-
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i].trim();
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
-    }
-    </script>
-
-
-
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Add change event listeners to all delivery boy select elements
-        const selects = document.querySelectorAll('[id^="deliveryBoy"]');
-        selects.forEach(select => {
-            select.addEventListener('change', function() {
-                const orderId = this.id.replace('deliveryBoy', '');
-                updateDeliveryBoyDetails(orderId);
-            });
-        });
-    });
-
-    function updateDeliveryBoyDetails(orderId) {
-        const select = document.getElementById('deliveryBoy' + orderId);
-        const detailsDiv = document.getElementById('selectedDeliveryBoyDetails' + orderId);
-        
-        if (select.value) {
-            const selectedOption = select.options[select.selectedIndex];
-            const details = selectedOption.text.split('|');
-            
-            document.getElementById('dbName' + orderId).textContent = details[0].trim();
-            document.getElementById('dbMobile' + orderId).textContent = details[1].replace('Mobile:', '').trim();
-            document.getElementById('dbVehicle' + orderId).textContent = details[2].replace('Vehicle:', '').trim();
-            document.getElementById('dbDistrict' + orderId).textContent = details[3].replace('District:', '').trim();
-            
-            detailsDiv.style.display = 'block';
-        } else {
-            detailsDiv.style.display = 'none';
-        }
-    }
-
-    function showDeliveryBoyModal(orderId) {
-        var modal = document.getElementById('deliveryBoyModal' + orderId);
-        modal.style.display = "block";
-        updateDeliveryBoyDetails(orderId); // Update details if a delivery boy is pre-selected
-    }
-
-    function assignDeliveryBoy(orderId) {
-        const deliveryBoyId = document.getElementById('deliveryBoy' + orderId).value;
-        if (!deliveryBoyId) {
-            alert('Please select a delivery boy');
-            return;
-        }
-    
-        // Show loading state
-        const confirmButton = event.target;
-        confirmButton.disabled = true;
-        confirmButton.textContent = 'Assigning...';
-    
-        const data = { 
-            delivery_boy_id: deliveryBoyId,
-            order_id: orderId,
-            status: 'assigned'
-        };
-    
-        console.log('Sending data:', data);  // Debug log
-    
-        fetch(`/userapp/assign-delivery-boy/${orderId}/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRFToken': getCookie('csrftoken')
-            },
-            body: JSON.stringify(data)
-        })
-        .then(response => {
-            console.log('Response status:', response.status);
-            return response.json().catch(error => {
-                console.error('JSON parsing error:', error);
-                throw new Error('Invalid JSON response from server');
-            });
-        })
-        .then(data => {
-            console.log('Response data:', data);
-            if (data.success) {
-                alert('Delivery boy assigned successfully');
-                closeDeliveryBoyModal(orderId);
-                // Refresh the page after successful assignment
-                window.location.reload();
-            } else {
-                const errorMessage = data.error || 'Unknown error occurred';
-                console.error('Assignment failed:', errorMessage);
-                alert('Failed to assign delivery boy: ' + errorMessage);
-            }
-        })
-        .catch(error => {
-            console.error('Error details:', error);
-            alert('An error occurred while assigning the delivery boy: ' + error.message);
-        })
-        .finally(() => {
-            // Reset button state
-            confirmButton.disabled = false;
-            confirmButton.textContent = 'Confirm Assignment';
-        });
-    }
-
-    function closeDeliveryBoyModal(orderId) {
-        const modal = document.getElementById('deliveryBoyModal' + orderId);
-        if (modal) {
-            modal.style.display = "none";
-        }
-    }
-
-    function updateDeliveryButton(orderId) {
-        const buttonGroup = document.querySelector(`#order-card-${orderId} .button-group`);
-        const newButton = `
-            <button class="btn btn-primary" onclick="showComponentsModal(${orderId})">View Components</button>
-            <button class="btn btn-info" onclick="showDeliveryBoyModal(${orderId})">
-                Manage Delivery
-            </button>
-        `;
-        buttonGroup.innerHTML = newButton;
-    }
     </script>
   </body>
 </html>

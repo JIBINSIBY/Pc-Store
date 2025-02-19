@@ -1440,7 +1440,7 @@ https://templatemo.com/tm-571-hexashop
                                         <a href="javascript:;">{{ request.session.username }}</a>
                                         <ul class="dropdown">
                                             <li><a href="{% url 'userapp:profile' %}"><i class="fa fa-user"></i> Profile</a></li>
-                                            <li><a href="loginuser"><i class="fa fa-shopping-bag"></i> Orders</a></li>
+                                            <li><a href="{% url 'userapp:orders' %}"><i class="fa fa-shopping-bag"></i> Orders</a></li>
                                             <li><a href="loginuser"><i class="fa fa-heart"></i> Wishlist</a></li>
                                             <li><a href="loginuser"><i class="fa fa-bell"></i> Notifications</a></li>
                                             <li><a href="{% url 'userapp:logout'%}" id="logout-link"><i class="fa fa-sign-out"></i> Logout</a></li>

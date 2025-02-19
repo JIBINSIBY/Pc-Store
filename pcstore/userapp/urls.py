@@ -7,6 +7,7 @@ from django.urls import path,reverse_lazy
 from django.contrib.auth import views as auth_views
 from .views import search_suggestions
 from .views import create_order
+from django.views.decorators.csrf import csrf_exempt  # Only if needed
 
 app_name='userapp'
 print("Loading userapp URLs")
@@ -186,6 +187,19 @@ urlpatterns = [
     path('cancel-custom-order/<int:order_id>/', views.cancel_custom_order, name='cancel_custom_order'),
     path('ml/', views.ml_implement, name='ml_implement'),
     path('predict_component/', views.predict_component, name='predict_component'),
+    path('delivery-dashboard/', views.delivery_dashboard, name='delivery_dashboard'),
+    path('delivery_profile/', views.delivery_profile, name='delivery_profile'),
+    path('delivery_profile/update_delivery_profile', views.update_delivery_profile, name='update_delivery_profile'),
+    path('delivery_assigned/', views.delivery_assigned, name='delivery_assigned'),
+    path('delivery_completed/', views.delivery_completed, name='delivery_completed'),
+    path('delivery_cancelled/', views.delivery_cancelled, name='delivery_cancelled'),
+    path('update-delivery-profile/', views.update_delivery_profile, name='update_delivery_profile'),
+    path('assign-delivery-boy/<int:order_id>/', views.assign_delivery_boy, name='assign_delivery_boy'),
+     path('userapp/assign-delivery-boy/<int:order_id>/', views.assign_delivery_boy, name='assign_delivery_boy'),
+    path('delivery/update-status/<int:delivery_id>/', views.update_delivery_status, name='update_delivery_status'),
+    path('delivery/send-otp/<int:delivery_id>/', views.send_delivery_otp, name='send_delivery_otp'),
+    path('delivery/verify-otp/<int:delivery_id>/', views.verify_delivery_otp, name='verify_delivery_otp'),
+    path('chatbot/', views.chatbot_view, name='chatbot'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
