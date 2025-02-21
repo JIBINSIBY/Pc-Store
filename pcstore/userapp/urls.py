@@ -200,6 +200,7 @@ urlpatterns = [
     path('delivery/send-otp/<int:delivery_id>/', views.send_delivery_otp, name='send_delivery_otp'),
     path('delivery/verify-otp/<int:delivery_id>/', views.verify_delivery_otp, name='verify_delivery_otp'),
     path('chatbot/', views.chatbot_view, name='chatbot'),
+    path('get-cart-total/', views.get_cart_total, name='get_cart_total'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

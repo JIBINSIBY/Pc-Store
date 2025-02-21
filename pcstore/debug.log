@@ -7987,3 +7987,33 @@ Traceback (most recent call last):
     raise e.__class__(
 TypeError: Field 'id' expected a number but got <SimpleLazyObject: <django.contrib.auth.models.AnonymousUser object at 0x00000268EFC07750>>.
 Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader
+C:\Users\JIBIN\Desktop\mini project 2\Pc-Store\pcstore\userapp\views.py changed, reloading.
+Watching for file changes with StatReloader

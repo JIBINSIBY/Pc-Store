@@ -1126,6 +1126,68 @@ https://templatemo.com/tm-571-hexashop
             color: white;
             text-decoration: none;
         }
+
+        .cart-details {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        .cart-item {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .item-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .item-details {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .cart-summary {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #ddd;
+        }
+
+        .total-items, .total-amount {
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        .total-amount {
+            color: #7e96dc;
+            font-size: 1.1em;
+        }
+
+        .cart-action {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .cart-link {
+            display: inline-block;
+            padding: 8px 20px;
+            background: #7e96dc;
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .cart-link:hover {
+            background: #6477b9;
+            transform: translateY(-2px);
+        }
     </style>
     </head>
     
@@ -2092,14 +2154,71 @@ https://templatemo.com/tm-571-hexashop
     </script>
     <script>
         async function sendMessage() {
+           
+
             const userInput = document.getElementById('user-input');
             const message = userInput.value.trim().toLowerCase();
             
             if (message) {
+                console.log("hi")
+                console.log(message)
                 addMessage(message, 'user');
                 userInput.value = '';
                 document.getElementById('typing-indicator').style.display = 'block';
-    
+                console.log("hi1")
+                // Check if it's a cart-related query
+                if (message.includes('cart') && (message.includes('total') || message.includes('show') || message.includes('what'))) {
+                    console.log("hi2")
+                    try {
+                        console.log("hi3")
+                        const response = await fetch('{% url "userapp:get_cart_total" %}', {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': getCookie('csrftoken'),
+                            },
+                            credentials: 'same-origin'
+                        });
+
+                        const data = await response.json();
+                        if (data.success) {
+                            let cartResponse = '';
+                            
+                            if (data.cart_items.length === 0) {
+                                cartResponse = "Your cart is currently empty.";
+                            } else {
+                                cartResponse = `Here are the items in your cart:\n\n`;
+                                
+                                // Add each cart item
+                                data.cart_items.forEach(item => {
+                                    cartResponse += `${item.name}\n`;
+                                    cartResponse += `Quantity: ${item.quantity}\n`;
+                                    cartResponse += `Price: ₹${item.price.toFixed(2)}\n`;
+                                    cartResponse += `Subtotal: ₹${item.subtotal.toFixed(2)}\n\n`;
+                                });
+                                
+                                // Add total
+                                cartResponse += `Total Items: ${data.item_count}\n`;
+                                cartResponse += `Total Amount: ₹${data.total.toFixed(2)}\n\n`;
+                                cartResponse += `<div class="cart-action">
+                                    <a href="{% url 'userapp:cart_view' %}" class="cart-link">View Full Cart →</a>
+                                </div>`;
+                            }
+                            
+                            addFormattedMessage(cartResponse, 'bot');
+                            document.getElementById('typing-indicator').style.display = 'none';
+                            return;
+                        } else {
+                            addFormattedMessage(data.message || "Unable to fetch cart details", 'bot');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        addFormattedMessage("Sorry, I couldn't fetch your cart details at the moment.", 'bot');
+                    }
+                    document.getElementById('typing-indicator').style.display = 'none';
+                    return;
+                }
+
                 // Define keyword mappings for different pages
                 const pageKeywords = {
                     'build': {
@@ -2179,6 +2298,21 @@ https://templatemo.com/tm-571-hexashop
                     addMessage('Sorry, I encountered an error. Please try again.', 'bot');
                 }
             }
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
         }
     </script>
   </body>

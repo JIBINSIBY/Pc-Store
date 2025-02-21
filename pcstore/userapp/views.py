@@ -2724,3 +2724,66 @@ def verify_delivery_otp(request, delivery_id):
 
 def chatbot_view(request):
     return render(request, 'chatbot.html')
+
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.db import connection
+
+@login_required
+def get_cart_total(request):
+    
+    if request.method == 'GET':
+        try:
+            user_id = request.session.get('user_id')
+            if not user_id:
+                return JsonResponse({
+                    'success': False,
+                    'message': 'Please log in to view your cart'
+                })
+
+            with connection.cursor() as cursor:
+                # Updated query to use correct table names based on your models
+                cursor.execute("""
+                    SELECT 
+                        p.name as product_name,
+                        c.quantity,
+                        p.price,
+                        (p.price * c.quantity) as subtotal,
+                        p.productId as product_id
+                    FROM userapp_cart c
+                    JOIN userapp_product p ON c.product_id = p.productId
+                    WHERE c.user_id = %s
+                """, [user_id])
+                
+                cart_items = []
+                total = 0
+                
+                for row in cursor.fetchall():
+                    item = {
+                        'name': row[0],
+                        'quantity': row[1],
+                        'price': float(row[2]),
+                        'subtotal': float(row[3]),
+                        'product_id': row[4]
+                    }
+                    cart_items.append(item)
+                    total += item['subtotal']
+
+                return JsonResponse({
+                    'success': True,
+                    'cart_items': cart_items,
+                    'total': total,
+                    'item_count': len(cart_items)
+                })
+
+        except Exception as e:
+            print(f"Error fetching cart data: {str(e)}")
+            return JsonResponse({
+                'success': False,
+                'message': 'Error retrieving cart information'
+            })
+
+    return JsonResponse({
+        'success': False,
+        'message': 'Invalid request method'
+    })
